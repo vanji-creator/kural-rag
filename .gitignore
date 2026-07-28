@@ -1,0 +1,29 @@
+# virtual environment
+venv/
+.venv/
+
+# python bytecode
+__pycache__/
+*.py[cod]
+
+# model / dataset caches, if HF_HOME is ever pointed inside the repo
+.cache/
+models/
+
+# saved embeddings — regenerable, and large
+*.npy
+*.npz
+*.faiss
+
+# editor / OS noise
+.vscode/
+.idea/
+.DS_Store
+
+# machine-local Claude Code settings (CLAUDE.md itself IS tracked)
+.claude/settings.local.json
+.claude/*.tmp.*
+
+# secrets (LLM API keys, Phase 7)
+.env
+.env.local
