@@ -27,3 +27,11 @@ models/
 # secrets (LLM API keys, Phase 7)
 .env
 .env.local
+
+# --- web app (Phase 8) ---
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+.vercel

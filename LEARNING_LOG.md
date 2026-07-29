@@ -400,3 +400,96 @@ Carried into Phase 2:
 - Parimelazhagar commentary runs up to ~1684 characters, and Tamil produces more
   tokens per character than English. Against a 512-token model limit that risks
   truncation. `bge-m3` allows 8194 — relevant if Phase 4 favours commentary.
+
+---
+
+## 2026-07-29 — Phase 8 (out of order): the frontend, built early
+
+The design came back from Claude Design and I asked for it to be built now,
+rather than waiting until after retrieval works. So Phase 8 landed before
+Phases 2–7. The app is real: all 1330 kurals, real chapters, real commentary,
+real search. What it does **not** have is embeddings, a vector database, or a
+generator, because those are still ahead.
+
+### What was actually learned
+
+**A frontend built before the model forces an honest interface.**
+
+Every screen the design specified had to answer the question "what do you show
+when the thing behind you does not exist yet?" The answers turned out to be the
+most valuable part of the build:
+
+- The "grounded answer" block renders from data. There is no generator, so it
+  simply does not appear, and a notice says why. It was tempting to write a
+  plausible paragraph. That is the exact failure this product is supposed to
+  prevent, and it would have been invisible once written.
+- The Method page in the design carried measured numbers — recall@5 of 0.92 and
+  so on. Those are Phase 5 numbers and Phase 5 has not happened. They are shown
+  as blanks with an explanation. A methodology page is the worst possible place
+  to start making things up.
+
+**The measurement that changed the build.**
+
+The design specified a refusal policy: answer above 0.70, show doubt above
+0.45, refuse below. Before wiring those numbers up I ran ten questions the
+Thirukkural does address, and seven it does not, through the placeholder
+word-overlap retriever:
+
+```
+    on topic                                        off topic
+    1.000  what does it say about friendship        0.847  who won the football world cup
+    0.856  why should I not envy others             0.500  how do I fix a flat tyre
+    0.809  the greatness of rain                    0.368  best language for machine learning
+    0.479  how should a king choose his ministers   0.306  recommend a restaurant in Chennai
+    0.363  how do I stop being controlled by anger  0.295  should I move my savings into crypto
+    0.283  is it wrong to eat meat                  0.000  how do I install postgresql
+```
+
+**The two groups do not separate.** "Who won the football world cup" scored
+0.847 — higher than all but two real questions — because *won*, *world* and
+*cup* each appear somewhere in the translations. Meanwhile a genuine question
+about eating meat scored 0.283.
+
+There is no threshold that puts one group above it and the other below. So the
+refusal policy cannot be implemented on this engine at all, and picking a
+number anyway would have been decoration dressed as rigour.
+
+What I did instead: the engine declares `calibrated: false`, and the interface
+reads that flag. It refuses to claim confidence, refuses to refuse on the
+reader's behalf, and shows a notice explaining the football result. When
+embeddings arrive, the engine changes and the flag flips — the interface does
+not change.
+
+**Why this matters more than the UI.** This is the clearest evidence I have
+produced so far for *why embeddings are needed*. Not an argument from a
+tutorial — a measured failure of the alternative, on my own corpus. Word
+matching cannot tell a question about the book from a question about football.
+Meaning matching is supposed to be able to. Phase 5 will show whether it does.
+
+**Retrieval is the ceiling — now visible in the product.** Search, browse and
+the verse pages are all wired to one `RetrievalEngine` interface. Swapping the
+placeholder for a real embedding retriever is one line (`ACTIVE_ENGINE`).
+Everything else — cards, citations, thresholds, notices — reads from whatever
+that engine reports about itself.
+
+### Smaller things learned
+
+- A single-column CSS grid sizes its track to `auto`, which is at least
+  max-content. One long unbreakable Tamil line therefore widened the track,
+  widened the page, and produced a horizontal scrollbar on a phone.
+  `minmax(0, 1fr)` is the fix. Found by measuring, not by looking.
+- Tamil needs far more line height than Latin — 1.85 to 2.1 against 1.5 to 1.7
+  — because the vowel signs hang above and below the line and collide
+  otherwise.
+- The corpus has no empty commentaries at all, so the design's "no commentary
+  survives for this verse" state is implemented but never fires. Left in place
+  deliberately: the day a source changes, it will.
+
+### Status after this session
+
+- Phase 8 — **frontend complete and deployed-ready**, running on the real
+  corpus with a placeholder retriever that is labelled as one everywhere it
+  appears.
+- Phases 2–7 — still ahead, unchanged. Nothing about the UI shortcuts them.
+- Next is still **Phase 2 — embeddings over the real corpus**, and there is now
+  a working product to plug them into and a measured baseline to beat.
