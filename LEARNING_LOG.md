@@ -250,14 +250,153 @@ returns a plausible number is expensive.
 
 ---
 
+---
+
+## 2026-07-29 — Phase 1 (Corpus)
+
+### Joining data: identity, never position
+
+Two raw sources. One has all 1330 kurals but no Parimelazhagar commentary. The
+other has the commentary but is **missing kurals 395 and 648**.
+
+I asked whether we could just map them in order, since the order is the same.
+We tested it: a positional join silently mis-pairs **934 of 1330 records**,
+because a hole at 395 slides everything after it up by one.
+
+```
+                thirukkural.json         all_info.json
+   position         kural                    kural
+      393             394                     394     ok
+      394             395                     396     <-- shifted
+```
+
+**Rule:** join on identity, never on position. Same reason I use a primary key
+in PostgreSQL instead of row order — I just had never applied it to a poem.
+
+### Six defects found by a written audit
+
+`src/audit_corpus.py` runs 11 checks and modifies nothing. It found:
+
+1. kural 1000's first line truncated — `ண்பிலான்` instead of `பண்பிலான்`
+2. 664 Manakkudavar commentaries with English text glued onto the end
+3. 21 Karunanidhi meanings with the same problem
+4. kurals 319, 320 running two commentators together in one field
+5. kural 870 carrying kural 810's meaning
+6. kural 524 carrying kural 468's meaning
+
+**None of these crashed anything.** All 1330 records were present and populated
+throughout. The only way to find them was to count and compare on purpose.
+
+Two things that *looked* like bugs and were not: 70 English couplets starting
+with an apostrophe (`'Tis rain works all`), and 18 kurals sharing an identical
+second line — Valluvar genuinely reuses lines. **An audit reports; it does not
+auto-fix.** A script that "deduplicated" those 18 would have destroyed real data.
+
+### Copies are not witnesses
+
+Kural 524 was wrong in **both** raw sources. I checked three websites: two had
+the same wrong text, one had it right.
+
+Majority vote would have "confirmed" the error 3-to-1. Those sites are not
+independent — they all copy the same upstream dataset.
+
+**Counting copies is not verification.** Every hand-sourced value in the corpus
+now records how many genuinely independent sources backed it; five of nine are
+single-sourced, and that is stated rather than hidden.
+
+### Using embeddings as an audit instrument
+
+The six defects above were found by text rules. But 524 and 870 only surfaced
+because they were *exact copies* — a merely wrong meaning would have been
+invisible to all 11 checks.
+
+So we used the embedding model as a detector: embed each kural's English
+explanation and its Tamil meaning, and measure the angle between them. A record
+whose two arrows disagree is a record whose two texts are not saying the same
+thing.
+
+**We tested the detector before trusting it.** We planted 22 known errors — the
+2 historical ones recreated, plus 20 random meaning-swaps — and measured how many
+it caught.
+
+```
+                                    caught in the 22 most suspicious
+   paraphrase-multilingual-MiniLM     0 / 22    (0%)     384 dims
+   LaBSE                             15 / 22   (68%)     768 dims
+```
+
+MiniLM was **useless** for this. Its English-to-Tamil similarities were all
+squashed near zero (median 0.098), so a wrong pair looked no different from a
+right one. LaBSE separated them cleanly (median 0.575), and ranked the planted
+kural 524 error **4th out of 1330**.
+
+Two lessons:
+
+- **A detector nobody has tested is worth nothing.** Plant known errors first
+  and measure recall. This is exactly the LinkGuard evaluation habit, in a new
+  setting.
+- **Task fit beats size.** LaBSE was built to decide "is text A a translation of
+  text B", which is precisely this question. It is not simply "bigger".
+
+Also: the "same model on both sides" rule is about **both sides of one
+comparison**, not "one model per project". The audit and retrieval are separate,
+self-contained comparisons and may legitimately use different models — as long as
+arrows from different models are never compared to each other.
+
+### Low similarity is suspicion, not evidence
+
+A low score has two possible causes: the translation is loose, or the meaning
+belongs to another kural. To tell them apart, compare each Tamil meaning against
+**all 1330** English explanations:
+
+- a loose translation still matches its own kural best
+- a misassigned meaning matches some other kural best
+
+### What the embedding audit actually found
+
+Not what I expected. **25 kurals had an `english_explanation` that was really a
+slice of the poetic couplet**, not an explanation at all. Kural 1156 read
+`"Is hard, when he could stand, and of departure speak to me"`. The prose
+explanation was simply absent.
+
+No text check could have seen this. Not empty, not duplicated, not mixed-script
+— just the wrong content. All 25 were repaired from the alternate source, and
+the build now refuses to write if an explanation is a verbatim slice of its own
+couplet.
+
+After the repair, the top remaining candidates were all false positives — loose
+English translations, with the Tamil correct.
+
+**Honest limits of the detector:** it caught 68% of planted errors at 22, and it
+completely missed the historical kural 870 error (rank 398 of 1330), because the
+wrong text happened to be topically similar. There may be more errors it cannot
+see. Recall was measured, not assumed.
+
+### Final corpus state
+
+1330 records, 21 fields, every field complete. No script mixing, no label
+leakage, no spurious duplicates. 133 chapters of exactly 10, 3 contiguous
+sections — cross-checked against the derivable structure.
+
+`REQUIRED_FIELDS` in the build gate went from 8 to 17. Every defect found today
+is now something that stops the build rather than shipping silently.
+
+---
+
 ### Status
 
 - Concept 1 (embeddings) — done in pre-work.
-- Concept 2 (similarity / cosine) — **properly done today**, derived by hand.
+- Concept 2 (similarity / cosine) — done 2026-07-28, derived by hand.
 - Phase 0 — complete. Map understood.
-- Next: **Phase 1 — build the corpus.** 1330 kurals + meanings + commentary
-  into clean structured data. Mostly data wrangling; my normal skills apply.
+- Phase 1 — **corpus complete and audited.** 1330 records, 21 fields, no holes.
+- Next: **Phase 2 — embeddings over the real corpus.**
 
-Open housekeeping: repo is not a git repo yet; folder structure
-(`data/ src/ experiments/`) proposed but not created; `sandbox.py` still at
-the repo root.
+Carried into Phase 2:
+- The embedding model is still undecided. MiniLM is demonstrably too weak for
+  cross-lingual work on this corpus. LaBSE proved itself for translation
+  equivalence; `multilingual-e5-large` and `bge-m3` are the retrieval
+  candidates, to be decided by Phase 5 measurement, not by argument.
+- This machine is **CPU only** (`torch.cuda.is_available()` is False).
+- Parimelazhagar commentary runs up to ~1684 characters, and Tamil produces more
+  tokens per character than English. Against a 512-token model limit that risks
+  truncation. `bge-m3` allows 8194 — relevant if Phase 4 favours commentary.

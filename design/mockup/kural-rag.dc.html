@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Sans:wght@400;500;600&family=Noto+Serif+Tamil:wght@400;500;600&family=Anek+Tamil:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F8F6F2; --paper-2:#FDFCFA; --paper-3:#F2EFE9;
+  --ink:#1B1A18; --ink-2:#4A4741; --ink-3:#78736B; --ink-4:#A8A29A;
+  --rule:rgba(27,26,24,.11); --rule-2:rgba(27,26,24,.055); --rule-3:rgba(27,26,24,.2);
+  --accent:#9E3F24; --accent-2:#82311A; --accent-soft:rgba(158,63,36,.09); --accent-line:rgba(158,63,36,.34);
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:64px; --s9:96px; --s10:128px;
+  --f-ui:'Instrument Sans','Helvetica Neue',Helvetica,sans-serif;
+  --f-text:Spectral,Georgia,'Times New Roman',serif;
+  --f-ta:'Noto Serif Tamil',serif;
+  --f-ta-ui:'Anek Tamil','Noto Sans Tamil',sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --d1:140ms; --d2:260ms; --d3:420ms; --d4:640ms; --d5:900ms;
+  --e-out:cubic-bezier(.16,1,.3,1); --e-emph:cubic-bezier(.62,.03,.1,1); --e-std:cubic-bezier(.32,.72,0,1);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-ui);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-wrap:break-word}
+button{font:inherit;color:inherit}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-line)}
+a:hover{color:var(--accent-2);border-bottom-color:var(--accent)}
+::selection{background:rgba(158,63,36,.16)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+[aria-current="page"]{color:var(--accent)}
+[aria-current="page"] > span[data-underline]{background:var(--accent)}
+@keyframes kr-rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes kr-fade{from{opacity:0}to{opacity:1}}
+@keyframes kr-lift{from{opacity:0;transform:translateY(26px) scale(.994)}to{opacity:1;transform:none}}
+@keyframes kr-scan{0%{opacity:.1;transform:scaleY(.35)}18%{opacity:1;transform:scaleY(1)}55%{opacity:.28;transform:scaleY(.6)}100%{opacity:.14;transform:scaleY(.35)}}
+@keyframes kr-caret{0%,45%{opacity:1}55%,100%{opacity:0}}
+@keyframes kr-arrive{0%{box-shadow:inset 3px 0 0 var(--accent),0 0 0 6px var(--accent-soft)}100%{box-shadow:inset 3px 0 0 var(--accent),0 0 0 0 rgba(158,63,36,0)}}
+@keyframes kr-sweep{0%{transform:translateX(-100%)}100%{transform:translateX(300%)}}
+@media (max-width: 560px){
+  [data-count]{display:none !important}
+  [data-nav] button{padding-left:7px !important;padding-right:7px !important;font-size:13px !important}
+}
+@media (prefers-reduced-motion: reduce){
+  [data-anim]{animation-name:kr-fade !important;animation-duration:200ms !important;animation-delay:0ms !important}
+  [data-scan]{animation:none !important;opacity:.22 !important;transform:none !important}
+  [data-sweep]{animation:none !important;opacity:.5 !important}
+}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column;background:var(--paper)">
+
+<header style="position:sticky;top:0;z-index:30;display:flex;flex-wrap:wrap;align-items:center;gap:var(--s2) var(--s5);padding:13px clamp(16px,4vw,48px);background:rgba(248,246,242,.9);backdrop-filter:saturate(140%) blur(10px);border-bottom:1px solid var(--rule)">
+  <button onClick="{{ goHome }}" aria-label="Kural RAG — home" style="display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;cursor:pointer">
+    <span lang="ta" style="font-family:var(--f-ta);font-weight:500;font-size:20px;line-height:1;color:var(--ink)">குறள்</span>
+    <span style="width:1px;height:15px;background:var(--rule-3)"></span>
+    <span lang="en" style="font-family:var(--f-ui);font-weight:500;font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-2)">Kural&nbsp;RAG</span>
+  </button>
+  <nav data-nav style="display:flex;flex-wrap:wrap;gap:var(--s1);margin-left:auto;align-items:center;min-width:0">
+    <button onClick="{{ goSearch }}" aria-current="{{ navSearch }}" style="position:relative;background:none;border:0;padding:6px 10px 7px;font-size:13.5px;color:var(--ink-2);cursor:pointer" style-hover="color:var(--ink)">Search<span data-underline style="position:absolute;left:10px;right:10px;bottom:2px;height:1px;background:transparent"></span></button>
+    <button onClick="{{ goBrowse }}" aria-current="{{ navBrowse }}" style="position:relative;background:none;border:0;padding:6px 10px 7px;font-size:13.5px;color:var(--ink-2);cursor:pointer" style-hover="color:var(--ink)">Browse<span data-underline style="position:absolute;left:10px;right:10px;bottom:2px;height:1px;background:transparent"></span></button>
+    <button onClick="{{ goMethod }}" aria-current="{{ navMethod }}" style="position:relative;background:none;border:0;padding:6px 10px 7px;font-size:13.5px;color:var(--ink-2);cursor:pointer" style-hover="color:var(--ink)">Method<span data-underline style="position:absolute;left:10px;right:10px;bottom:2px;height:1px;background:transparent"></span></button>
+    <span data-count style="margin-left:10px;padding-left:14px;border-left:1px solid var(--rule);font-family:var(--f-mono);font-size:11px;color:var(--ink-4);font-variant-numeric:tabular-nums;white-space:nowrap">1330 verses</span>
+  </nav>
+</header>
+
+<main style="flex:1">
+
+<sc-if value="{{ isSearch }}" hint-placeholder-val="{{ true }}">
+<div style="max-width:1180px;margin:0 auto;padding:0 clamp(16px,4vw,48px)">
+
+  <sc-if value="{{ isRest }}" hint-placeholder-val="{{ true }}">
+  <section data-screen-label="Resting" style="padding:clamp(48px,9vh,104px) 0 var(--s9);display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s8)">
+    <div style="display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s6);max-width:1180px">
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s3);font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)">
+        <span lang="en">Semantic search · grounded answers</span>
+        <span style="flex:1;min-width:24px;height:1px;background:var(--rule)"></span>
+        <span lang="en" style="font-variant-numeric:tabular-nums">3 · 13 · 133 · 1330</span>
+      </div>
+      <h1 style="margin:0;max-width:22ch;font-family:var(--f-text);font-weight:300;font-size:clamp(38px,6.4vw,74px);line-height:1.06;letter-spacing:-.022em;color:var(--ink);text-wrap:balance">
+        <span lang="en">Ask the Thirukkural a question.</span>
+      </h1>
+      <p lang="en" style="margin:0;max-width:56ch;font-family:var(--f-text);font-size:19px;line-height:1.62;color:var(--ink-2)">Every answer is assembled only from couplets retrieved for your question, and every claim carries the number of the verse it came from.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s5);max-width:820px">
+      <div style="display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s2)">
+        <label lang="en" for="kr-q" style="font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)">Your question</label>
+        <div style="display:flex;align-items:stretch;gap:var(--s3);border-bottom:1px solid var(--ink);padding-bottom:var(--s3);transition:border-color var(--d2) var(--e-std)">
+          <input id="kr-q" value="{{ query }}" onChange="{{ onType }}" onKeyDown="{{ onKey }}" placeholder="{{ placeholder }}" autocomplete="off" spellcheck="false" style="flex:1;min-width:0;background:none;border:0;outline:none;padding:0;font-family:var(--f-text);font-size:clamp(20px,2.6vw,28px);line-height:1.4;color:var(--ink)">
+          <button onClick="{{ onSubmit }}" aria-label="Search 1330 verses" style="align-self:flex-end;display:flex;align-items:center;gap:8px;background:var(--ink);color:var(--paper-2);border:0;border-radius:2px;padding:9px 16px;font-family:var(--f-ui);font-size:13px;font-weight:500;cursor:pointer;transition:background var(--d1) var(--e-std),transform var(--d1) var(--e-std)" style-hover="background:var(--accent);transform:translateY(-1px)" style-active="transform:translateY(0)"><span lang="en">Retrieve</span><span aria-hidden="true" style="font-family:var(--f-mono);font-size:12px">↩</span></button>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4);padding-top:var(--s1);font-size:12.5px;color:var(--ink-3)">
+          <span lang="en" style="display:flex;align-items:center;gap:6px"><span style="width:5px;height:5px;border-radius:50%;background:var(--ink-4)"></span>English</span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:5px;height:5px;border-radius:50%;background:var(--ink-4)"></span><span lang="ta" style="font-family:var(--f-ta-ui);font-size:14px">தமிழ்</span></span>
+          <span lang="en" style="display:flex;align-items:center;gap:6px"><span style="width:5px;height:5px;border-radius:50%;background:var(--ink-4)"></span>Thanglish <span style="font-family:var(--f-mono);font-size:11px;color:var(--ink-4)">sinam adakkuvadhu eppadi</span></span>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s3);padding-top:var(--s2)">
+        <span lang="en" style="font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-4)">Try</span>
+        <div style="display:flex;flex-wrap:wrap;gap:var(--s2)">
+          <sc-for list="{{ examples }}" as="ex" hint-placeholder-count="4">
+            <button onClick="{{ ex.run }}" lang="{{ ex.lang }}" style="display:flex;align-items:baseline;gap:8px;background:var(--paper-2);border:1px solid var(--rule);border-radius:2px;padding:8px 12px;text-align:left;cursor:pointer;transition:border-color var(--d1) var(--e-std),background var(--d1) var(--e-std),transform var(--d2) var(--e-out)" style-hover="border-color:var(--rule-3);transform:translateY(-1px)">
+              <span style="font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)">{{ ex.tag }}</span>
+              <span style="font-family:{{ ex.font }};font-size:{{ ex.size }};line-height:1.45;color:var(--ink-2)">{{ ex.q }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);max-width:1180px">
+      <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+        <div style="background:var(--paper-2);padding:var(--s5) var(--s5) var(--s6);display:grid;gap:6px">
+          <span style="font-family:var(--f-mono);font-size:30px;font-variant-numeric:tabular-nums;letter-spacing:-.02em;color:var(--ink)">{{ s.n }}</span>
+          <span lang="en" style="font-size:12.5px;color:var(--ink-3)">{{ s.label }}</span>
+          <span lang="ta" style="font-family:var(--f-ta-ui);font-size:14px;color:var(--ink-4)">{{ s.ta }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+  </sc-if>
+
+  <sc-if value="{{ isThinking }}" hint-placeholder-val="{{ false }}">
+  <section data-screen-label="Thinking" aria-live="polite" style="padding:var(--s8) 0 var(--s9);min-height:64vh;display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s7);align-content:start;max-width:900px">
+    <div style="display:grid;gap:var(--s3)">
+      <span lang="en" style="font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)">Retrieving</span>
+      <p style="margin:0;font-family:{{ qFont }};font-size:clamp(21px,2.6vw,29px);line-height:1.45;color:var(--ink)" lang="{{ qLang }}">{{ query }}</p>
+    </div>
+    <div style="display:grid;gap:var(--s4)">
+      <div style="display:flex;align-items:flex-end;gap:2px;height:64px;padding-bottom:2px;border-bottom:1px solid var(--rule)">
+        <sc-for list="{{ bars }}" as="b" hint-placeholder-count="40">
+          <span data-scan style="flex:1;min-width:1px;height:{{ b.h }};background:{{ b.bg }};transform-origin:bottom;animation:kr-scan 1500ms var(--e-std) infinite;animation-delay:{{ b.delay }}"></span>
+        </sc-for>
+      </div>
+      <div style="display:flex;justify-content:space-between;gap:var(--s4);font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;color:var(--ink-4);font-variant-numeric:tabular-nums">
+        <span lang="ta" style="font-family:var(--f-ta-ui);font-size:12px">அறத்துப்பால்</span>
+        <span lang="ta" style="font-family:var(--f-ta-ui);font-size:12px">பொருட்பால்</span>
+        <span lang="ta" style="font-family:var(--f-ta-ui);font-size:12px">காமத்துப்பால்</span>
+      </div>
+    </div>
+    <ol style="margin:0;padding:0;list-style:none;display:grid;gap:0;border-top:1px solid var(--rule);max-width:640px">
+      <sc-for list="{{ steps }}" as="st" hint-placeholder-count="4">
+        <li style="display:flex;align-items:baseline;gap:var(--s4);padding:13px 0;border-bottom:1px solid var(--rule-2);opacity:{{ st.op }};transition:opacity var(--d3) var(--e-std)">
+          <span style="font-family:var(--f-mono);font-size:11px;color:{{ st.mark }};width:14px">{{ st.icon }}</span>
+          <span lang="en" style="flex:1;font-size:14px;color:var(--ink-2)">{{ st.label }}</span>
+          <span style="font-family:var(--f-mono);font-size:11.5px;font-variant-numeric:tabular-nums;color:var(--ink-4)">{{ st.val }}</span>
+        </li>
+      </sc-for>
+    </ol>
+  </section>
+  </sc-if>
+
+  <sc-if value="{{ isError }}" hint-placeholder-val="{{ false }}">
+  <section data-screen-label="Error" style="padding:var(--s9) 0;min-height:60vh;max-width:640px;display:grid;gap:var(--s5);align-content:start">
+    <span aria-hidden="true" style="width:28px;height:28px;border:1px solid var(--accent-line);border-radius:50%;display:grid;place-items:center;font-family:var(--f-mono);font-size:13px;color:var(--accent)">!</span>
+    <h2 lang="en" style="margin:0;font-family:var(--f-text);font-weight:400;font-size:clamp(26px,4vw,38px);line-height:1.15;letter-spacing:-.015em">The retrieval service did not answer.</h2>
+    <p lang="en" style="margin:0;font-family:var(--f-text);font-size:18px;line-height:1.6;color:var(--ink-2)">The index is unreachable, so nothing was retrieved and nothing was generated. No partial answer is shown, because an ungrounded answer is worse than none.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center">
+      <button onClick="{{ retry }}" style="background:var(--ink);color:var(--paper-2);border:0;border-radius:2px;padding:10px 16px;font-size:13px;font-weight:500;cursor:pointer" style-hover="background:var(--accent)"><span lang="en">Try the query again</span></button>
+      <button onClick="{{ goBrowse }}" style="background:none;border:1px solid var(--rule-3);border-radius:2px;padding:10px 16px;font-size:13px;cursor:pointer;color:var(--ink-2)" style-hover="border-color:var(--ink);color:var(--ink)"><span lang="en">Browse the 133 chapters instead</span></button>
+    </div>
+    <p style="margin:0;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-4)">retrieve · 503 · index/kural-e5-1330 · 2 retries</p>
+  </section>
+  </sc-if>
+
+  <sc-if value="{{ isAnswer }}" hint-placeholder-val="{{ false }}">
+  <section data-screen-label="Answer" style="padding:var(--s7) 0 var(--s9);display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s7)">
+
+    <div data-anim style="display:grid;gap:var(--s5);max-width:760px;animation:kr-lift var(--d5) var(--e-out) both">
+      <div style="display:grid;gap:var(--s3)">
+        <div style="display:flex;align-items:center;gap:var(--s3)">
+          <span lang="en" style="font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)">Question</span>
+          <span style="flex:1;height:1px;background:var(--rule)"></span>
+          <button onClick="{{ reset }}" style="background:none;border:0;padding:0;font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-4);cursor:pointer" style-hover="color:var(--accent)"><span lang="en">New question</span></button>
+        </div>
+        <p lang="{{ qLang }}" style="margin:0;font-family:{{ qFont }};font-size:clamp(22px,3vw,32px);line-height:{{ qLH }};letter-spacing:-.012em;color:var(--ink);text-wrap:pretty">{{ query }}</p>
+      </div>
+
+      <sc-if value="{{ hasNotice }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;gap:var(--s3);padding:var(--s4) var(--s5);border:1px solid {{ noticeBorder }};border-left:2px solid var(--accent);background:var(--paper-2)">
+          <div style="display:flex;align-items:baseline;gap:var(--s3)">
+            <span lang="en" style="font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)">{{ noticeKind }}</span>
+            <span style="font-family:var(--f-mono);font-size:11px;font-variant-numeric:tabular-nums;color:var(--ink-4)">{{ noticeMeta }}</span>
+          </div>
+          <p lang="en" style="margin:0;font-family:var(--f-text);font-size:16.5px;line-height:1.6;color:var(--ink-2);max-width:62ch">{{ noticeText }}</p>
+          <sc-if value="{{ hasNoticeAction }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-wrap:wrap;gap:var(--s2)">
+              <sc-for list="{{ noticeActions }}" as="a" hint-placeholder-count="2">
+                <button onClick="{{ a.run }}" lang="{{ a.lang }}" style="display:flex;align-items:baseline;gap:7px;background:none;border:1px solid var(--accent-line);border-radius:2px;padding:7px 11px;cursor:pointer;color:var(--accent);transition:background var(--d1) var(--e-std)" style-hover="background:var(--accent-soft)">
+                  <span style="font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;opacity:.75">{{ a.tag }}</span>
+                  <span style="font-family:{{ a.font }};font-size:{{ a.size }}">{{ a.label }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ hasAnswer }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;gap:var(--s4)">
+        <div style="display:flex;align-items:center;gap:var(--s3)">
+          <span lang="en" style="font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)">Grounded answer</span>
+          <span style="flex:1;height:1px;background:var(--rule)"></span>
+        </div>
+        <p lang="en" style="margin:0;font-family:var(--f-text);font-size:clamp(18px,2.1vw,21px);line-height:1.7;color:var(--ink);max-width:64ch;text-wrap:pretty">
+          <sc-for list="{{ answerParts }}" as="p" hint-placeholder-count="4">
+            <span>{{ p.text }}<sc-if value="{{ p.cite }}" hint-placeholder-val="{{ false }}"><button onClick="{{ p.run }}" aria-label="{{ p.aria }}" style="display:inline-flex;align-items:baseline;gap:1px;margin:0 1px;padding:1px 7px 2px;border:1px solid var(--accent-line);border-radius:3px;background:var(--accent-soft);color:var(--accent);font-family:var(--f-mono);font-size:12.5px;font-variant-numeric:tabular-nums;line-height:1.2;cursor:pointer;vertical-align:1px;transition:background var(--d1) var(--e-std),color var(--d1) var(--e-std),transform var(--d1) var(--e-out)" style-hover="background:var(--accent);color:var(--paper-2);transform:translateY(-1px)">⟨{{ p.cite }}⟩</button></sc-if></span>
+          </sc-for>
+        </p>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:var(--s2) var(--s4);padding-top:var(--s3);border-top:1px solid var(--rule)">
+          <span style="display:flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:11.5px;font-variant-numeric:tabular-nums;color:var(--ink-3)"><span aria-hidden="true" style="width:7px;height:7px;border-radius:50%;background:{{ confDot }}"></span><span lang="en">{{ groundLine }}</span></span>
+          <span lang="en" style="font-family:var(--f-mono);font-size:11.5px;color:var(--ink-4)">{{ groundMeta }}</span>
+        </div>
+      </div>
+      </sc-if>
+    </div>
+
+    <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ false }}">
+    <div style="display:grid;gap:var(--s5)">
+      <div style="display:flex;align-items:baseline;gap:var(--s3)">
+        <span lang="en" style="font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)">Retrieved verses</span>
+        <span style="flex:1;height:1px;background:var(--rule)"></span>
+        <span lang="en" style="font-family:var(--f-mono);font-size:11px;color:var(--ink-4);font-variant-numeric:tabular-nums">{{ resultCount }}</span>
+      </div>
+
+      <ol style="margin:0;padding:0;list-style:none;display:grid;gap:1px;background:var(--rule);border-block:1px solid var(--rule)">
+        <sc-for list="{{ results }}" as="r" hint-placeholder-count="4">
+          <li data-anim id="{{ r.anchor }}" ref="{{ r.ref }}" style="background:var(--paper-2);animation:{{ r.anim }};animation-delay:{{ r.delay }};box-shadow:{{ r.shadow }};scroll-margin-top:88px">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s5);padding:var(--s6) clamp(16px,3vw,36px)">
+
+              <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s3) var(--s5)">
+                <span style="font-family:var(--f-mono);font-size:11px;color:var(--ink-4);font-variant-numeric:tabular-nums">{{ r.rank }}</span>
+                <button onClick="{{ r.open }}" style="display:flex;align-items:baseline;gap:10px;background:none;border:0;padding:0;cursor:pointer;text-align:left" style-hover="color:var(--accent)">
+                  <span style="font-family:var(--f-mono);font-size:19px;font-variant-numeric:tabular-nums;letter-spacing:-.01em;color:var(--ink)">{{ r.num }}</span>
+                  <span lang="ta" style="font-family:var(--f-ta-ui);font-size:15px;color:var(--ink-2)">{{ r.chapTa }}</span>
+                  <span lang="en" style="font-size:12.5px;color:var(--ink-3)">{{ r.chapEn }}</span>
+                </button>
+                <div style="flex:1;min-width:120px;display:flex;align-items:center;gap:var(--s3);justify-content:flex-end">
+                  <span aria-hidden="true" style="width:clamp(56px,10vw,110px);height:3px;background:var(--paper-3);position:relative;overflow:hidden"><span style="position:absolute;inset:0 auto 0 0;width:{{ r.barW }};background:{{ r.barColor }};transition:width var(--d5) var(--e-out)"></span></span>
+                  <span style="font-family:var(--f-mono);font-size:13px;font-variant-numeric:tabular-nums;color:{{ r.scoreColor }};min-width:4ch;text-align:right">{{ r.scoreText }}</span>
+                </div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s5);align-items:start">
+                <div style="display:grid;gap:var(--s2);padding-left:clamp(0px,2vw,22px);border-left:1px solid var(--rule-2)">
+                  <p lang="ta" style="margin:0;font-family:var(--f-ta);font-weight:400;font-size:clamp(21px,2.5vw,27px);line-height:1.85;letter-spacing:0;color:var(--ink)">{{ r.l1 }}</p>
+                  <p lang="ta" style="margin:0;font-family:var(--f-ta);font-weight:400;font-size:clamp(21px,2.5vw,27px);line-height:1.85;letter-spacing:0;color:var(--ink)">{{ r.l2 }}</p>
+                  <sc-if value="{{ showTr }}" hint-placeholder-val="{{ true }}">
+                    <p lang="en" style="margin:6px 0 0;font-family:var(--f-mono);font-size:12px;line-height:1.6;color:var(--ink-4)">{{ r.tr }}</p>
+                  </sc-if>
+                </div>
+                <p lang="en" style="margin:0;font-family:var(--f-text);font-size:17.5px;line-height:1.64;color:var(--ink-2);max-width:66ch;text-wrap:pretty">{{ r.primary }}</p>
+              </div>
+
+              <div style="display:flex;flex-wrap:wrap;gap:var(--s2) var(--s5);align-items:center">
+                <button onClick="{{ r.toggle }}" aria-expanded="{{ r.expanded }}" aria-controls="{{ r.panelId }}" style="display:flex;align-items:center;gap:9px;background:none;border:1px solid var(--rule);border-radius:2px;padding:7px 12px;font-size:12.5px;color:var(--ink-2);cursor:pointer;transition:border-color var(--d1) var(--e-std),color var(--d1) var(--e-std)" style-hover="border-color:var(--ink);color:var(--ink)">
+                  <span aria-hidden="true" style="font-family:var(--f-mono);font-size:11px;display:inline-block;transform:{{ r.chev }};transition:transform var(--d3) var(--e-out)">↓</span>
+                  <span lang="en">{{ r.toggleLabel }}</span>
+                </button>
+                <button onClick="{{ r.open }}" style="background:none;border:0;padding:0;font-size:12.5px;color:var(--ink-3);cursor:pointer;border-bottom:1px solid var(--rule-3)" style-hover="color:var(--accent);border-bottom-color:var(--accent)"><span lang="en">Full verse page →</span></button>
+                <sc-if value="{{ r.arrived }}" hint-placeholder-val="{{ false }}">
+                  <span style="display:flex;align-items:center;gap:7px;margin-left:auto;font-family:var(--f-mono);font-size:11px;color:var(--accent)"><span aria-hidden="true">⟨{{ r.num }}⟩</span><span lang="en">you arrived here from the citation</span></span>
+                </sc-if>
+              </div>
+
+              <div id="{{ r.panelId }}" style="display:grid;grid-template-rows:{{ r.rows }};transition:grid-template-rows var(--d4) var(--e-out);margin-top:calc(var(--s2) * -1)">
+                <div style="overflow:hidden;min-height:0">
+                  <div style="display:grid;gap:var(--s5);padding-top:var(--s5);border-top:1px solid var(--rule);opacity:{{ r.panelOp }};transition:opacity var(--d3) var(--e-std) {{ r.panelDelay }}">
+
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--rule-2)">
+                      <sc-for list="{{ r.altTrans }}" as="t" hint-placeholder-count="2">
+                        <div style="background:var(--paper-2);padding:var(--s4) var(--s4) var(--s5);display:grid;gap:8px;align-content:start">
+                          <span lang="en" style="font-family:var(--f-mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-4)">{{ t.label }}</span>
+                          <p lang="en" style="margin:0;font-family:var(--f-text);font-style:italic;font-size:16px;line-height:1.6;color:var(--ink-2)">{{ t.text }}</p>
+                        </div>
+                      </sc-for>
+                    </div>
+
+                    <div style="display:grid;gap:var(--s3)">
+                      <div style="display:flex;align-items:baseline;gap:var(--s3)">
+                        <span lang="ta" style="font-family:var(--f-ta-ui);font-size:14px;color:var(--ink-2)">உரை</span>
+                        <span lang="en" style="font-family:var(--f-mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-4)">Modern Tamil prose</span>
+                        <span style="flex:1;height:1px;background:var(--rule-2)"></span>
+                      </div>
+                      <div style="display:grid;gap:1px;background:var(--rule-2)">
+                        <sc-for list="{{ r.meanings }}" as="m" hint-placeholder-count="3">
+                          <div style="background:var(--paper-2);display:grid;grid-template-columns:minmax(0,1fr);gap:6px;padding:var(--s3) 0">
+                            <span lang="ta" style="font-family:var(--f-ta-ui);font-size:12.5px;color:var(--ink-4)">{{ m.who }}</span>
+                            <p lang="ta" style="margin:0;font-family:var(--f-ta);font-size:16.5px;line-height:1.95;color:var(--ink-2);max-width:74ch">{{ m.text }}</p>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </div>
+
+                    <div style="display:grid;gap:var(--s3)">
+                      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s3)">
+                        <span lang="ta" style="font-family:var(--f-ta-ui);font-size:14px;color:var(--ink-2)">பழைய உரை</span>
+                        <span lang="en" style="font-family:var(--f-mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-4)">Classical commentary · Tamil only, no English exists</span>
+                        <span style="flex:1;height:1px;background:var(--rule-2)"></span>
+                      </div>
+                      <sc-for list="{{ r.commentaries }}" as="c" hint-placeholder-count="2">
+                        <div style="display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s2);padding:var(--s4) 0;border-top:1px solid var(--rule-2)">
+                          <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s3)">
+                            <span lang="ta" style="font-family:var(--f-ta-ui);font-size:15px;color:var(--ink)">{{ c.who }}</span>
+                            <span lang="en" style="font-family:var(--f-mono);font-size:10.5px;color:var(--ink-4)">{{ c.era }}</span>
+                            <span style="font-family:var(--f-mono);font-size:10.5px;color:var(--ink-4);font-variant-numeric:tabular-nums;margin-left:auto">{{ c.len }}</span>
+                          </div>
+                          <sc-if value="{{ c.hasPre }}" hint-placeholder-val="{{ false }}">
+                            <div style="display:grid;gap:6px;padding:var(--s3) var(--s4);background:var(--paper-3)">
+                              <span lang="ta" style="font-family:var(--f-ta-ui);font-size:12px;color:var(--ink-3)">அதிகாரமுன்னுரை · chapter preamble</span>
+                              <p lang="ta" style="margin:0;font-family:var(--f-ta);font-size:16px;line-height:1.95;color:var(--ink-2)">{{ c.pre }}</p>
+                            </div>
+                          </sc-if>
+                          <sc-if value="{{ c.has }}" hint-placeholder-val="{{ true }}">
+                            <p lang="ta" style="margin:0;font-family:var(--f-ta);font-size:17px;line-height:2.05;color:var(--ink-2);max-width:70ch;text-wrap:pretty">{{ c.text }}</p>
+                          </sc-if>
+                          <sc-if value="{{ c.empty }}" hint-placeholder-val="{{ false }}">
+                            <p lang="en" style="margin:0;display:flex;align-items:baseline;gap:10px;font-family:var(--f-mono);font-size:12px;line-height:1.7;color:var(--ink-3)"><span aria-hidden="true" style="width:18px;height:1px;background:var(--rule-3);transform:translateY(-5px)"></span>No commentary by this author survives for this kural. 3 of 1330.</p>
+                          </sc-if>
+                        </div>
+                      </sc-for>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </sc-for>
+      </ol>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ noMatch }}" hint-placeholder-val="{{ false }}">
+    <div data-anim style="display:grid;gap:var(--s5);max-width:640px;animation:kr-rise var(--d5) var(--e-out) both">
+      <div style="display:grid;gap:var(--s3)">
+        <span lang="en" style="font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)">Nothing retrieved</span>
+        <p lang="en" style="margin:0;font-family:var(--f-text);font-size:20px;line-height:1.62;color:var(--ink-2)">Rather than rank five weak verses and let the wording imply an answer, the result set is empty. You can ask something the text does speak to:</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:var(--s2)">
+        <sc-for list="{{ examples }}" as="ex" hint-placeholder-count="3">
+          <button onClick="{{ ex.run }}" lang="{{ ex.lang }}" style="display:flex;align-items:baseline;gap:8px;background:var(--paper-2);border:1px solid var(--rule);border-radius:2px;padding:8px 12px;text-align:left;cursor:pointer" style-hover="border-color:var(--rule-3)">
+            <span style="font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)">{{ ex.tag }}</span>
+            <span style="font-family:{{ ex.font }};font-size:{{ ex.size }};color:var(--ink-2)">{{ ex.q }}</span>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+  </section>
+  </sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ isBrowse }}" hint-placeholder-val="{{ false }}">
+<section data-screen-label="Browse" style="max-width:1180px;margin:0 auto;padding:var(--s7) clamp(16px,4vw,48px) var(--s9);display:grid;gap:var(--s6)">
+  <div style="display:grid;gap:var(--s3);max-width:680px">
+    <span lang="en" style="font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)">The book as an object</span>
+    <h2 style="margin:0;font-family:var(--f-text);font-weight:300;font-size:clamp(30px,4.6vw,50px);line-height:1.1;letter-spacing:-.02em"><span lang="en">3 sections, 13 subsections, 133 chapters, 10 verses each.</span></h2>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:1px;background:var(--rule);border:1px solid var(--rule)">
+    <sc-for list="{{ sections }}" as="s" hint-placeholder-count="3">
+      <button onClick="{{ s.run }}" style="flex:1 1 240px;min-width:0;display:grid;gap:8px;text-align:left;background:{{ s.bg }};border:0;padding:var(--s5);cursor:pointer;transition:background var(--d2) var(--e-std)">
+        <span style="display:flex;align-items:baseline;gap:var(--s3)"><span lang="ta" style="font-family:var(--f-ta);font-size:22px;line-height:1.7;color:{{ s.fg }}">{{ s.ta }}</span><span style="font-family:var(--f-mono);font-size:11px;color:var(--ink-4);font-variant-numeric:tabular-nums;margin-left:auto">{{ s.range }}</span></span>
+        <span lang="en" style="font-size:13px;color:var(--ink-3)">{{ s.en }}</span>
+      </button>
+    </sc-for>
+  </div>
+
+  <div style="display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s6)">
+    <sc-for list="{{ subs }}" as="sub" hint-placeholder-count="4">
+      <div style="display:grid;gap:var(--s4)">
+        <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s3);padding-bottom:var(--s2);border-bottom:1px solid var(--rule)">
+          <span lang="ta" style="font-family:var(--f-ta);font-size:19px;line-height:1.8;color:var(--ink)">{{ sub.ta }}</span>
+          <span lang="en" style="font-size:13px;color:var(--ink-3)">{{ sub.en }}</span>
+          <span style="font-family:var(--f-mono);font-size:11px;color:var(--ink-4);font-variant-numeric:tabular-nums;margin-left:auto">{{ sub.count }}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1px;background:var(--rule-2)">
+          <sc-for list="{{ sub.chapters }}" as="c" hint-placeholder-count="8">
+            <button onClick="{{ c.run }}" aria-current="{{ c.current }}" style="display:grid;gap:5px;text-align:left;background:{{ c.bg }};border:0;padding:13px var(--s4) 15px;cursor:pointer;transition:background var(--d1) var(--e-std)" style-hover="background:var(--paper-3)">
+              <span style="display:flex;align-items:baseline;gap:10px">
+                <span style="font-family:var(--f-mono);font-size:11px;color:var(--ink-4);font-variant-numeric:tabular-nums">{{ c.n }}</span>
+                <span lang="ta" style="font-family:var(--f-ta-ui);font-size:15.5px;color:var(--ink);line-height:1.6">{{ c.ta }}</span>
+              </span>
+              <span style="display:flex;align-items:baseline;gap:10px">
+                <span style="width:11px"></span>
+                <span lang="en" style="font-size:12px;color:var(--ink-3)">{{ c.en }}</span>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <sc-if value="{{ hasChapter }}" hint-placeholder-val="{{ false }}">
+  <div data-anim style="display:grid;gap:var(--s5);padding:var(--s6) 0 0;border-top:1px solid var(--ink);animation:kr-rise var(--d4) var(--e-out) both">
+    <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s3) var(--s5)">
+      <span style="font-family:var(--f-mono);font-size:30px;font-variant-numeric:tabular-nums;letter-spacing:-.02em">{{ chapNo }}</span>
+      <div style="display:grid;gap:2px">
+        <span lang="ta" style="font-family:var(--f-ta);font-size:26px;line-height:1.75;color:var(--ink)">{{ chapTa }}</span>
+        <span lang="en" style="font-size:14px;color:var(--ink-3)">{{ chapEn }}</span>
+      </div>
+      <span style="font-family:var(--f-mono);font-size:11.5px;color:var(--ink-4);font-variant-numeric:tabular-nums;margin-left:auto">{{ chapRange }}</span>
+    </div>
+    <ol style="margin:0;padding:0;list-style:none;display:grid;gap:1px;background:var(--rule-2);border-top:1px solid var(--rule)">
+      <sc-for list="{{ chapKurals }}" as="k" hint-placeholder-count="10">
+        <li data-anim style="background:var(--paper-2);animation:{{ k.anim }};animation-delay:{{ k.delay }}">
+          <button onClick="{{ k.run }}" style="width:100%;display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--s3) var(--s5);align-items:baseline;text-align:left;background:none;border:0;padding:var(--s4) var(--s3);cursor:pointer;transition:background var(--d1) var(--e-std)" style-hover="background:var(--paper-3)">
+            <span style="font-family:var(--f-mono);font-size:13px;color:var(--ink-4);font-variant-numeric:tabular-nums">{{ k.n }}</span>
+            <span style="display:grid;gap:var(--s2)">
+              <sc-if value="{{ k.loaded }}" hint-placeholder-val="{{ true }}">
+                <span style="display:grid;gap:2px">
+                  <span lang="ta" style="font-family:var(--f-ta);font-size:19px;line-height:1.9;color:var(--ink)">{{ k.l1 }}</span>
+                  <span lang="ta" style="font-family:var(--f-ta);font-size:19px;line-height:1.9;color:var(--ink)">{{ k.l2 }}</span>
+                </span>
+                <span lang="en" style="font-family:var(--f-text);font-size:15.5px;line-height:1.6;color:var(--ink-3);max-width:70ch">{{ k.ex }}</span>
+              </sc-if>
+              <sc-if value="{{ k.skeleton }}" hint-placeholder-val="{{ false }}">
+                <span style="display:grid;gap:9px" aria-hidden="true">
+                  <span data-sweep style="height:11px;width:64%;background:var(--paper-3);position:relative;overflow:hidden"><span style="position:absolute;inset:0;width:34%;background:linear-gradient(90deg,transparent,rgba(27,26,24,.06),transparent);animation:kr-sweep 1400ms var(--e-std) infinite"></span></span>
+                  <span data-sweep style="height:11px;width:46%;background:var(--paper-3)"></span>
+                  <span data-sweep style="height:9px;width:78%;background:var(--paper-3)"></span>
+                </span>
+              </sc-if>
+            </span>
+          </button>
+        </li>
+      </sc-for>
+    </ol>
+    <sc-if value="{{ chapPartial }}" hint-placeholder-val="{{ false }}">
+      <p lang="en" style="margin:0;font-family:var(--f-mono);font-size:11.5px;line-height:1.7;color:var(--ink-4);max-width:70ch">This mockup ships the full record for chapters 1 and 31; other chapters show the loading pass that runs while the 10 verses stream from the index.</p>
+    </sc-if>
+  </div>
+  </sc-if>
+</section>
+</sc-if>
+
+<sc-if value="{{ isVerse }}" hint-placeholder-val="{{ false }}">
+<section data-screen-label="Verse" style="max-width:900px;margin:0 auto;padding:var(--s6) clamp(16px,4vw,48px) var(--s9);display:grid;gap:var(--s7)">
+  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:var(--s3);font-size:12.5px;color:var(--ink-3)">
+    <button onClick="{{ back }}" style="background:none;border:0;padding:0;font-size:12.5px;color:var(--ink-3);cursor:pointer" style-hover="color:var(--accent)"><span lang="en">← back</span></button>
+    <span aria-hidden="true" style="color:var(--ink-4)">/</span>
+    <span lang="ta" style="font-family:var(--f-ta-ui);font-size:13.5px">{{ v.secTa }}</span>
+    <span aria-hidden="true" style="color:var(--ink-4)">/</span>
+    <span lang="ta" style="font-family:var(--f-ta-ui);font-size:13.5px">{{ v.subTa }}</span>
+    <span aria-hidden="true" style="color:var(--ink-4)">/</span>
+    <button onClick="{{ v.openChap }}" style="background:none;border:0;padding:0;cursor:pointer;color:var(--ink-2);border-bottom:1px solid var(--rule-3)" style-hover="color:var(--accent);border-bottom-color:var(--accent)"><span lang="ta" style="font-family:var(--f-ta-ui);font-size:13.5px">{{ v.chapTa }}</span></button>
+  </div>
+
+  <div data-anim style="display:grid;gap:var(--s6);animation:kr-lift var(--d5) var(--e-out) both">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:var(--s4);padding-bottom:var(--s4);border-bottom:1px solid var(--ink)">
+      <span style="font-family:var(--f-mono);font-size:clamp(44px,8vw,80px);line-height:.9;letter-spacing:-.04em;font-variant-numeric:tabular-nums">{{ v.num }}</span>
+      <div style="display:grid;gap:2px;padding-bottom:6px">
+        <span lang="en" style="font-family:var(--f-mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-4)">{{ v.chapMeta }}</span>
+        <span lang="en" style="font-size:14px;color:var(--ink-2)">{{ v.chapEn }}</span>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:var(--s2);padding-bottom:6px">
+        <button onClick="{{ v.prev }}" aria-label="Previous verse" style="background:none;border:1px solid var(--rule);border-radius:2px;padding:7px 11px;font-family:var(--f-mono);font-size:12px;color:var(--ink-2);cursor:pointer" style-hover="border-color:var(--ink);color:var(--ink)">←</button>
+        <button onClick="{{ v.next }}" aria-label="Next verse" style="background:none;border:1px solid var(--rule);border-radius:2px;padding:7px 11px;font-family:var(--f-mono);font-size:12px;color:var(--ink-2);cursor:pointer" style-hover="border-color:var(--ink);color:var(--ink)">→</button>
+      </div>
+    </div>
+
+    <div style="display:grid;gap:var(--s4);padding:var(--s5) 0">
+      <p lang="ta" style="margin:0;font-family:var(--f-ta);font-weight:500;font-size:clamp(26px,4.4vw,44px);line-height:1.78;letter-spacing:-.005em;color:var(--ink);text-wrap:pretty">{{ v.l1 }}</p>
+      <p lang="ta" style="margin:0;font-family:var(--f-ta);font-weight:500;font-size:clamp(26px,4.4vw,44px);line-height:1.78;letter-spacing:-.005em;color:var(--ink);text-wrap:pretty">{{ v.l2 }}</p>
+      <p lang="en" style="margin:var(--s2) 0 0;font-family:var(--f-mono);font-size:13px;line-height:1.7;color:var(--ink-4)">{{ v.tr }}</p>
+    </div>
+
+    <div style="display:grid;gap:var(--s4)">
+      <div style="display:flex;align-items:baseline;gap:var(--s3)">
+        <span lang="en" style="font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)">In English</span>
+        <span style="flex:1;height:1px;background:var(--rule)"></span>
+      </div>
+      <p lang="en" style="margin:0;font-family:var(--f-text);font-size:clamp(19px,2.3vw,23px);line-height:1.66;color:var(--ink);max-width:64ch;text-wrap:pretty">{{ v.ex }}</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;background:var(--rule-2);border-top:1px solid var(--rule-2)">
+        <sc-for list="{{ v.altTrans }}" as="t" hint-placeholder-count="2">
+          <div style="background:var(--paper);padding:var(--s4) 0;display:grid;gap:8px;align-content:start">
+            <span lang="en" style="font-family:var(--f-mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-4)">{{ t.label }}</span>
+            <p lang="en" style="margin:0;font-family:var(--f-text);font-style:italic;font-size:16.5px;line-height:1.62;color:var(--ink-2);max-width:44ch">{{ t.text }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display:grid;gap:var(--s4)">
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s3)">
+        <span lang="ta" style="font-family:var(--f-ta-ui);font-size:15px;color:var(--ink-2)">உரை</span>
+        <span lang="en" style="font-family:var(--f-mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-4)">Modern Tamil prose · three editors</span>
+        <span style="flex:1;height:1px;background:var(--rule)"></span>
+      </div>
+      <sc-for list="{{ v.meanings }}" as="m" hint-placeholder-count="3">
+        <div style="display:grid;gap:8px;padding:var(--s4) 0;border-bottom:1px solid var(--rule-2)">
+          <span lang="ta" style="font-family:var(--f-ta-ui);font-size:13.5px;color:var(--ink-4)">{{ m.who }}</span>
+          <p lang="ta" style="margin:0;font-family:var(--f-ta);font-size:18px;line-height:2;color:var(--ink);max-width:72ch;text-wrap:pretty">{{ m.text }}</p>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="display:grid;gap:var(--s4)">
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s3)">
+        <span lang="ta" style="font-family:var(--f-ta-ui);font-size:15px;color:var(--ink-2)">பழைய உரை</span>
+        <span lang="en" style="font-family:var(--f-mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-4)">Classical commentary · exists in Tamil only</span>
+        <span style="flex:1;height:1px;background:var(--rule)"></span>
+      </div>
+      <sc-for list="{{ v.commentaries }}" as="c" hint-placeholder-count="2">
+        <div style="display:grid;gap:var(--s3);padding:var(--s5) 0;border-top:1px solid var(--rule)">
+          <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s3)">
+            <span lang="ta" style="font-family:var(--f-ta);font-size:19px;line-height:1.8;color:var(--ink)">{{ c.who }}</span>
+            <span lang="en" style="font-family:var(--f-mono);font-size:11px;color:var(--ink-4)">{{ c.era }}</span>
+            <span style="font-family:var(--f-mono);font-size:11px;color:var(--ink-4);font-variant-numeric:tabular-nums;margin-left:auto">{{ c.len }}</span>
+          </div>
+          <sc-if value="{{ c.hasPre }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;gap:8px;padding:var(--s4);background:var(--paper-3)">
+              <span lang="ta" style="font-family:var(--f-ta-ui);font-size:12.5px;color:var(--ink-3)">அதிகாரமுன்னுரை · chapter preamble</span>
+              <p lang="ta" style="margin:0;font-family:var(--f-ta);font-size:17px;line-height:2;color:var(--ink-2);max-width:68ch">{{ c.pre }}</p>
+            </div>
+          </sc-if>
+          <sc-if value="{{ c.has }}" hint-placeholder-val="{{ true }}">
+            <p lang="ta" style="margin:0;font-family:var(--f-ta);font-size:18px;line-height:2.1;color:var(--ink);max-width:68ch;text-wrap:pretty">{{ c.text }}</p>
+          </sc-if>
+          <sc-if value="{{ c.empty }}" hint-placeholder-val="{{ false }}">
+            <p lang="en" style="margin:0;display:flex;align-items:baseline;gap:12px;font-family:var(--f-mono);font-size:12.5px;line-height:1.75;color:var(--ink-3);max-width:60ch"><span aria-hidden="true" style="width:22px;height:1px;background:var(--rule-3);transform:translateY(-6px)"></span>No commentary by this author survives for this kural — one of 3 in 1330. The verse is complete without it.</p>
+          </sc-if>
+        </div>
+      </sc-for>
+      <sc-if value="{{ v.partial }}" hint-placeholder-val="{{ false }}">
+        <p lang="en" style="margin:0;font-family:var(--f-mono);font-size:11.5px;line-height:1.75;color:var(--ink-4);max-width:70ch">Full apparatus — three translations, three modern Tamil readings, two classical commentaries — is loaded in this mockup for verses 1, 129, 291, 292, 301, 302, 305 and 309.</p>
+      </sc-if>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center;padding-top:var(--s5);border-top:1px solid var(--rule)">
+      <span lang="en" style="font-family:var(--f-mono);font-size:11.5px;color:var(--ink-4)">{{ v.permalink }}</span>
+      <button style="margin-left:auto;background:none;border:1px solid var(--rule-3);border-radius:2px;padding:8px 13px;font-size:12.5px;color:var(--ink-2);cursor:pointer" style-hover="border-color:var(--ink);color:var(--ink)"><span lang="en">Copy link</span></button>
+      <button onClick="{{ v.askAbout }}" style="background:var(--ink);color:var(--paper-2);border:0;border-radius:2px;padding:8px 13px;font-size:12.5px;font-weight:500;cursor:pointer" style-hover="background:var(--accent)"><span lang="en">Ask about this chapter</span></button>
+    </div>
+  </div>
+</section>
+</sc-if>
+
+<sc-if value="{{ isMethod }}" hint-placeholder-val="{{ false }}">
+<section data-screen-label="Method" style="max-width:1000px;margin:0 auto;padding:var(--s7) clamp(16px,4vw,48px) var(--s9);display:grid;gap:var(--s8)">
+  <div style="display:grid;gap:var(--s4);max-width:660px">
+    <span lang="en" style="font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)">Method · evaluated 2026-06-14 · v0.4.2</span>
+    <h2 style="margin:0;font-family:var(--f-text);font-weight:300;font-size:clamp(30px,4.6vw,50px);line-height:1.1;letter-spacing:-.02em"><span lang="en">How retrieval works, and how well.</span></h2>
+    <p lang="en" style="margin:0;font-family:var(--f-text);font-size:19px;line-height:1.62;color:var(--ink-2)">1330 verses is a small corpus, which makes exhaustive scoring cheap and makes the failure modes measurable. Every number below comes from a 220-question labelled set, not from a demo.</p>
+  </div>
+
+  <div style="display:grid;gap:var(--s5)">
+    <div style="display:flex;align-items:baseline;gap:var(--s3)"><span lang="en" style="font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)">Pipeline</span><span style="flex:1;height:1px;background:var(--rule)"></span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)">
+      <sc-for list="{{ pipeline }}" as="p" hint-placeholder-count="5">
+        <div style="background:var(--paper-2);padding:var(--s5) var(--s4);display:grid;gap:10px;align-content:start">
+          <div style="display:flex;align-items:baseline;gap:10px">
+            <span style="font-family:var(--f-mono);font-size:11px;color:var(--accent);font-variant-numeric:tabular-nums">{{ p.n }}</span>
+            <span lang="en" style="font-size:14px;font-weight:600;color:var(--ink)">{{ p.title }}</span>
+          </div>
+          <p lang="en" style="margin:0;font-family:var(--f-text);font-size:15px;line-height:1.58;color:var(--ink-2)">{{ p.body }}</p>
+          <span style="font-family:var(--f-mono);font-size:10.5px;line-height:1.6;color:var(--ink-4)">{{ p.meta }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center;font-family:var(--f-mono);font-size:11px;color:var(--ink-4)">
+      <span lang="en">retrieve</span><span aria-hidden="true" style="width:26px;height:1px;background:var(--rule-3)"></span><span lang="en">augment</span><span aria-hidden="true" style="width:26px;height:1px;background:var(--rule-3)"></span><span lang="en">generate</span><span aria-hidden="true" style="flex:1;min-width:20px;height:1px;background:var(--rule-2)"></span><span lang="en">answer refuses to emit a claim without a verse id</span>
+    </div>
+  </div>
+
+  <div style="display:grid;gap:var(--s5)">
+    <div style="display:flex;align-items:baseline;gap:var(--s3)"><span lang="en" style="font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)">Measured</span><span style="flex:1;height:1px;background:var(--rule)"></span><span lang="en" style="font-family:var(--f-mono);font-size:11px;color:var(--ink-4)">n = 220</span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)">
+      <sc-for list="{{ metrics }}" as="m" hint-placeholder-count="5">
+        <div style="background:var(--paper-2);padding:var(--s5) var(--s4);display:grid;gap:7px">
+          <span style="font-family:var(--f-mono);font-size:27px;font-variant-numeric:tabular-nums;letter-spacing:-.02em;color:var(--ink)">{{ m.v }}</span>
+          <span lang="en" style="font-family:var(--f-mono);font-size:11px;letter-spacing:.05em;color:var(--ink-3)">{{ m.k }}</span>
+          <span lang="en" style="font-size:12px;line-height:1.5;color:var(--ink-4)">{{ m.note }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule)">
+      <div style="background:var(--paper-3);display:grid;grid-template-columns:1.4fr repeat(3,minmax(0,1fr));gap:var(--s3);padding:11px var(--s4);font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)">
+        <span lang="en">Query language</span><span lang="en" style="text-align:right">recall@5</span><span lang="en" style="text-align:right">precision@5</span><span lang="en" style="text-align:right">n</span>
+      </div>
+      <sc-for list="{{ langRows }}" as="r" hint-placeholder-count="3">
+        <div style="background:var(--paper-2);display:grid;grid-template-columns:1.4fr repeat(3,minmax(0,1fr));gap:var(--s3);padding:13px var(--s4);align-items:baseline">
+          <span style="display:flex;align-items:baseline;gap:9px"><span lang="en" style="font-size:13.5px;color:var(--ink)">{{ r.lang }}</span><span lang="en" style="font-family:var(--f-mono);font-size:10.5px;color:var(--ink-4)">{{ r.note }}</span></span>
+          <span style="font-family:var(--f-mono);font-size:13px;font-variant-numeric:tabular-nums;text-align:right;color:{{ r.color }}">{{ r.recall }}</span>
+          <span style="font-family:var(--f-mono);font-size:13px;font-variant-numeric:tabular-nums;text-align:right;color:var(--ink-2)">{{ r.prec }}</span>
+          <span style="font-family:var(--f-mono);font-size:13px;font-variant-numeric:tabular-nums;text-align:right;color:var(--ink-4)">{{ r.n }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <p lang="en" style="margin:0;font-family:var(--f-text);font-size:16.5px;line-height:1.62;color:var(--ink-2);max-width:64ch">Thanglish is the honest weak point: transliteration is unstandardised, so <span style="font-family:var(--f-mono);font-size:14px">sinam</span> and <span style="font-family:var(--f-mono);font-size:14px">chinam</span> land in different neighbourhoods. The interface handles this by transliterating to Tamil script, searching both, and telling the reader it did.</p>
+  </div>
+
+  <div style="display:grid;gap:var(--s5)">
+    <div style="display:flex;align-items:baseline;gap:var(--s3)"><span lang="en" style="font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)">Refusal policy</span><span style="flex:1;height:1px;background:var(--rule)"></span></div>
+    <div style="display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule)">
+      <sc-for list="{{ policy }}" as="p" hint-placeholder-count="3">
+        <div style="background:var(--paper-2);display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--s4);padding:var(--s4) var(--s4);align-items:baseline">
+          <span style="font-family:var(--f-mono);font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--accent);min-width:9ch">{{ p.range }}</span>
+          <span style="display:grid;gap:4px"><span lang="en" style="font-size:14px;color:var(--ink)">{{ p.title }}</span><span lang="en" style="font-family:var(--f-text);font-size:15px;line-height:1.55;color:var(--ink-3)">{{ p.body }}</span></span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display:grid;gap:var(--s5)">
+    <div style="display:flex;align-items:baseline;gap:var(--s3)"><span lang="en" style="font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)">Design system</span><span style="flex:1;height:1px;background:var(--rule)"></span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--s6)">
+      <div style="display:grid;gap:var(--s3);align-content:start">
+        <span lang="en" style="font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)">Colour</span>
+        <div style="display:grid;gap:1px;background:var(--rule-2)">
+          <sc-for list="{{ tokColour }}" as="t" hint-placeholder-count="6">
+            <div style="display:flex;align-items:center;gap:var(--s3);background:var(--paper);padding:7px 0">
+              <span aria-hidden="true" style="width:26px;height:26px;background:{{ t.v }};border:1px solid var(--rule)"></span>
+              <span style="font-family:var(--f-mono);font-size:11.5px;color:var(--ink-2)">{{ t.k }}</span>
+              <span style="font-family:var(--f-mono);font-size:11px;color:var(--ink-4);margin-left:auto">{{ t.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:grid;gap:var(--s3);align-content:start">
+        <span lang="en" style="font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)">Type · Latin ↔ Tamil pairs</span>
+        <div style="display:grid;gap:1px;background:var(--rule-2)">
+          <sc-for list="{{ tokType }}" as="t" hint-placeholder-count="4">
+            <div style="background:var(--paper);display:grid;gap:6px;padding:11px 0">
+              <span style="font-family:var(--f-mono);font-size:11px;color:var(--ink-4)">{{ t.k }}</span>
+              <span style="font-family:{{ t.font }};font-size:{{ t.size }};line-height:{{ t.lh }};color:var(--ink)">{{ t.sample }}</span>
+              <span style="font-family:var(--f-mono);font-size:10.5px;color:var(--ink-4)">{{ t.spec }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:grid;gap:var(--s5);align-content:start">
+        <div style="display:grid;gap:var(--s3)">
+          <span lang="en" style="font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)">Space · 4px base</span>
+          <sc-for list="{{ tokSpace }}" as="s" hint-placeholder-count="6">
+            <div style="display:flex;align-items:center;gap:var(--s3)">
+              <span style="font-family:var(--f-mono);font-size:11px;color:var(--ink-3);width:4ch">{{ s.k }}</span>
+              <span aria-hidden="true" style="height:8px;width:{{ s.v }};background:var(--paper-3);border-left:1px solid var(--rule-3);border-right:1px solid var(--rule-3)"></span>
+              <span style="font-family:var(--f-mono);font-size:11px;color:var(--ink-4)">{{ s.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:grid;gap:var(--s3)">
+          <span lang="en" style="font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)">Motion</span>
+          <sc-for list="{{ tokMotion }}" as="m" hint-placeholder-count="5">
+            <div style="display:flex;align-items:baseline;gap:var(--s3);border-bottom:1px solid var(--rule-2);padding-bottom:6px">
+              <span style="font-family:var(--f-mono);font-size:11px;color:var(--ink-3)">{{ m.k }}</span>
+              <span style="font-family:var(--f-mono);font-size:11px;color:var(--ink-4);margin-left:auto;text-align:right">{{ m.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</sc-if>
+
+</main>
+
+<footer style="border-top:1px solid var(--rule);background:var(--paper-2)">
+  <div style="max-width:1180px;margin:0 auto;padding:var(--s6) clamp(16px,4vw,48px);display:grid;gap:var(--s5)">
+    <div style="display:flex;flex-wrap:wrap;gap:var(--s5);align-items:baseline">
+      <span lang="ta" style="font-family:var(--f-ta);font-size:17px;line-height:1.8;color:var(--ink-2)">திருக்குறள்</span>
+      <span lang="en" style="font-family:var(--f-text);font-size:15px;color:var(--ink-3);max-width:52ch">Public-domain text. Translations after G. U. Pope's register; commentary attributed to its editor on every screen.</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:var(--s2) var(--s3);align-items:center;padding-top:var(--s4);border-top:1px solid var(--rule-2)">
+      <span lang="en" style="font-family:var(--f-mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-4)">Prototype states</span>
+      <sc-for list="{{ demos }}" as="d" hint-placeholder-count="6">
+        <button onClick="{{ d.run }}" style="background:none;border:1px solid var(--rule);border-radius:2px;padding:5px 10px;font-family:var(--f-mono);font-size:11px;color:var(--ink-3);cursor:pointer;transition:border-color var(--d1) var(--e-std),color var(--d1) var(--e-std)" style-hover="border-color:var(--ink);color:var(--ink)"><span lang="en">{{ d.label }}</span></button>
+      </sc-for>
+    </div>
+  </div>
+</footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;primaryTranslation&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;explanation&quot;,&quot;couplet&quot;,&quot;gloss&quot;],&quot;default&quot;:&quot;explanation&quot;,&quot;tsType&quot;:&quot;'explanation'|'couplet'|'gloss'&quot;,&quot;section&quot;:&quot;Reading&quot;},&quot;showTransliteration&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Reading&quot;},&quot;motionMode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;full&quot;,&quot;reduced&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;'auto'|'full'|'reduced'&quot;,&quot;section&quot;:&quot;Motion&quot;}}">
+const CH = [["கடவுள் வாழ்த்து","The Praise of God"],["வான்சிறப்பு","The Blessing of Rain"],["நீத்தார் பெருமை","The Greatness of Ascetics"],["அறன்வலியுறுத்தல்","The Strength of Virtue"],["இல்வாழ்க்கை","Married Life"],["வாழ்க்கைத் துணைநலம்","The Worth of a Wife"],["மக்கட்பேறு","The Wealth of Children"],["அன்புடைமை","Loving-kindness"],["விருந்தோம்பல்","Hospitality"],["இனியவைகூறல்","Pleasant Words"],["செய்ந்நன்றி அறிதல்","Gratitude"],["நடுவு நிலைமை","Impartiality"],["அடக்கமுடைமை","Self-restraint"],["ஒழுக்கமுடைமை","Right Conduct"],["பிறனில் விழையாமை","Not Coveting Another's Wife"],["பொறையுடைமை","Forbearance"],["அழுக்காறாமை","Not Envying"],["வெஃகாமை","Not Coveting"],["புறங்கூறாமை","Not Backbiting"],["பயனில சொல்லாமை","Against Vain Speaking"],["தீவினையச்சம்","Dread of Evil Deeds"],["ஒப்புரவறிதல்","Duty to Society"],["ஈகை","Giving"],["புகழ்","Renown"],["அருளுடைமை","Compassion"],["புலான்மறுத்தல்","Abstaining from Flesh"],["தவம்","Penance"],["கூடாவொழுக்கம்","Imposture"],["கள்ளாமை","Absence of Fraud"],["வாய்மை","Veracity"],["வெகுளாமை","Restraining Anger"],["இன்னாசெய்யாமை","Doing No Harm"],["கொல்லாமை","Not Killing"],["நிலையாமை","Impermanence"],["துறவு","Renunciation"],["மெய்யுணர்தல்","Realisation of Truth"],["அவாவறுத்தல்","Eradication of Desire"],["ஊழ்","Fate"],["இறைமாட்சி","The Greatness of a King"],["கல்வி","Learning"],["கல்லாமை","Ignorance"],["கேள்வி","Hearing"],["அறிவுடைமை","Possession of Wisdom"],["குற்றங்கடிதல்","Correction of Faults"],["பெரியாரைத் துணைக்கோடல்","Seeking the Aid of the Great"],["சிற்றினஞ்சேராமை","Avoiding Mean Company"],["தெரிந்துசெயல்வகை","Acting after Consideration"],["வலியறிதல்","Knowing One's Strength"],["காலமறிதல்","Knowing the Right Time"],["இடனறிதல்","Knowing the Right Place"],["தெரிந்துதெளிதல்","Selection and Confidence"],["தெரிந்துவினையாடல்","Selection and Employment"],["சுற்றந்தழால்","Cherishing Kindred"],["பொச்சாவாமை","Unforgetfulness"],["செங்கோன்மை","The Just Sceptre"],["கொடுங்கோன்மை","The Cruel Sceptre"],["வெருவந்தசெய்யாமை","Absence of Terrorism"],["கண்ணோட்டம்","Benignity"],["ஒற்றாடல்","Detectives"],["ஊக்கமுடைமை","Energy"],["மடியின்மை","Unsluggishness"],["ஆள்வினையுடைமை","Manly Effort"],["இடுக்கண் அழியாமை","Hopefulness in Trouble"],["அமைச்சு","The Office of Minister"],["சொல்வன்மை","Power of Speech"],["வினைத்தூய்மை","Purity in Action"],["வினைத்திட்பம்","Power in Action"],["வினைசெயல்வகை","Modes of Action"],["தூது","The Envoy"],["மன்னரைச் சேர்ந்தொழுகல்","Conduct before the King"],["குறிப்பறிதல்","Reading the Mind"],["அவையறிதல்","Knowing the Assembly"],["அவையஞ்சாமை","Not Fearing the Assembly"],["நாடு","The Land"],["அரண்","The Fortification"],["பொருள்செயல்வகை","Making Wealth"],["படைமாட்சி","The Excellence of an Army"],["படைச்செருக்கு","Military Spirit"],["நட்பு","Friendship"],["நட்பாராய்தல்","Testing Friendship"],["பழைமை","Familiarity"],["தீ நட்பு","Evil Friendship"],["கூடாநட்பு","Feigned Friendship"],["பேதைமை","Folly"],["புல்லறிவாண்மை","Petty Conceit"],["இகல்","Hostility"],["பகைமாட்சி","The Might of Hatred"],["பகைத்திறந்தெரிதல்","Knowing the Enemy"],["உட்பகை","Enmity Within"],["பெரியாரைப் பிழையாமை","Not Offending the Great"],["பெண்வழிச்சேறல்","Being Led by Women"],["வரைவின் மகளிர்","Wanton Women"],["கள்ளுண்ணாமை","Not Drinking Toddy"],["சூது","Gambling"],["மருந்து","Medicine"],["குடிமை","Nobility"],["மானம்","Honour"],["பெருமை","Greatness"],["சான்றாண்மை","Perfect Excellence"],["பண்புடைமை","Courtesy"],["நன்றியில் செல்வம்","Useless Wealth"],["நாணுடைமை","Shame"],["குடிசெயல்வகை","Duty to the Family"],["உழவு","Farming"],["நல்குரவு","Poverty"],["இரவு","Mendicancy"],["இரவச்சம்","Dread of Mendicancy"],["கயமை","Baseness"],["தகையணங்குறுத்தல்","The Pangs of Beauty"],["குறிப்பறிதல்","Reading the Signs"],["புணர்ச்சி மகிழ்தல்","Rejoicing in Union"],["நலம் புனைந்துரைத்தல்","Praise of Her Beauty"],["காதற் சிறப்புரைத்தல்","Love's Excellence"],["நாணுத் துறவுரைத்தல்","Abandonment of Reserve"],["அலர் அறிவுறுத்தல்","Rumour"],["பிரிவாற்றாமை","Separation Unendurable"],["படர் மெலிந்திரங்கல்","Pining Away"],["கண்விதுப்பழிதல்","Eyes Consumed with Grief"],["பசப்புறு பருவரல்","The Pallor of Sorrow"],["தனிப்படர் மிகுதி","Solitary Anguish"],["நினைந்தவர் புலம்பல்","Sad Memories"],["கனவுநிலை உரைத்தல்","Visions of the Night"],["பொழுதுகண்டிரங்கல்","Lament at Eventide"],["உறுப்பு நலனழிதல்","Wasting Away"],["நெஞ்சொடு கிளத்தல்","Soliloquy"],["நிறையழிதல்","Reserve Overcome"],["அவர்வயின் விதும்பல்","Mutual Desire"],["குறிப்பறிவுறுத்தல்","Reading the Signs"],["புணர்ச்சி விதும்பல்","Desire for Reunion"],["நெஞ்சொடு புலத்தல்","Debating with the Heart"],["புலவி","Sulking"],["புலவி நுணுக்கம்","Feigned Anger"],["ஊடலுவகை","The Pleasures of Variance"]];
+
+const SEC = [
+  {ta:"அறத்துப்பால்", en:"Virtue", from:1, to:38, subs:[["பாயிரவியல்","Prologue",1,4],["இல்லறவியல்","Domestic Virtue",5,24],["துறவறவியல்","Ascetic Virtue",25,37],["ஊழியல்","Fate",38,38]]},
+  {ta:"பொருட்பால்", en:"Wealth", from:39, to:108, subs:[["அரசியல்","Royalty",39,63],["அமைச்சியல்","Ministers of State",64,73],["அரணியல்","Land and Fort",74,75],["கூழியல்","Making Wealth",76,76],["படையியல்","The Army",77,78],["நட்பியல்","Friendship",79,95],["குடியியல்","Society",96,108]]},
+  {ta:"காமத்துப்பால்", en:"Love", from:109, to:133, subs:[["களவியல்","Secret Love",109,115],["கற்பியல்","Wedded Love",116,133]]}
+];
+
+const K = {
+  1:{l1:"அகர முதல எழுத்தெல்லாம் ஆதி",l2:"பகவன் முதற்றே உலகு.",tr:"agara mudhala ezhuththellām ādhi / bagavan mudhaṟṟē ulagu",et:"A, as its first of letters, every speech maintains",ec:"As 'A' is first of all the letters, so through all the world / The primal deity is first confessed.",ex:"As the letter A is the first of all letters, so is the eternal God first in the world.",mv:"எழுத்துக்கள் எல்லாம் அகரத்தை முதலாகக் கொண்டிருக்கின்றன; அதுபோல உலகம் கடவுளை முதலாகக் கொண்டு இயங்குகிறது.",sp:"அகரம் இல்லாமல் ஓர் எழுத்தும் இல்லை; கடவுள் இல்லாமல் ஓர் உலகமும் இல்லை. முதல் என்பது இதுவே.",kn:"எழுத்துகளுக்கு முதல் அகரம் என்பது போல, உலகிற்கு முதல் இறைவன் என்பது தெளிவு.",pm:"அகர முதல எழுத்து எல்லாம் — எழுத்துக்கள் எல்லாம் அகரமாகிய முதலை உடையன; ஆதி பகவன் முதற்றே உலகு — அது போல உலகம் ஆதியாகிய பகவனை முதலாக உடைத்து என்றவாறு. அகரம் எல்லா எழுத்திற்கும் உயிர்நிலையாய் நின்று அவற்றை நிகழ்த்துவது போல, இறைவனும் எல்லா உயிர்க்கும் நிலைக்களனாய் நின்று அவற்றை நிகழ்த்தும் என்பது கருத்து. இதனால் நூலுக்கு வாழ்த்தும், கடவுள் வழிபாட்டின் இன்றியமையாமையும் ஒருங்கே கூறப்பட்டன.",mk:"இது நூலின் தொடக்கத்தில் கடவுளை வாழ்த்தியது. 'ஆதி பகவன்' என்றது, தொடக்கமும் முடிவும் இல்லாதவன் என்றது."},
+  129:{l1:"தீயினாற் சுட்ட புண் உள்ளாறும் ஆறாதே",l2:"நாவினாற் சுட்ட வடு.",tr:"thīyināṟ suṭṭa puṇ uḷḷāṟum āṟādhē / nāvināṟ suṭṭa vaḍu",et:"The wound that fire has made will heal within",ec:"The wound of fire will heal within and leave no trace; / The scar the tongue has burned no time can efface.",ex:"The scar of a burn made by fire heals over inwardly, but the scar left by the burning of the tongue never heals.",mv:"தீயினால் சுட்ட புண் மேலே வடுவாக இருந்தாலும் உள்ளே ஆறிவிடும்; நாவினால் சொல்லிச் சுட்ட வடு ஒருபோதும் ஆறாது.",sp:"நெருப்பு உண்டாக்கிய புண் ஆறும். சொல் உண்டாக்கிய புண் ஆறவே ஆறாது — அது மனத்தில் இருக்கும்.",kn:"",pm:"தீயினால் சுட்ட புண் உள் ஆறும் — தீயால் சுடப்பட்ட புண் மருந்தினால் உள்ளே ஆறும்; நாவினால் சுட்ட வடு ஆறாது — நாவினால் கடுஞ்சொல் சொல்லிச் சுட்ட வடு என்றும் ஆறாது என்றவாறு. புண் என்றது உடம்பின்மேல் ஆயதனை; வடு என்றது மனத்தின்மேல் ஆயதனை. உடம்பின் புண்ணுக்கு மருந்து உண்டு; மனத்தின் வடுவுக்கு மருந்து இன்மையின், அது ஆறாது என்றார். ஆகலான், அடக்கம் உடையான் நாவினைக் காக்க வேண்டும் என்பது இதனால் கூறப்பட்டது.",mk:""},
+  291:{l1:"வாய்மை எனப்படுவது யாதெனின் யாதொன்றும்",l2:"தீமை இலாத சொலல்.",tr:"vāymai enappaḍuvadhu yādhenin yādhonṟum / thīmai ilādha solal",et:"You ask, what is veracity? 'Tis speech from evil free",ec:"What is veracity? 'Tis speech unmixed with harm, / Words that in no wise any creature can alarm.",ex:"Truthfulness is the speaking of such words as are free from every kind of evil.",mv:"வாய்மை என்று சொல்லப்படுவது எது என்றால், பிறருக்கு எவ்வகையிலும் தீமை தராத சொற்களைச் சொல்லுதலே.",sp:"உண்மை என்பது நடந்ததைச் சொல்வது மட்டுமன்று; சொல்வதால் யாருக்கும் தீமை நேராமல் இருப்பதும் ஆகும்.",kn:"எவருக்கும் ஒரு தீமையும் விளையாத சொல்லே வாய்மை எனப்படும்.",pm:"வாய்மை எனப்படுவது யாது எனின் — வாய்மை என்று சொல்லப்படுவது யாது என்று வினவின்; யாது ஒன்றும் தீமை இலாத சொலல் — யாதோர் உயிர்க்கும் ஒரு தீமையும் பயவாத சொல்லைச் சொல்லுதல் என்றவாறு. இதனால் வாய்மையது இலக்கணம் கூறப்பட்டது. உள்ளது சொல்லுதல் மாத்திரையே வாய்மை என்றால், தீமை பயக்கும் உண்மைச் சொல்லும் வாய்மை ஆதல் வேண்டும்; ஆகாமையின், தீமை இன்மையை உடன் வைத்துக் கூறினார்.",mk:"இது வாய்மையது இலக்கணம் கூறியது. 'யாதொன்றும் தீமை இலாத' என்றது, பிறர்க்கும் தனக்கும் தீமை இல்லாத என்றது."},
+  292:{l1:"பொய்ம்மையும் வாய்மை இடத்த புரைதீர்ந்த",l2:"நன்மை பயக்கும் எனின்.",tr:"poymmaiyum vāymai iḍaththa puraidhīrndha / nanmai bayakkum enin",et:"Falsehood may take the place of truthful word",ec:"Even falsehood bears the name of truth's own perfect deed, / If from its use unmixed and blissful good proceed.",ex:"Even falsehood has the nature of truth, if it confers a benefit that is entirely free from fault.",mv:"பொய்யாகச் சொல்லுவதும் வாய்மையின் இடத்தில் வைத்து எண்ணப்படும் — அது குற்றமற்ற நன்மையைத் தரும் என்றால்.",sp:"ஒரு பொய், யாருக்கும் தீங்கு செய்யாமல், தூய நன்மை மட்டுமே தருமானால், அது பொய் அல்ல; வாய்மையின் இடத்தில் நிற்கும்.",kn:"குற்றம் நீங்கிய நன்மையைத் தருமெனில், பொய்யும் வாய்மையாகவே கொள்ளப்படும்.",pm:"பொய்ம்மையும் வாய்மை இடத்த — பொய்யாய சொல்லும் வாய்மையாய சொல்லின் இடத்து வைத்து எண்ணப்படும்; புரை தீர்ந்த நன்மை பயக்கும் எனின் — அது குற்றம் அற்ற நன்மையைப் பயக்கும் ஆயின் என்றவாறு. 'புரை தீர்ந்த' என்றதனால், சிறிதேனும் தீமை கலந்த நன்மையைப் பயப்பின் அது பொய்யே ஆம் என்பது பெறப்பட்டது. ஆகலான், இது எல்லாப் பொய்க்கும் உரியது அன்று; பிறர் உயிர் காத்தல் போலும் ஒப்பற்ற நன்மை பயக்கும் இடத்து மட்டுமே உரியது என்று உணர்க. இதனால் வாய்மையது எல்லை கூறப்பட்டது.",mk:"இது, பொய்யும் ஒருகால் வாய்மையாம் என்றது. நன்மை பயக்கும் என்றது, பிறர்க்கு நன்மை பயக்கும் என்றது."},
+  301:{l1:"செல்லிடத்துக் காப்பான் சினங்காப்பான் அல்லிடத்துக்",l2:"காக்கின்என் காவாக்கால் என்.",tr:"sellidaththuk kāppān sinangkāppān allidaththuk / kākkinen kāvākkāl en",et:"Where thou hast power, there guard thy wrath",ec:"Where wrath can work its will, restrain it; where it may not, / What matters wrath restrained, or wrath forgot?",ex:"He restrains anger who restrains it where it has power to hurt; where it has no power, what does it matter whether he restrains it or not?",mv:"சினம் பயன்படும் இடத்தில் அதைக் காப்பவனே சினம் காப்பவன்; பயன்படாத இடத்தில் காத்தாலும் என்ன, காக்காவிட்டாலும் என்ன?",sp:"வலியவர் மேல் வரும் சினத்தை அடக்குவதே அடக்கம். எளியவர் மேல் காட்டும் சினத்தை அடக்கியதில் பெருமை இல்லை.",kn:"தன் சினம் பலிக்கும் இடத்தில் அதைக் காப்பவனே சினத்தைக் காத்தவன்; பலிக்காத இடத்தில் காப்பதில் பொருள் இல்லை.",pre:"மேல் வாய்மையின் பின் வெகுளாமை கூறப்படுகிறது. வாய்மை உடையானுக்கும் வெகுளி உண்டாயின் அது கெடும் ஆகலின், அதன் பின் இது வைக்கப்பட்டது. வெகுளாமை என்பது, வெகுளத்தகும் இடத்தும் வெகுளாது ஒழிதல்.",pm:"செல் இடத்துக் காப்பான் சினம் காப்பான் — தன் சினம் சென்று பயன்படும் இடத்து அதனைக் காப்பானே சினத்தைக் காத்தவன் ஆவான்; அல் இடத்துக் காக்கின் என் காவாக்கால் என் — அது செல்லாத இடத்துக் காத்தால் என்னை, காவாவிடின் என்னை என்றவாறு. மெலியார் மேல் வெகுள்வது எளிது; வலியார் மேல் வெகுளாது நிற்பது அரிது. அரியதனைச் செய்தானே அடக்கம் உடையான் ஆகலின், அதனை வலியுறுத்தினார். இதனால் வெகுளாமையது சிறப்பு இடம் பற்றிக் கூறப்பட்டது.",mk:"இது, சினம் காக்கும் இடம் கூறியது. 'செல்லிடம்' என்றது தன் சினம் பயன்படும் இடத்தை."},
+  302:{l1:"செல்லா இடத்துச் சினந்தீது செல்லிடத்தும்",l2:"இல்அதனின் தீய பிற.",tr:"sellā idaththuc chinandhīdhu selliḍaththum / il adhanin thīya piṟa",et:"Where power is none, wrath is but ill",ec:"Where power is none, ill-tempered wrath is ill; / Where power is present, nothing worse than wrath.",ex:"Anger is bad even when it cannot take effect; when it can, there is nothing more evil.",mv:"பயன்படாத இடத்தில் கொள்ளும் சினம் தீமையானது; பயன்படும் இடத்தில் கொள்ளும் சினத்தை விடத் தீமையானது வேறு இல்லை.",sp:"ஒன்றும் செய்ய முடியாத இடத்தில் சினம் கொள்வது வீண்; செய்ய முடிகிற இடத்தில் சினம் கொள்வது கொடுமை.",kn:"பலிக்காத இடத்தில் சினம் தீது; பலிக்கும் இடத்தில் சினத்தைவிடக் கொடிய தீமை வேறு இல்லை.",pm:"செல்லா இடத்துச் சினம் தீது — தன் ஆற்றல் செல்லாத இடத்து வெகுள்வது தனக்கே இழிவு தருதலின் தீது; செல் இடத்தும் அதனின் தீய பிற இல் — செல்லும் இடத்து வெகுள்வதனினும் தீயவை பிற இல்லை என்றவாறு. முன்னது தன்னைக் கெடுக்கும்; பின்னது பிறரையும் கெடுத்துத் தன் அறத்தையும் கெடுக்கும். ஆகலான், இரண்டு இடத்தும் வெகுளி விடற்பாலது என்பது கூறப்பட்டது.",mk:"இது, சினம் இருவகை இடத்தும் தீது என்றது."},
+  305:{l1:"தன்னைத்தான் காக்கின் சினங்காக்க காவாக்கால்",l2:"தன்னையே கொல்லும் சினம்.",tr:"thannaiththān kākkin sinangkākka kāvākkāl / thannaiyē kollum sinam",et:"Thyself to save, from wrath thyself defend",ec:"'Gainst wrath who guards not, wrath his ruin proves; / Wrath, if unguarded, slays the man it moves.",ex:"If a man would guard himself, let him guard against anger; if he does not, his own anger will destroy him.",mv:"தன்னைத் தான் காத்துக்கொள்ள வேண்டுமானால் சினம் வராமல் காக்க வேண்டும்; காக்கத் தவறினால் அச் சினமே தன்னைக் கொன்றுவிடும்.",sp:"உன்னை நீ காப்பாற்றிக் கொள்ள விரும்பினால் சினம் வராமல் பார்த்துக்கொள். இல்லையானால் அது பிறரை ஒன்றும் செய்யாது; உன்னையே அழிக்கும்.",kn:"தன்னைத் தானே காத்துக்கொள்ள விரும்புகிறவன் சினத்தை விட்டொழிக்க வேண்டும்; இல்லையேல் சினம் அவனையே சுட்டெரித்துவிடும்.",pm:"'தன்னைத்தான் காக்கின்' என்றது, ஒருவன் தன் உயிரையும் நல்வாழ்வையும் தானே காத்துக்கொள்ள வேண்டுமாயின் என்றவாறு. 'சினம் காக்க' என்றது, பிற பொருள்களைக் காப்பது போலச் சினத்தையும் புறத்தே செல்லாமல் உள்ளடக்கிக் காக்க என்றது. 'காவாக்கால் தன்னையே கொல்லும் சினம்' என்றது, அது காக்கப்படாதவழி பிறரை வெல்லுதற்குச் செல்லாது, தன்னிடத்தே நின்று தன்னையே அழிக்கும் என்றது. சினம் தோன்றியவழி அறிவு கெடும்; அறிவு கெட்டவழி செயல் கெடும்; செயல் கெட்டவழி பொருளும் புகழும் நட்பும் ஒருங்கே கெடும். ஆகலான், சினத்தால் வரும் கேடு பிறர்மேல் விழாது தன்மேலே விழும் என்பது பெறப்பட்டது. 'கொல்லும்' என்ற ஒரு சொல்லால், உடம்பைக் கொல்லுதல் மட்டுமன்றி அவன் அறத்தையும் மறுமைப் பயனையும் கொல்லுதல் கொள்ளப்படும். மேலும், முன்னைய குறளில் 'செல்லிடத்துக் காப்பான்' என்று சினம் செல்லும் இடத்துக் காப்பதனை வலியுறுத்தி, இதனுள் அதற்குக் காரணம் கூறினார் என்க. இதனால், சினம் அடக்கற்பாலது என்பதும், அதனை அடக்காதவன் தனக்குத் தானே பகைவன் ஆவன் என்பதும் ஒருங்கே கூறப்பட்டன. எ-று.",mk:"இது, சினம் தன்னைக் கெடுக்கும் என்றது. 'காக்கின்' என்றது காக்க வேண்டுமாயின் என்றது. தன்னைக் காத்தல் வேண்டுவான் சினத்தை நீக்குக என்றார்."},
+  309:{l1:"உள்ளிய தெல்லாம் உடனெய்தும் உள்ளத்தால்",l2:"உள்ளான் வெகுளி எனின்.",tr:"uḷḷiya thellām uḍaneydhum uḷḷaththāl / uḷḷān veguḷi enin",et:"All he has thought of, he at once obtains",ec:"If, in his soul, he thinks not angry thoughts at all, / Whate'er he thinks of, straightway to his lot will fall.",ex:"A man will at once obtain all that he has thought of, if in his heart he does not entertain anger.",mv:"ஒருவன் தன் உள்ளத்தால் சினத்தை நினைக்காமல் இருந்தால், அவன் நினைத்தவை எல்லாம் அவனுக்கு உடனே கிடைக்கும்.",sp:"சினத்தை மனத்தில் ஏற்றாதவனுக்கு, நினைத்தது நினைத்தபடி கிடைக்கும்.",kn:"சினத்தை நினைக்காத உள்ளம் உடையவன் நினைத்ததை எல்லாம் ஒருசேர அடைவான்.",pm:"உள்ளத்தால் வெகுளி உள்ளான் எனின் — ஒருவன் தன் மனத்தால் சினத்தை நினையாதவன் ஆயின்; உள்ளியது எல்லாம் உடன் எய்தும் — அவன் நினைந்த பொருள்கள் எல்லாம் ஒருங்கே வந்து எய்தும் என்றவாறு. வெகுளி இன்மையால் அறிவு தெளியும்; அறிவு தெளிந்தவழி வினை முடியும்; வினை முடிந்தவழி வேண்டியது எல்லாம் கிட்டும் என்பது கருத்து. இதனால் வெகுளாமையின் பயன் கூறப்பட்டது.",mk:"இது, வெகுளாதவனுக்கு எல்லாம் கிடைக்கும் என்றது."},
+  303:{l1:"மறத்தல் வெகுளியை யார்மாட்டும் தீயவை",l2:"பிறத்தல் அதனான் வரும்.",ex:"Forget anger toward everyone, for all evils arise from it."},
+  304:{l1:"நகையும் உவகையும் கொல்லும் சினத்தின்",l2:"பகையும் உளவோ பிற.",ex:"Is there a greater enemy than anger, which kills both laughter and joy?"},
+  306:{l1:"சினமென்னும் சேர்ந்தாரைக் கொல்லி இனமென்னும்",l2:"ஏமப் புணையைச் சுடும்.",ex:"Anger is a fire that kills those who draw near it; it burns even the raft of kinship that carries one to safety."},
+  307:{l1:"சினத்தைப் பொருளென்று கொண்டவன் கேடு",l2:"நிலத்தறைந்தான் கைபிழையா தற்று.",ex:"Ruin comes to the man who treats anger as an asset, as surely as the hand of one who strikes the ground is hurt."},
+  308:{l1:"இணர்எரி தோய்வன்ன இன்னா செயினும்",l2:"புணரின் வெகுளாமை நன்று.",ex:"Though others harm you as if you were touched by a cluster of flame, it is good, if you can manage it, to feel no anger."},
+  310:{l1:"இறந்தார் இறந்தார் அனையர் சினத்தை",l2:"துறந்தார் துறந்தார் துணை.",ex:"Those who give way to anger are as the dead; those who renounce it are the equals of those who have renounced all."},
+  2:{l1:"கற்றதனால் ஆய பயனென்கொல் வாலறிவன்",l2:"நற்றாள் தொழாஅர் எனின்.",ex:"What profit have those gained by their learning, who do not worship the good feet of Him who is pure knowledge?"},
+  3:{l1:"மலர்மிசை ஏகினான் மாணடி சேர்ந்தார்",l2:"நிலமிசை நீடுவாழ் வார்.",ex:"They who hold the glorious feet of Him who walks upon the flower of the mind will live long above the earth."},
+  4:{l1:"வேண்டுதல் வேண்டாமை இலான்அடி சேர்ந்தார்க்கு",l2:"யாண்டும் இடும்பை இல.",ex:"To those who have reached the feet of Him who is without desire or aversion, no sorrow comes at any time."},
+  5:{l1:"இருள்சேர் இருவினையும் சேரா இறைவன்",l2:"பொருள்சேர் புகழ்புரிந்தார் மாட்டு.",ex:"The two-fold deeds that spring from darkness do not cling to those who delight in the true praise of God."},
+  6:{l1:"பொறிவாயில் ஐந்தவித்தான் பொய்தீர் ஒழுக்க",l2:"நெறிநின்றார் நீடுவாழ் வார்.",ex:"Those who stand in the faultless way of Him who has quenched the five senses will live long."},
+  7:{l1:"தனக்குவமை இல்லாதான் தாள்சேர்ந்தார்க் கல்லால்",l2:"மனக்கவலை மாற்றல் அரிது.",ex:"Anxiety of mind is hard to remove, except for those who hold the feet of Him who is incomparable."},
+  8:{l1:"அறவாழி அந்தணன் தாள்சேர்ந்தார்க் கல்லால்",l2:"பிறவாழி நீந்தல் அரிது.",ex:"None can swim the sea of vice but those who hold the feet of Him who is the ocean of righteousness."},
+  9:{l1:"கோளில் பொறியின் குணமிலவே எண்குணத்தான்",l2:"தாளை வணங்காத் தலை.",ex:"The head that does not bow before Him of eightfold excellence is as useless as a sense organ deprived of its faculty."},
+  10:{l1:"பிறவிப் பெருங்கடல் நீந்துவர் நீந்தார்",l2:"இறைவன் அடிசேரா தார்.",ex:"Only those who hold the feet of God swim the great sea of births; the rest do not."}
+};
+
+const FULL = [1,129,291,292,301,302,305,309];
+
+const SCEN = {
+  anger_en:{q:"How do I stop being controlled by my anger?",lang:"en",conf:"high",
+    ids:[305,301,302,309],scores:[0.87,0.84,0.79,0.74],
+    parts:[["The Kural treats anger as damage to the self before it is damage to anyone else: guard yourself by guarding your anger, or the anger kills the one holding it",305],
+      [". It refuses the excuse of powerlessness — restraint counts where the anger could actually land",301],
+      [", and it condemns both directions: useless where it cannot reach, worst of all where it can",302],
+      [". What is asked is not suppression but non-arising; the mind that never entertains anger gets what it seeks",309],["."]],
+    ground:"grounded in 4 of 1330 kurals",meta:"chapter 31 · வெகுளாமை · retrieved 620 ms"},
+  anger_ta:{q:"சினத்தை அடக்குவது எப்படி?",lang:"ta",conf:"high",
+    ids:[305,301,309],scores:[0.85,0.81,0.73],
+    parts:[["Anger is read as self-harm first: guard the self by guarding anger",305],
+      [", and restraint only counts where the anger has somewhere to land",301],
+      [". The chapter's promise is practical rather than moral — an unangered mind reaches what it intends",309],["."]],
+    ground:"grounded in 3 of 1330 kurals",meta:"chapter 31 · வெகுளாமை · retrieved 574 ms"},
+  anger_tg:{q:"sinam adakkuvadhu eppadi",lang:"tg",conf:"thanglish",
+    ids:[305,301,302],scores:[0.68,0.62,0.57],
+    parts:[["Read as Thanglish, the query still lands in chapter 31: guard anger to guard yourself",305],
+      [", and restraint counts where anger has power to act",301],
+      [". Scores are lower than the same question in Tamil script, so treat the ranking as approximate",302],["."]],
+    ground:"grounded in 3 of 1330 kurals",meta:"transliterated · both scripts searched · 810 ms"},
+  lie:{q:"Is it ever right to lie in order to protect someone?",lang:"en",conf:"low",
+    ids:[292,291],scores:[0.66,0.58],
+    parts:[["Two verses bear on this, and neither is addressed to your case directly. Falsehood is admitted into the place of truth when it yields a good entirely free of fault",292],
+      [", while truthfulness itself is defined not as accuracy but as speech that causes no harm",291],
+      [". The text sets a condition rather than granting permission; read both before relying on this."]],
+    ground:"grounded in 2 of 1330 kurals",meta:"chapter 30 · வாய்மை · top score 0.66"},
+  crypto:{q:"Should I move my savings into crypto this year?",lang:"en",conf:"none",ids:[],scores:[],top:0.24,
+    ground:"",meta:""}
+};
+
+const EXAMPLES = [
+  {tag:"EN",key:"anger_en",q:"How do I stop being controlled by my anger?",lang:"en",font:"var(--f-text)",size:"15.5px"},
+  {tag:"தமிழ்",key:"anger_ta",q:"சினத்தை அடக்குவது எப்படி?",lang:"ta",font:"var(--f-ta)",size:"17px"},
+  {tag:"Thanglish",key:"anger_tg",q:"sinam adakkuvadhu eppadi",lang:"en",font:"var(--f-mono)",size:"13.5px"},
+  {tag:"EN",key:"lie",q:"Is it ever right to lie to protect someone?",lang:"en",font:"var(--f-text)",size:"15.5px"}
+];
+
+class Component extends DCLogic {
+  state = {view:"search",phase:"rest",query:"",scen:null,open:{},arrived:0,scoreP:0,step:0,verse:305,chap:31,sec:0,fresh:0};
+
+  componentWillUnmount(){ this.clear(); }
+  clear(){ (this.timers||[]).forEach(clearTimeout); this.timers=[]; if(this.raf) cancelAnimationFrame(this.raf); if(this.sraf) cancelAnimationFrame(this.sraf); }
+  after(ms,fn){ (this.timers=this.timers||[]).push(setTimeout(fn,ms)); }
+
+  reduced(){
+    if(this.props.motionMode==="reduced") return true;
+    if(this.props.motionMode==="full") return false;
+    return typeof matchMedia==="function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  chapOf(n){ return Math.ceil(n/10); }
+  chapInfo(c){
+    const s = SEC.find(s=>c>=s.from&&c<=s.to) || SEC[0];
+    const sub = s.subs.find(x=>c>=x[2]&&c<=x[3]) || s.subs[0];
+    return {ta:CH[c-1][0],en:CH[c-1][1],secTa:s.ta,secEn:s.en,subTa:sub[0],subEn:sub[1],n:c};
+  }
+
+  run(key){
+    const sc = SCEN[key]; if(!sc) return;
+    this.clear();
+    this.setState({view:"search",phase:"thinking",query:sc.q,scen:key,step:0,scoreP:0,open:{},arrived:0});
+    [[360,1],[880,2],[1420,3]].forEach(([t,s])=>this.after(t,()=>this.setState({step:s})));
+    this.after(2050,()=>{ this.setState({phase:"answer",step:4,fresh:Date.now()}); this.countUp(); });
+  }
+  countUp(){
+    if(this.reduced()){ this.setState({scoreP:1}); return; }
+    const t0=performance.now(), dur=900;
+    const tick=()=>{ const p=Math.min(1,(performance.now()-t0)/dur);
+      this.setState({scoreP:1-Math.pow(1-p,3)});
+      if(p<1) this.raf=requestAnimationFrame(tick); };
+    this.raf=requestAnimationFrame(tick);
+  }
+  submit(){
+    const q=(this.state.query||"").trim().toLowerCase(); if(!q) return;
+    let key="crypto";
+    if(/sinam|adakku|kobam|eppadi/.test(q)) key="anger_tg";
+    else if(/[\u0B80-\u0BFF]/.test(q)) key="anger_ta";
+    else if(/anger|angry|wrath|temper|rage/.test(q)) key="anger_en";
+    else if(/lie|lying|truth|honest|falsehood/.test(q)) key="lie";
+    const sc=SCEN[key];
+    const custom=this.state.query.trim();
+    SCEN.crypto.q = key==="crypto" ? custom : SCEN.crypto.q;
+    this.run(key);
+    if(key!=="crypto") this.setState({query:sc.q});
+  }
+  scrollToY(y){
+    const doc=document.scrollingElement||document.documentElement;
+    const max=Math.max(0,doc.scrollHeight-doc.clientHeight), to=Math.max(0,Math.min(max,y));
+    if(this.reduced()){ window.scrollTo(0,to); return; }
+    const from=window.scrollY||doc.scrollTop||0, dist=to-from;
+    if(Math.abs(dist)<2) return;
+    const dur=Math.min(760,Math.max(320,Math.abs(dist)*0.55)), t0=performance.now();
+    if(this.sraf) cancelAnimationFrame(this.sraf);
+    const ease=(p)=>1-Math.pow(1-p,4);
+    const tick=()=>{ const p=Math.min(1,(performance.now()-t0)/dur);
+      window.scrollTo(0,from+dist*ease(p));
+      if(p<1) this.sraf=requestAnimationFrame(tick); };
+    this.sraf=requestAnimationFrame(tick);
+  }
+  cite(n){
+    this.setState({arrived:n,open:Object.assign({},this.state.open)});
+    const el=(this.refs2||{})[n];
+    if(el&&el.getBoundingClientRect) this.scrollToY(el.getBoundingClientRect().top+(window.scrollY||0)-96);
+    this.after(2600,()=>{ if(this.state.arrived===n) this.setState({arrived:0}); });
+  }
+
+  altTrans(k){
+    return [{label:"Verse translation · 1886 register",text:k.ec||"—"},{label:"Short gloss · archaic",text:k.et?k.et+".":"—"}];
+  }
+  meanings(k){
+    const out=[{who:"மு. வரதராசன்",text:k.mv},{who:"சாலமன் பாப்பையா",text:k.sp}];
+    if(k.kn) out.push({who:"கலைஞர்",text:k.kn});
+    return out.filter(m=>m.text);
+  }
+  commentaries(k){
+    const mk=[{who:"பரிமேலழகர்",era:"13th c.",text:k.pm||"",pre:k.pre||""},{who:"மணக்குடவர்",era:"c. 11th c.",text:k.mk||"",pre:""}];
+    return mk.map(c=>({who:c.who,era:c.era,text:c.text,pre:c.pre,hasPre:!!c.pre,has:!!c.text,empty:!c.text,
+      len:c.text?c.text.length+" chars":"—"}));
+  }
+  primaryText(k){
+    const mode=this.props.primaryTranslation||"explanation";
+    if(mode==="couplet") return k.ec||k.ex||"";
+    if(mode==="gloss") return (k.et?k.et+".":"")||k.ex||"";
+    return k.ex||"";
+  }
+
+  renderVals(){
+    const st=this.state, red=this.reduced(), sc=st.scen?SCEN[st.scen]:null;
+    const view=st.view, self=this;
+    this.refs2=this.refs2||{};
+    const anim=(i)=>red?"kr-fade 240ms linear both":"kr-lift 640ms var(--e-out) both";
+    const delay=(i)=>red?"0ms":(90+i*70)+"ms";
+
+    const results=(sc&&sc.ids?sc.ids:[]).map((n,i)=>{
+      const k=K[n], ci=this.chapInfo(this.chapOf(n)), raw=sc.scores[i], v=raw*st.scoreP;
+      const isOpen=!!st.open[n];
+      return {n:n,num:String(n),anchor:"kural-"+n,panelId:"panel-"+n,rank:String(i+1).padStart(2,"0"),
+        chapTa:ci.ta,chapEn:ci.en,l1:k.l1,l2:k.l2,tr:k.tr||"",primary:this.primaryText(k),
+        scoreText:v.toFixed(2),barW:(v*100).toFixed(1)+"%",
+        barColor:raw>=0.7?"var(--accent)":"var(--ink-4)",scoreColor:raw>=0.7?"var(--ink)":"var(--ink-3)",
+        anim:anim(i),delay:delay(i),
+        shadow:st.arrived===n?(red?"inset 3px 0 0 var(--accent)":"inset 3px 0 0 var(--accent), 0 0 0 6px var(--accent-soft)"):"none",
+        arrived:st.arrived===n,
+        isOpen:isOpen,expanded:isOpen?"true":"false",rows:isOpen?"1fr":"0fr",
+        panelOp:isOpen?1:0,panelDelay:isOpen?"120ms":"0ms",
+        chev:isOpen?"rotate(180deg)":"rotate(0deg)",
+        toggleLabel:isOpen?"Hide commentary and translations":"Commentary, translations, உரை",
+        altTrans:this.altTrans(k),meanings:this.meanings(k),commentaries:this.commentaries(k),
+        toggle:()=>self.setState({open:Object.assign({},st.open,{[n]:!isOpen})}),
+        open:()=>self.setState({view:"verse",verse:n,arrived:0}),
+        ref:(el)=>{ if(el) self.refs2[n]=el; }};
+    });
+
+    const bars=Array.from({length:76},(_,i)=>{
+      const hit=sc&&sc.ids&&sc.ids.some(n=>Math.round(this.chapOf(n)/133*75)===i);
+      return {h:(16+((i*37)%9)*5)+"px",bg:hit?"var(--accent)":"var(--ink-3)",delay:(i*11)+"ms"};
+    });
+
+    const stepDefs=[["embedding the query","multilingual-e5 · 768d"],["scanning 1330 verse vectors","cosine · exhaustive"],["re-ranking candidates","cross-encoder · top 8"],["assembling the grounded answer","citations required"]];
+    const steps=stepDefs.map((s,i)=>({label:s[0],val:s[1],op:st.step>i?1:st.step===i?0.85:0.28,
+      icon:st.step>i?"✓":st.step===i?"·":" ",mark:st.step>i?"var(--accent)":"var(--ink-4)"}));
+
+    const examples=EXAMPLES.map(e=>Object.assign({},e,{run:()=>self.run(e.key)}));
+
+    const conf=sc?sc.conf:"high";
+    const notice=(()=>{
+      if(!sc) return null;
+      if(conf==="none") return {kind:"No good match",meta:"top score "+sc.top.toFixed(2)+" · floor 0.45",
+        text:"No kural in the 1330 addresses this. The strongest vector match scored 0.24, well under the floor we treat as meaningful, so no answer has been generated and no verses are listed. The Thirukkural speaks about conduct, governance and love; it does not speak about this.",actions:[]};
+      if(conf==="low") return {kind:"Low confidence",meta:"top score "+sc.scores[0].toFixed(2)+" · marginal",
+        text:"The retrieved verses are related but not addressed to your question. The answer below stays close to what the couplets actually say and stops there — read both verses before relying on it.",actions:[]};
+      if(conf==="thanglish") return {kind:"Read as Thanglish",meta:"−0.18 recall vs Tamil script",
+        text:"Transliteration is unstandardised, so “sinam” and “chinam” embed differently. The query was transliterated to Tamil script and both forms were searched; scores are lower than they would be in either single script.",
+        actions:[{tag:"Search",label:"சினத்தை அடக்குவது எப்படி?",lang:"ta",font:"var(--f-ta)",size:"16px",run:()=>self.run("anger_ta")},
+                 {tag:"Search",label:"How do I control my anger?",lang:"en",font:"var(--f-text)",size:"15px",run:()=>self.run("anger_en")}]};
+      return null;
+    })();
+
+    const chapNum=st.chap, ci=this.chapInfo(chapNum);
+    const chapKurals=Array.from({length:10},(_,i)=>{
+      const n=(chapNum-1)*10+i+1, k=K[n];
+      return {n:String(n),loaded:!!k,skeleton:!k,l1:k?k.l1:"",l2:k?k.l2:"",ex:k?k.ex:"",
+        anim:anim(i),delay:delay(i),run:()=>self.setState({view:"verse",verse:n})};
+    });
+
+    const vn=st.verse, vk=K[vn]||{}, vci=this.chapInfo(this.chapOf(vn));
+    const v={num:String(vn),l1:vk.l1||"",l2:vk.l2||"",tr:vk.tr||"",ex:vk.ex||"",
+      chapTa:vci.ta,chapEn:vci.en,secTa:vci.secTa,subTa:vci.subTa,
+      chapMeta:"chapter "+vci.n+" · "+vci.ta+" · verse "+((vn-1)%10+1)+" of 10",
+      altTrans:this.altTrans(vk),meanings:this.meanings(vk),commentaries:this.commentaries(vk),
+      partial:FULL.indexOf(vn)<0,permalink:"kural.rag/"+vn,
+      prev:()=>self.setState({verse:Math.max(1,vn-1)}),next:()=>self.setState({verse:Math.min(1330,vn+1)}),
+      openChap:()=>self.setState({view:"browse",chap:vci.n}),
+      askAbout:()=>self.run(vci.n===31?"anger_en":"lie")};
+
+    const sections=SEC.map((s,i)=>({ta:s.ta,en:s.en,range:s.from+"–"+s.to,
+      bg:st.sec===i?"var(--paper-3)":"var(--paper-2)",fg:st.sec===i?"var(--accent)":"var(--ink)",
+      run:()=>self.setState({sec:i})}));
+    const subs=SEC[st.sec].subs.map(x=>({ta:x[0],en:x[1],count:(x[3]-x[2]+1)+" chapters",
+      chapters:Array.from({length:x[3]-x[2]+1},(_,i)=>{
+        const c=x[2]+i;
+        return {n:String(c).padStart(3,"0"),ta:CH[c-1][0],en:CH[c-1][1],
+          bg:st.chap===c?"var(--paper-3)":"var(--paper-2)",current:st.chap===c?"page":"false",
+          run:()=>self.setState({chap:c})};
+      })}));
+
+    return {
+      isSearch:view==="search",isBrowse:view==="browse",isVerse:view==="verse",isMethod:view==="method",
+      navSearch:view==="search"?"page":"false",navBrowse:view==="browse"?"page":"false",navMethod:view==="method"?"page":"false",
+      isRest:view==="search"&&st.phase==="rest",isThinking:view==="search"&&st.phase==="thinking",
+      isAnswer:view==="search"&&st.phase==="answer",isError:view==="search"&&st.phase==="error",
+      query:st.query,placeholder:"e.g. what does it say about restraining anger?",
+      qLang:sc?(sc.lang==="ta"?"ta":"en"):"en",
+      qFont:sc&&sc.lang==="ta"?"var(--f-ta)":"var(--f-text)",qLH:sc&&sc.lang==="ta"?"1.8":"1.35",
+      onType:(e)=>self.setState({query:e.target.value}),
+      onKey:(e)=>{ if(e.key==="Enter") self.submit(); },
+      onSubmit:()=>self.submit(),
+      reset:()=>{ self.clear(); self.setState({phase:"rest",query:"",scen:null,open:{},arrived:0}); },
+      retry:()=>self.run(st.scen||"anger_en"),
+      goHome:()=>self.setState({view:"search",phase:"rest",query:"",scen:null}),
+      goSearch:()=>self.setState({view:"search"}),goBrowse:()=>self.setState({view:"browse"}),
+      goMethod:()=>self.setState({view:"method"}),back:()=>self.setState({view:st.scen?"search":"browse"}),
+      examples:examples,
+      stats:[{n:"3",label:"sections",ta:"பால்"},{n:"13",label:"subsections",ta:"இயல்"},{n:"133",label:"chapters, 10 verses each",ta:"அதிகாரம்"},{n:"1330",label:"couplets, indexed whole",ta:"குறள்"}],
+      bars:bars,steps:steps,
+      hasAnswer:!!sc&&conf!=="none",hasResults:results.length>0,noMatch:!!sc&&conf==="none",
+      results:results,resultCount:results.length?results.length+" of 1330 · ranked":"",
+      answerParts:(sc&&sc.parts?sc.parts:[]).map(p=>({text:p[0],cite:p[1]||false,aria:p[1]?"Go to kural "+p[1]:"",
+        run:p[1]?()=>self.cite(p[1]):null})),
+      groundLine:sc?sc.ground:"",groundMeta:sc?sc.meta:"",
+      confDot:conf==="high"?"var(--accent)":conf==="low"||conf==="thanglish"?"var(--ink-4)":"var(--ink-4)",
+      hasNotice:!!notice,noticeKind:notice?notice.kind:"",noticeMeta:notice?notice.meta:"",
+      noticeText:notice?notice.text:"",noticeBorder:notice?"var(--rule)":"transparent",
+      hasNoticeAction:!!(notice&&notice.actions&&notice.actions.length),
+      noticeActions:notice&&notice.actions?notice.actions:[],
+      showTr:this.props.showTransliteration!==false,
+      sections:sections,subs:subs,hasChapter:true,
+      chapNo:String(chapNum).padStart(3,"0"),chapTa:ci.ta,chapEn:ci.en,
+      chapRange:((chapNum-1)*10+1)+"–"+(chapNum*10),
+      chapKurals:chapKurals,chapPartial:!K[(chapNum-1)*10+2],
+      v:v,
+      pipeline:[
+        {n:"01",title:"Normalise",body:"Script detected; Thanglish transliterated to Tamil and kept alongside the raw string.",meta:"aksharamukha · 3 forms kept"},
+        {n:"02",title:"Embed",body:"Query and all 1330 couplets share one multilingual vector space, so Tamil finds English and back.",meta:"multilingual-e5-large · 768d"},
+        {n:"03",title:"Retrieve",body:"Exhaustive cosine over the whole book — at 1330 rows there is no reason to approximate.",meta:"1330 × 768 · 11 ms"},
+        {n:"04",title:"Augment",body:"Top 8 pass a cross-encoder; the prompt receives couplet, explanation and commentary with ids attached.",meta:"top 8 → 4 · id-tagged"},
+        {n:"05",title:"Generate",body:"The model may only assert what a supplied verse supports, and every clause carries its verse id.",meta:"claim → id validator"}
+      ],
+      metrics:[{v:"0.92",k:"recall@5",note:"labelled question has a gold verse in top 5"},
+        {v:"0.78",k:"precision@5",note:"retrieved verses judged relevant"},
+        {v:"0.81",k:"MRR",note:"mean reciprocal rank of first gold verse"},
+        {v:"0.96",k:"citation validity",note:"claims traceable to a supplied verse"},
+        {v:"620ms",k:"p50 latency",note:"p95 1.4 s, retrieval to first token"}],
+      langRows:[{lang:"English",note:"n=120",recall:"0.94",prec:"0.81",n:"120",color:"var(--ink)"},
+        {lang:"Tamil script",note:"n=60",recall:"0.89",prec:"0.76",n:"60",color:"var(--ink)"},
+        {lang:"Thanglish",note:"n=40",recall:"0.71",prec:"0.62",n:"40",color:"var(--accent)"}],
+      policy:[{range:"≥ 0.70",title:"Answer normally",body:"Generate 2–4 sentences, every clause carrying a verse id."},
+        {range:"0.45–0.69",title:"Answer with the doubt shown",body:"Low-confidence notice above the answer; wording stays inside what the couplets say."},
+        {range:"< 0.45",title:"Refuse",body:"No answer, no ranked list. Weak results presented as strong are the failure mode this product exists to avoid."}],
+      tokColour:[{k:"--paper",v:"#F8F6F2"},{k:"--paper-2",v:"#FDFCFA"},{k:"--paper-3",v:"#F2EFE9"},
+        {k:"--ink",v:"#1B1A18"},{k:"--ink-3",v:"#78736B"},{k:"--accent",v:"#9E3F24"}],
+      tokType:[{k:"display / Latin",font:"var(--f-text)",size:"27px",lh:"1.1",sample:"Ask the Thirukkural",spec:"Spectral 300 · lh 1.06 · −0.022em"},
+        {k:"couplet / Tamil",font:"var(--f-ta)",size:"22px",lh:"1.85",sample:"தன்னையே கொல்லும் சினம்",spec:"Noto Serif Tamil 400 · lh 1.85"},
+        {k:"body / Latin",font:"var(--f-text)",size:"17px",lh:"1.64",sample:"Guard yourself by guarding anger.",spec:"Spectral 400 · 17.5px · lh 1.64"},
+        {k:"prose / Tamil",font:"var(--f-ta)",size:"16px",lh:"2",sample:"சினம் வராமல் காக்க வேண்டும்.",spec:"Noto Serif Tamil · 16.5px · lh 1.95"},
+        {k:"chrome / Latin",font:"var(--f-ui)",size:"14px",lh:"1.5",sample:"Retrieved verses, ranked",spec:"Instrument Sans 400/500"},
+        {k:"numerals",font:"var(--f-mono)",size:"15px",lh:"1.4",sample:"0.87 · 1330 · 305",spec:"IBM Plex Mono · tabular-nums"}],
+      tokSpace:[{k:"s1",v:"4px"},{k:"s2",v:"8px"},{k:"s3",v:"12px"},{k:"s4",v:"16px"},{k:"s5",v:"24px"},{k:"s6",v:"32px"},{k:"s7",v:"48px"},{k:"s8",v:"64px"},{k:"s9",v:"96px"}],
+      tokMotion:[{k:"--d1 … --d5",v:"140 · 260 · 420 · 640 · 900ms"},{k:"--e-out",v:"cubic-bezier(.16,1,.3,1)"},
+        {k:"--e-emph",v:"cubic-bezier(.62,.03,.1,1)"},{k:"--e-std",v:"cubic-bezier(.32,.72,0,1)"},
+        {k:"stagger",v:"70ms · rank order"},{k:"reduced",v:"opacity 200ms, no travel"}],
+      demos:[{label:"resting",run:()=>{ self.clear(); self.setState({view:"search",phase:"rest",query:"",scen:null}); }},
+        {label:"thinking",run:()=>{ self.clear(); self.setState({view:"search",phase:"thinking",query:SCEN.anger_en.q,scen:"anger_en",step:1}); }},
+        {label:"strong answer",run:()=>self.run("anger_en")},
+        {label:"low confidence",run:()=>self.run("lie")},
+        {label:"no match",run:()=>self.run("crypto")},
+        {label:"thanglish",run:()=>self.run("anger_tg")},
+        {label:"long commentary",run:()=>{ self.setState({view:"verse",verse:305}); }},
+        {label:"empty commentary",run:()=>{ self.setState({view:"verse",verse:129}); }},
+        {label:"backend error",run:()=>{ self.clear(); self.setState({view:"search",phase:"error",query:SCEN.anger_en.q,scen:"anger_en"}); }},
+        {label:"chapter 31",run:()=>self.setState({view:"browse",sec:0,chap:31})}]
+    };
+  }
+}
+</script>
+</body>
+</html>
