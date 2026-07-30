@@ -493,3 +493,167 @@ that engine reports about itself.
 - Phases 2–7 — still ahead, unchanged. Nothing about the UI shortcuts them.
 - Next is still **Phase 2 — embeddings over the real corpus**, and there is now
   a working product to plug them into and a measured baseline to beat.
+
+---
+
+---
+
+## 2026-07-30 — Phase 1 close-out, and an answer to yesterday's open question
+
+### The question Phase 8 left open
+
+Yesterday's frontend session ended with this, unresolved:
+
+> Word matching cannot tell a question about the book from a question about
+> football. Meaning matching is supposed to be able to. Phase 5 will show
+> whether it does.
+
+Today I ran that test early, with real LaBSE embeddings instead of word overlap.
+
+**Meaning matching does not fix it either.**
+
+```
+   word overlap (Phase 8 placeholder)
+     0.847  who won the football world cup        <- garbage
+     0.363  how do I stop being controlled by anger
+
+   LaBSE embeddings (today)
+     0.386  what happened during the world cup this year   <- garbage
+     0.320  what does Thirukkural say about controlling anger?
+```
+
+Different engine. Same failure, same direction: **the garbage question outranks
+the real one.** Switching from words to meaning changed the numbers and did not
+change the verdict.
+
+So the `calibrated: false` flag in the frontend does not flip when embeddings
+arrive. That was my assumption yesterday and it was wrong.
+
+### Why no number can fix it
+
+Retrieval keeps the top k. It has no way to keep zero. Sort 1330 numbers and
+there is always a winner, even when all 1330 are meaningless.
+
+LaBSE did read the whole sentence — it is not matching words. It was asked
+"which is nearest?" and answered correctly. It was **never asked "is any of this
+relevant?"** That second question cannot be carried by a similarity score at all.
+
+Something that **reads the text** can tell that a verse about yesterday and
+today does not answer a football question. A cosine number never can. In the
+pipeline that reader is the LLM in Phase 7 — which makes grounding a load-bearing
+part of the design, not a finishing touch.
+
+Pure gibberish (`asdfgh qwerty zxcvbn`) did score low at 0.173, so a threshold
+catches noise. It is fluent, plausible, off-topic English that walks through.
+
+I checked whether score-shape signals (gap between top and 5th, tightness of the
+top 5) separate good queries from bad. They do not, cleanly. Candidates to
+measure in Phase 5, not fixes.
+
+### Retrieval is already visibly weak on real questions
+
+```
+   "what does Thirukkural say about controlling anger?"
+     1. kural 301  0.320  He restrains his anger who restrains it when...  correct
+     2. kural  57  0.291  The chief guard of a woman is her chastity...    nonsense
+     3. kural  54  0.262  What is more excellent than a wife...            nonsense
+```
+
+Thirukkural has a whole chapter on anger (301–310). One of those ten came back.
+This was English explanations only, one kural per chunk — exactly the chunking
+choice Phase 4 exists to question.
+
+---
+
+### The audit detector, revisited
+
+Yesterday's misassignment hunt ranked candidates by how much better some other
+kural matched. Its number one candidate in the whole corpus, largest gap of all
+1330:
+
+```
+   kural 977    own 0.116    matches kural 489 at 0.413    gap +0.297
+```
+
+I read both texts. Kural 977's English explanation and its Tamil meaning say the
+same thing — high status landing on base people produces behaviour that exceeds
+its bounds. Kural 489 is about seizing a rare opportunity. Unrelated.
+
+**The strongest accusation in the run is a false positive.**
+
+### Mismatch is not error
+
+```
+   305 of 1330 Tamil meanings match some other kural better
+```
+
+23% of a corpus I had already audited and repaired. It does not contain 305
+misassigned meanings. So a mismatch does not mean an error.
+
+The pipeline is three stages, not two:
+
+```
+   pass 1   a score               ->  suspicion
+   pass 2   a ranked accusation   ->  a candidate, and a lead to check
+   me       reading the text      ->  the verdict
+```
+
+Pass 2's contribution is not proof. It hands over **a specific lead** — "compare
+977 against 489" — instead of a bare number I can do nothing with. It shrinks
+1330 records to a list a human can read. Still a large win, just not proof.
+
+Kural 524 was the case where the lead was real: pass 2 said "compare 524 against
+468", and reading the text settled it. Same tool, opposite outcome.
+
+### What a threshold would actually have done
+
+I assumed a cutoff would drown me in false alarms. Measured, it does not:
+
+```
+   cutoff   flagged   mismatched   self-matched
+   ──────────────────────────────────────────────
+    0.20        1          1             0
+    0.30       14         14             0
+    0.40       74         69             5
+    0.50      295        215            80
+```
+
+Only 5 kurals score below 0.40 and still match themselves. The threshold was not
+the weak part. The weak part is that "mismatched" was never the same thing as
+"wrong", at any cutoff.
+
+**Lesson to keep: check the assumption before building the argument on it.**
+
+---
+
+### Two changes to the plan, both from my own questions
+
+1. **The Phase 5 golden set needs out-of-domain questions** — ones that should
+   return *nothing*. Otherwise evaluation only measures "did the right kural show
+   up", never "did a wrong kural show up when nothing should have". A system that
+   answers everything scores perfectly on the first and fails in real use.
+
+2. **Build the golden set chapter-first, not memory-first.** I cannot judge
+   retrieval from memory — I did not know Thirukkural has a chapter on abstaining
+   from meat (26, புலால் மறுத்தல், 251–260). That limit is real and cannot be
+   fixed by trying harder.
+
+```
+   WRONG   think of a question  ->  guess which kurals answer it
+           (limited by what I happen to remember)
+
+   RIGHT   open a chapter -> read its 10 kurals -> write the questions
+           they answer
+           (ground truth comes from the text, not my memory)
+```
+
+133 chapters, one question each, already exceeds the ~100 the plan asks for.
+
+### Status after this session
+
+- Phase 1 — closed. Corpus complete, audited, and the audit tool's own limits
+  now measured rather than assumed.
+- Phase 8 — unchanged, and its `calibrated: false` flag is now known to survive
+  the arrival of embeddings.
+- Next is still **Phase 2 — embeddings over the real corpus**, now with a
+  measured embedding baseline (LaBSE, English explanations only) to beat.

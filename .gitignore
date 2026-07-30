@@ -24,6 +24,10 @@ models/
 .claude/settings.local.json
 .claude/*.tmp.*
 
+# git worktrees live here — they are checkouts of this same repo, plus
+# node_modules. Never commit them into the repo they came from.
+.claude/worktrees/
+
 # secrets (LLM API keys, Phase 7)
 .env
 .env.local
