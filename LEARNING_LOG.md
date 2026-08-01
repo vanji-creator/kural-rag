@@ -1081,3 +1081,58 @@ production object so the two cannot drift.
 - Phase 9: not started.
 
 Branch `phase5-evaluation-harness`, four commits, not yet merged to main.
+
+---
+
+## Parked notes, revisited (2026-08-02)
+
+### Note 1 — CLOSED
+
+"We are barely missing, not lost." Median rank of the first correct verse was
+**7**; the answer sat just outside the window.
+
+    median rank    7  ->  1
+
+The top result is now usually correct.
+
+### Note 2 — CLOSED, and this is the clearest evidence in the project
+
+"The model is matching question SHAPE, not meaning." Re-measured against the
+shipping pipeline:
+
+```
+distinct kurals filling all 500 top-5 slots    170  ->  375
+
+kural 251  [Abstinence from Flesh]     26 questions  ->   1
+kural 862  [The Might of Hatred]       22 questions  ->   0
+kural 175  [Not Coveting]              22 questions  ->   0
+kural  53  [The Worth of a Wife]       18 questions  ->   2
+
+worst offender now: kural 192, 7 questions (was 26)
+```
+
+Kural 251 is a verse about eating meat. It answered 26 unrelated questions
+because it opens "What graciousness can one command..." - question-shaped text
+matching question-shaped queries. It now answers one.
+
+The note predicted query rewriting would fix this before anything else was
+tried. It did, and the proof is the spread: answers now come from more than
+twice as many distinct verses.
+
+**Writing the prediction down BEFORE testing is what made this checkable.**
+
+### Still open — carried forward, not closed
+
+1. **Thanglish queries.** CLAUDE.md §2 promises support. Pre-work measured
+   ~0.24 similarity and parked it. The pipeline has no Thanglish handling at
+   all - it is neither rewritten nor measured.
+2. **Tamil questions.** The 85 is English-only. Tamil skips the rewrite and is
+   labelled unmeasured in the response, but has never been scored.
+3. **Parimelazhagar commentary.** The only Tamil column whose content the
+   English does not duplicate, so the only place Tamil could still add signal.
+   Never fed to anything.
+4. **The 15 remaining misses.** Never read. Some are probably bad golden
+   entries; one question is unreachable at any cutoff, which usually means the
+   entry itself is wrong.
+5. **Real hand-written chapter descriptions.** The fake glued ones are worth
+   +3 already. Phase 4 measured real ones better. Never written.
