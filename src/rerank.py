@@ -1,0 +1,115 @@
+"""Stage 2 - read the question and the kural TOGETHER, then score.
+
+Everything up to now compared the question and the kural SEPARATELY. Each was
+turned into 768 numbers on its own, and the two lists of numbers were compared.
+
+The catch: the kural's numbers were computed this morning, before any question
+existed. So one fixed summary has to serve every question anyone might ask.
+That is how kural 251 - a verse about eating meat - answered 26 of our 100
+questions. Its frozen summary said "this text asks a rhetorical question", and
+26 question-shaped queries matched that.
+
+A cross-encoder removes the problem by never freezing anything:
+
+    question + kural, in one input  ->  [model]  ->  one score
+
+It reads both texts side by side and answers "does this kural answer this
+question?". Much harder to fool with surface shape.
+
+The price: nothing can be cached. Change the question and every score is void.
+Scoring all 1330 kurals this way would mean 1330 model runs per question.
+
+So it only ever sees the top 50 from stage 1. 50 runs, not 1330.
+
+Measured ceiling for a top-50 cutoff: 94 of 100. The reranker can never beat
+that, because it only reorders what stage 1 handed it.
+"""
+
+import torch
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
+
+# Small, fast, English-only, and the standard baseline reranker. About 90 MB.
+#
+# English-only is a real limitation here: we feed it the English translation
+# and explanation and drop the Tamil. If Tamil turns out to carry signal the
+# English does not, a bigger multilingual reranker is the next thing to try -
+# and it gets measured on the scorecard like everything else.
+RERANKER_MODEL_NAME = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+
+# The multilingual challenger. 568M parameters against our 22M, so expect it
+# to be far slower.
+#
+# gte-multilingual-reranker-base was the first choice - it is the only
+# candidate that DECLARES Tamil ('ta') in its own metadata. It was abandoned
+# because it ships custom model code (trust_remote_code=True) written against
+# an older transformers, and under transformers 5.x it reads an uninitialised
+# position_ids buffer, then produces NaN even after that is patched.
+#
+# Lesson kept on purpose: a model needing trust_remote_code carries code that
+# rots when the library moves under it.
+#
+# bge-reranker-v2-m3 uses the stock XLM-RoBERTa architecture instead, so there
+# is no custom code to rot. Its Tamil support is INFERRED (XLM-RoBERTa declares
+# 94 languages including Tamil) rather than declared by the reranker itself.
+MULTILINGUAL_MODEL_NAME = "BAAI/bge-reranker-v2-m3"
+
+DEFAULT_CANDIDATE_COUNT = 50
+
+
+def rerankable_text(kural_record):
+    """English only. All our current reranker can read."""
+    return (kural_record["english_translation"] + ". "
+            + kural_record["english_explanation"])
+
+
+def rerankable_text_with_tamil(kural_record):
+    """English AND Tamil, for a model that can actually read both.
+
+    Only worth passing to a multilingual reranker. Handing this to the
+    English-only model would just be feeding it noise.
+    """
+    return (kural_record["english_translation"] + ". "
+            + kural_record["english_explanation"] + " "
+            + kural_record["tamil_meaning_mu_varadarajan"])
+
+
+class Reranker:
+    """Wraps the cross-encoder so callers never touch the model directly.
+
+    Uses plain transformers rather than sentence-transformers' CrossEncoder.
+    That is deliberate, and it cost an hour to find out why: the CrossEncoder
+    wrapper silently mis-loads bge-reranker-v2-m3's classifier head and
+    returns a score of 0.000 for EVERY pair - no error, no warning, just a
+    ranking made of noise. Loading the same checkpoint directly gives real
+    numbers (-6.9 for a match, -11.0 for a mismatch).
+
+    A wrapper that fails loudly is a bug. One that fails silently is a trap.
+    """
+
+    def __init__(self, model_name=RERANKER_MODEL_NAME, max_length=512):
+        self.max_length = max_length
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.model = AutoModelForSequenceClassification.from_pretrained(
+            model_name)
+        self.model.eval()
+
+    def score_pairs(self, question_text, kural_records,
+                    build_text=rerankable_text):
+        """Score this one question against each of these kurals.
+
+        Returns one number per kural. Higher means "answers the question
+        better". These are raw model outputs on the model's own scale - not
+        similarities, not capped at 1 - so only their ORDER means anything.
+
+        build_text decides how much of each kural the model gets to see, so
+        the same model can be measured on English-only and on English+Tamil.
+        """
+        question_and_kural_pairs = [[question_text, build_text(record)]
+                                    for record in kural_records]
+        with torch.no_grad():
+            tokenized = self.tokenizer(question_and_kural_pairs,
+                                       padding=True, truncation=True,
+                                       return_tensors="pt",
+                                       max_length=self.max_length)
+            logits = self.model(**tokenized).logits.view(-1).float()
+        return logits.numpy()

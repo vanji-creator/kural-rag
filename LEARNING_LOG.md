@@ -657,3 +657,268 @@ the weak part. The weak part is that "mismatched" was never the same thing as
   the arrival of embeddings.
 - Next is still **Phase 2 — embeddings over the real corpus**, now with a
   measured embedding baseline (LaBSE, English explanations only) to beat.
+
+---
+
+## 2026-08-01 — Phase 5 opens: the scorecard, and what the baseline is really doing
+
+### The scorecard exists now
+
+`data/golden_set.json` — 100 questions, each with the kurals that genuinely
+answer it. Two sources of "correct":
+
+1. the question's own chapters (10 kurals each)
+2. **200 hand-checked kurals from OTHER chapters** that still answer it
+
+Source 2 matters. Kural 35 ("Four ills eschew: lust, anger, envy, evil-speech")
+genuinely answers the anger question, but lives in chapter 4, not chapter 31.
+Without source 2 the scorecard would mark a correct retrieval as WRONG.
+
+How the 200 were found: a whole-word keyword sweep proposed candidates, a
+rare-word filter cut the noise (a word appearing in 200 kurals points nowhere),
+and then every candidate was read and judged by hand.
+
+### BASELINE: 44 of 100
+
+Plain kural-level embedding search. Question vs each of the 1330 kurals
+(English translation + English explanation + Tamil meaning glued), cosine, top 5.
+
+```
+questions with a correct kural in top 5   44 of 100
+average correct kurals per top 5          0.77 of 5
+median rank of the first correct kural    7 of 1330
+```
+
+**Prediction vs reality.** I guessed most questions would get at least one hit.
+It was under half. The gap was the lesson.
+
+### NOTES TO RETURN TO after all methods are measured
+
+**Note 1 — we are barely missing, not lost.**
+Median rank of the first correct kural is **7**. The right answer usually sits
+at position 6-8, just outside the top 5. Small improvements should move the
+number a lot.
+
+**Note 2 — the model is matching question SHAPE, not meaning.**
+All 100 questions x 5 slots = 500 slots, filled by only **170 distinct kurals**.
+The hogs:
+
+```
+26 of 100 questions | kural  251  "What graciousness can one command who feeds his flesh..."
+22 of 100 questions | kural  862  "Loveless, aidless, powerless king Can he withstand..."
+22 of 100 questions | kural  175  "What is one's subtle wisdom worth If it deals ill..."
+18 of 100 questions | kural   53  "What is rare when wife is good What can be there when she is bad?"
+```
+
+Kural 251 is about **eating meat**. It answered 26 unrelated questions.
+
+Every hog is phrased as a question. Our golden questions are phrased as
+questions. The model is matching *question-shaped text*. This is the same
+failure seen earlier when "how do I control my anger?" returned "How to hide
+this lust which shows...".
+
+This is the thing to come back to. It predicts that **query rewriting**
+(turning a chatty question into a bare topic) should help more than anything
+else — but that stays a prediction until it is measured.
+
+### Method note — how this phase runs
+
+Change ONE thing, re-measure against the same 100 questions, keep it only if
+the number goes up. No eyeballing five results and forming a view. That was
+the mistake that wasted the first half of the session.
+
+### Measured, in order. Each row changes ONE thing.
+
+```
+method                      hits/100  avg in top5  median rank
+kural only (BASELINE)             44         0.77            7
+chapter only                      33         1.47           21
+blend  chapter=0.5                52         1.33            4
+keyword only (BM25)               45         0.80            7
+hybrid rescaled kw=0.3            52         1.16            5
+hybrid RRF (rank-based)           49         1.04            6
+--- questions rewritten ---
+REWRITE kural only                69         1.60            2
+REWRITE blend=0.5                 67         2.12            2
+REWRITE keyword only              53         1.09            5
+REWRITE hybrid kw=0.3             75         2.03            1   <- best
+REWRITE hybrid RRF                65         1.81            2
+```
+
+### Lesson 1 — the scorecard caught a wrong answer I had already given
+
+Earlier the same day, on a test that defined "correct" as "in the right
+chapter", chapter weight **0.8** measured as the best blend. On the honest
+scorecard 0.8 scores **42 - below the 44 baseline**. The old test was grading
+its own homework: chapter scores are built to find the right chapter, so
+adding more of them always looked better. The honest answer is 0.5.
+
+Chapter-only told the same story. It looked like the clear winner before.
+Here it scores 33, eleven points BELOW baseline.
+
+**A metric that rewards the thing you are testing is not a metric.**
+
+### Lesson 2 — deleting words beat everything we built
+
+`REWRITE kural only` is the plain baseline method with "how do I my" stripped
+from the question. 44 -> 69. That one change is worth more than the chapter
+blend and hybrid search put together.
+
+No information was added. Noise was removed.
+
+Why it works, and it was measured twice before it was believed:
+  - kural 251 is about eating meat and answered 26 of 100 questions, because
+    it opens "What graciousness can one command..." - question-SHAPED text
+  - BM25 weighted "how" at 3.78 against "anger" at 4.13, because the corpus is
+    old verse translation that rarely writes "how do I my"
+
+### Lesson 3 — ORDER OF TESTING CHANGES THE CONCLUSION
+
+Before rewriting, keyword search added nothing: 52 -> 52. I called it useless.
+After rewriting, keyword search adds six points: 69 -> 75.
+
+Same code. Opposite verdict.
+
+It was never useless - it was blocked. Two methods that make the SAME mistake
+cannot cover for each other. Hybrid search only pays when the two methods fail
+DIFFERENTLY. Stripping the question words is what made them fail differently.
+
+Had we tested rewriting first, we would have concluded keyword search was
+great. Testing it first, we concluded it was worthless. Both from identical
+code. **A single measurement is not a fact about a technique - it is a fact
+about that technique in that pipeline at that moment.**
+
+### Where it stands
+
+44 -> 75, and the median rank of the first correct kural went from 7 to 1:
+the top result is now usually right.
+
+Note that the rewrite that did this is the CHEAP version - a hardcoded word
+list, no LLM. Whether a real LLM rewrite beats a word list is now a
+measurable question rather than an assumption.
+
+### VOID — the LLM-rewrite rows do not count
+
+```
+LLM* hybrid kw=0.3   97/100    <- VOID, do not cite
+LLM* keyword only    94/100    <- VOID
+LLM* kural only      89/100    <- VOID
+```
+
+Rejected for two separate reasons, and the second is the stronger one:
+
+1. **Leakage.** The rewrites were written by an LLM that had the chapter list
+   in front of it. The rewrite for the anger question was "restraining anger" -
+   the correct chapter's exact title. The answer was written into the question.
+
+2. **It does not transfer.** Even with zero leakage, the number measures a
+   large frontier model. Production would run a small cheap model whose
+   rewrites are worse. **A measurement that cannot transfer to what you ship
+   is not a measurement.** (Vikash's call, and it was the right one.)
+
+Query rewriting gets re-tested when a real, small, local model is wired up.
+The honest number remains the word-list rewrite: **75 of 100.**
+
+One thing worth remembering from the void run: `LLM* keyword only` scored 94.
+Once the query used the corpus's own vocabulary, plain keyword search beat the
+embeddings. That is a hint about where the ceiling lives - not a result.
+
+### Stage 2 — the reranker. 75 -> 85
+
+```
+REWRITE hybrid kw=0.3     75    stage 1 alone
+RERANK top-50             85    <- +10
+top-50 ceiling            94    the most a reranker could reach
+```
+
+Model: `cross-encoder/ms-marco-MiniLM-L-6-v2` (~90 MB, English-only).
+Cost measured on this CPU: **418 ms per question**, against ~4 ms for the
+embedding search. Roughly 100x slower.
+
+It captured 10 of the 19 points available. Nine cases still had a correct
+kural inside the top 50 that the reranker failed to lift into the top 5.
+
+**Why a cross-encoder helps.** Every earlier method encoded the question and
+the kural SEPARATELY, and the kural's numbers were frozen before any question
+existed. One fixed summary had to serve every possible question. That is
+exactly how kural 251 (about eating meat) answered 26 of 100 questions - its
+frozen summary captured "this text asks a rhetorical question".
+
+A cross-encoder puts both texts into the model together and scores the pair.
+Nothing is cached, so it cannot be fooled by surface shape - but a new
+question voids every score, which is why it only ever sees 50 candidates
+instead of 1330.
+
+**The ceiling rule.** A reranker only REORDERS what stage 1 hands it. If the
+correct kural is not in the top 50, no reranker can find it. Measured ceilings
+for our stage 1:
+
+```
+cutoff    ceiling
+     5    75 of 100   (where stage 1 leaves us)
+    10    85
+    20    88
+    50    94
+   100    99
+   200    99   <- completely flat, nothing left to find
+```
+
+Cost rises in a straight line with the cutoff; the gain flattens. That shape
+is the whole reason to pick a cutoff rather than rerank everything.
+
+### FULL RESULT FOR PHASE 5: 44 -> 85
+
+```
+kural only (BASELINE)             44
+blend  chapter=0.5                52
+keyword only (BM25)               45
+hybrid rescaled kw=0.3            52
+REWRITE kural only                69
+REWRITE hybrid kw=0.3             75
+RERANK top-50                     85
+```
+
+Every row is the same 100 questions, one change at a time.
+
+### The multilingual reranker — tested, measured, REJECTED
+
+```
+method                      hits/100  avg in top5   time per question
+RERANK en-only (ms-marco)        85       2.25             498 ms   <- KEPT
+RERANK bge en-only               91       2.68          11,840 ms
+RERANK bge en+tamil              91       2.77          17,483 ms
+ceiling at top-50                94
+```
+
+**Decision: keep the English-only ms-marco reranker.** +6 points is not worth
+24x the latency. Twelve seconds per search is not a product.
+
+**Tamil added nothing.** 91 either way. The whole reason to go multilingual was
+"our corpus is bilingual, our judge is monolingual, that's a mismatch." Measured:
+the mismatch costs zero, because the English explanation already paraphrases
+what the Tamil meaning says. The Tamil that MIGHT matter is the Parimelazhagar
+commentary - the only Tamil column whose content the English does not duplicate.
+Untested.
+
+### Two library traps found the hard way
+
+**1. `trust_remote_code=True` is a maintenance liability.**
+`gte-multilingual-reranker-base` was the first choice - the ONLY candidate that
+DECLARES Tamil ('ta') in its own metadata. It never ran. It ships custom model
+code written against an older transformers; under transformers 5.x it reads an
+uninitialised `position_ids` buffer (garbage like 124101626708704), and returns
+NaN even after that is patched. A model that carries its own code carries code
+that rots when the library moves under it.
+
+**2. sentence-transformers' CrossEncoder wrapper FAILED SILENTLY on bge.**
+It returned 0.000 for every pair - no error, no warning, just a ranking made of
+noise. Loading the identical checkpoint with plain transformers gave real
+numbers (-6.9 for a match, -11.0 for a mismatch). `rerank.py` now uses plain
+transformers for every model.
+
+**A wrapper that fails loudly is a bug. One that fails silently is a trap.**
+Nothing in the scorecard would have caught this as anything but "that model is
+bad" - the smoke test on three known pairs is what caught it.
+
+Re-measuring ms-marco through the new plain-transformers path returned exactly
+85, confirming the wrapper bug never touched it.
