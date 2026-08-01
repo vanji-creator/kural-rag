@@ -264,6 +264,14 @@ Start of each session:
 End of each session:
 - Write a short plain-English summary of **what was learned** (not just what
   was coded) into `LEARNING_LOG.md`.
+- **Update `LEARNING_GAPS.md`.** That file is the central tracker for my goal
+  of becoming an ML/AI engineer: what I can do, what I cannot do yet, and what
+  to fix next. Every session, add any new gap the work exposed, mark any gap
+  that closed, and attach the evidence — the exact moment in this repo where
+  the thing happened.
+- **`LEARNING_GAPS.md` is only useful if it is uncomfortable.** Never soften
+  it, never edit it to look better, and never record a strength I have not
+  actually demonstrated. A gap I do not know about is the expensive kind.
 
 
 ## PRE-WORK DONE (before Phase 0)
