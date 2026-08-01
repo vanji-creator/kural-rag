@@ -1,0 +1,22 @@
+# Python dependencies for retrieval. The web app's dependencies are in
+# package.json — the two halves are installed separately on purpose, because
+# they run as separate processes (see service/app.py for why).
+#
+#     python3 -m venv venv
+#     venv/bin/pip install -r requirements.txt
+
+# embeddings (LaBSE) — turns text into 768 numbers
+sentence-transformers>=5.0
+
+# the cross-encoder reranker is loaded through plain transformers, NOT through
+# sentence-transformers' CrossEncoder wrapper. That wrapper silently returned
+# 0.000 for every pair on bge-reranker-v2-m3 — no error, just a ranking made
+# of noise. See the note in src/rerank.py.
+transformers>=5.0
+torch>=2.0
+
+numpy>=1.24
+
+# the retrieval service
+fastapi>=0.110
+uvicorn[standard]>=0.27

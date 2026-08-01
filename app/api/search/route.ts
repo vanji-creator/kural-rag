@@ -35,7 +35,7 @@ export async function GET(request: Request) {
       ? Math.floor(limitParam)
       : DEFAULT_RESULT_LIMIT;
 
-  const retrieval = ACTIVE_ENGINE.search(query, limit);
+  const retrieval = await ACTIVE_ENGINE.search(query, limit);
 
   const response: SearchResponse = { retrieval, answer: null };
   return NextResponse.json(response);

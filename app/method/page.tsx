@@ -10,11 +10,17 @@ export const metadata = {
 /**
  * The page that says how the thing works and how well.
  *
- * The design for this page carried a full table of retrieval scores. Those
- * numbers are not here, because they have not been measured — the labelled
- * question set is a later phase. Printing a plausible 0.92 next to the word
- * "recall" would be exactly the failure this product is built to refuse, and
- * a methodology page is the worst possible place to start making things up.
+ * The numbers below were blank until 2026-08-02, because the labelled question
+ * set did not exist. It exists now — 100 hand-checked question-to-verse pairs
+ * in data/golden_set.json — so the blanks are filled from measurement.
+ *
+ * Every figure here is reproducible in about a minute:
+ *
+ *     venv/bin/python src/report_metrics.py
+ *
+ * If a number on this page does not match that output, this page is wrong.
+ * Citation validity stays blank on purpose: nothing generates answers yet, so
+ * there are no citations to check.
  */
 
 const PIPELINE = [
@@ -27,14 +33,14 @@ const PIPELINE = [
   {
     n: "02",
     title: "Retrieve",
-    body: `Every one of the ${CORPUS_SIZE} verses is scored against the question and ranked. At this size there is no reason to approximate — the whole book is compared, every time.`,
-    meta: "built · stand-in engine",
+    body: `Every one of the ${CORPUS_SIZE} verses is scored against the question and ranked — by meaning and by keyword, blended with a score for the chapter it belongs to. At this size there is no reason to approximate, so the whole book is compared exactly, every time.`,
+    meta: "built · measured",
   },
   {
     n: "03",
     title: "Embed",
-    body: "Question and verses share one multilingual vector space, so an English question can reach a Tamil verse by meaning rather than by spelling.",
-    meta: "not built yet",
+    body: "Question and verses share one multilingual vector space, so an English question can reach a Tamil verse by meaning rather than by spelling. The top 50 are then reread against the question by a second model that sees both texts together.",
+    meta: "built · measured",
   },
   {
     n: "04",
@@ -50,12 +56,34 @@ const PIPELINE = [
   },
 ];
 
-const PLANNED_METRICS = [
-  { k: "recall@5", note: "does a labelled question find its gold verse in the top 5" },
-  { k: "precision@5", note: "how many of the five returned verses are actually relevant" },
-  { k: "MRR", note: "how far down the list the first correct verse sits" },
-  { k: "citation validity", note: "share of claims traceable to a supplied verse" },
+/**
+ * Measured by src/report_metrics.py against data/golden_set.json.
+ * `v: null` means genuinely not measurable yet, and renders as a dash.
+ */
+const MEASURED_METRICS: { k: string; v: string | null; note: string }[] = [
+  {
+    k: "recall@5",
+    v: "0.85",
+    note: "85 of 100 questions found a correct verse in the top 5",
+  },
+  {
+    k: "precision@5",
+    v: "0.45",
+    note: "2.26 of the 5 verses shown are correct, on average",
+  },
+  {
+    k: "MRR",
+    v: "0.71",
+    note: "1.00 would mean the first result is always correct",
+  },
+  {
+    k: "citation validity",
+    v: null,
+    note: "nothing generates answers yet, so there is nothing to check",
+  },
 ];
+
+const GOLDEN_SET_SIZE = 100;
 
 const COLOUR_TOKENS = [
   { k: "--paper", v: "#F8F6F2" },
@@ -144,18 +172,28 @@ const MOTION_TOKENS = [
   { k: "reduced", v: "opacity 200ms, no travel" },
 ];
 
+/**
+ * Measured by src/calibrate.py on the engine running today: 20 questions the
+ * Thirukkural addresses and 15 it does not.
+ *
+ * A representative slice, ordered by score. The rows that matter are the
+ * bottom two: one off-topic question that is not quite zero, and one genuine
+ * question that is.
+ */
 const CALIBRATION_PROBE = [
-  { query: "what does it say about friendship", score: "1.00", onTopic: true },
-  { query: "why should I not envy others", score: "0.86", onTopic: true },
-  { query: "who won the football world cup", score: "0.85", onTopic: false },
-  { query: "the greatness of rain", score: "0.81", onTopic: true },
-  { query: "how do I fix a flat tyre on my bicycle", score: "0.50", onTopic: false },
-  { query: "how should a king choose his ministers", score: "0.48", onTopic: true },
-  { query: "what is the best language for machine learning", score: "0.37", onTopic: false },
-  { query: "how do I stop being controlled by my anger", score: "0.36", onTopic: true },
-  { query: "recommend a restaurant in Chennai", score: "0.31", onTopic: false },
-  { query: "is it wrong to eat meat", score: "0.28", onTopic: true },
+  { query: "what is the value of penance", score: "0.906", onTopic: true },
+  { query: "what happens when a ruler is cruel to his people", score: "0.746", onTopic: true },
+  { query: "how do I control my anger", score: "0.494", onTopic: true },
+  { query: "is it better to listen than to speak", score: "0.201", onTopic: true },
+  { query: "is killing animals a sin", score: "0.089", onTopic: true },
+  { query: "should I check someone before becoming friends", score: "0.008", onTopic: true },
+  { query: "which king won the most gold in the war", score: "0.003", onTopic: false },
+  { query: "who won the football world cup", score: "0.000", onTopic: false },
+  { query: "how do I install docker on ubuntu", score: "0.000", onTopic: false },
+  { query: "how do I finish what I start", score: "0.000", onTopic: true },
 ];
+
+const CALIBRATION_PROBE_SIZE = 35;
 
 export default function MethodPage() {
   const policy = [
@@ -181,16 +219,18 @@ export default function MethodPage() {
       <section className="method">
         <div className="method__intro">
           <span lang="en" className="eyebrow">
-            Method · retrieval not yet evaluated
+            Method · retrieval measured, generation not built
           </span>
           <h2 className="display-title">
             <span lang="en">How retrieval works, and how well.</span>
           </h2>
           <p lang="en" className="method__lede">
             {CORPUS_SIZE} verses is a small corpus, which makes exhaustive
-            scoring cheap and makes the failure modes measurable. The second
-            half of that sentence is not true yet: nothing on this page has
-            been measured, and the numbers are missing rather than estimated.
+            scoring cheap and makes the failure modes measurable. Both halves
+            of that sentence are now true: every verse is compared exactly on
+            every question, and retrieval is measured against{" "}
+            {GOLDEN_SET_SIZE} hand-checked question-to-verse pairs. What is
+            still missing from this page is missing, not estimated.
           </p>
         </div>
 
@@ -262,15 +302,18 @@ export default function MethodPage() {
             </span>
             <span className="rail" aria-hidden="true" />
             <span lang="en" className="mono" style={{ fontSize: 11, color: "var(--ink-4)" }}>
-              n = 0
+              n = {GOLDEN_SET_SIZE}
             </span>
           </div>
 
           <div className="hairline-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))" }}>
-            {PLANNED_METRICS.map((metric) => (
+            {MEASURED_METRICS.map((metric) => (
               <div key={metric.k} className="metric">
-                <span className="metric__v" style={{ color: "var(--ink-4)" }}>
-                  —
+                <span
+                  className="metric__v"
+                  style={metric.v === null ? { color: "var(--ink-4)" } : undefined}
+                >
+                  {metric.v ?? "—"}
                 </span>
                 <span lang="en" className="metric__k">
                   {metric.k}
@@ -283,13 +326,34 @@ export default function MethodPage() {
           </div>
 
           <p lang="en" className="method__note">
-            These are blank because the labelled question set does not exist
-            yet. Roughly a hundred hand-written question-to-verse pairs come
-            first; then these numbers get filled in from that set, and the
-            interesting sentence — retrieval recall went from X to Y by
-            changing Z — becomes possible to write. An unmeasured system with
-            confident numbers on its methodology page is worse than one with
-            blanks.
+            These were blank until the labelled question set existed. It exists
+            now: {GOLDEN_SET_SIZE} hand-checked question-to-verse pairs, where
+            a verse counts as correct if it sits in the question&rsquo;s own
+            chapter <em>or</em> is one of 200 verses from other chapters that
+            were read and judged to answer it anyway. Without that second
+            source the scorecard would have marked a correct retrieval wrong.
+          </p>
+
+          <p lang="en" className="method__note">
+            The sentence this page was waiting to be able to write:{" "}
+            <strong>
+              retrieval went from 44 of 100 to 85 of 100 by rewriting the
+              question to its bare topic, blending in the chapter signal,
+              adding keyword search alongside the embeddings, and rereading the
+              top 50 with a cross-encoder.
+            </strong>{" "}
+            Each of those four was measured on its own, one change at a time.
+            The largest single gain — 44 to 69 — came from deleting words:
+            stripping &ldquo;how do I my&rdquo; from the question, because the
+            model had been matching the <em>shape</em> of a question rather
+            than its subject.
+          </p>
+
+          <p lang="en" className="method__note">
+            Citation validity stays blank because nothing generates answers
+            yet, so there are no citations to check. Every other figure here is
+            reproducible with{" "}
+            <span className="mono">venv/bin/python src/report_metrics.py</span>.
           </p>
         </div>
 
@@ -333,16 +397,16 @@ export default function MethodPage() {
             </span>
             <span className="rail" aria-hidden="true" />
             <span lang="en" className="mono" style={{ fontSize: 11, color: "var(--ink-4)" }}>
-              n = 17
+              n = {CALIBRATION_PROBE_SIZE}
             </span>
           </div>
 
           <p lang="en" className="method__note">
-            The design specified a refusal policy — answer above 0.70, show
-            doubt above 0.45, refuse below. Before wiring those numbers up, ten
-            questions the Thirukkural does address and seven it does not were
-            run through the current engine, to find where the two groups
-            separate.
+            The design specified a refusal policy — answer above one score,
+            show doubt above another, refuse below. Before wiring any number
+            up, {CALIBRATION_PROBE_SIZE} questions were run through the engine
+            that ships: 20 the Thirukkural addresses and 15 it plainly does
+            not. A threshold only means something if those two groups separate.
           </p>
 
           <div className="method__table">
@@ -379,19 +443,31 @@ export default function MethodPage() {
           </div>
 
           <p lang="en" className="method__note">
-            They did not separate. “Who won the football world cup” scored
-            0.85, above all but two genuine questions, because <em>won</em>,{" "}
-            <em>world</em> and <em>cup</em> each appear somewhere in the
-            translations. Meanwhile a real question about eating meat scored
-            0.28. No line drawn through this column puts the one group above it
-            and the other below.
+            They still do not separate — but the way they fail has reversed,
+            and that is worth saying precisely. Fourteen of the fifteen
+            off-topic questions scored <em>exactly</em> zero. The one that did
+            not, about a king winning gold in a war, borrows three words the
+            book genuinely uses. The engine this replaced put “who won the
+            football world cup” at 0.85, above almost every real question.
           </p>
 
           <p lang="en" className="method__note">
-            That is not a bug to tune away — it is the limit of matching words
-            instead of matching meaning, and it is the clearest possible
-            argument for the phase that comes next. The threshold returns when
-            there is a score worth thresholding.
+            The overlap now comes from the other side: “how do I finish what I
+            start” is a question the Thirukkural answers, and it also scored
+            zero. So a floor set anywhere above 0.003 would refuse four genuine
+            questions in order to catch one fake. That is a worse trade than
+            refusing nothing.
+          </p>
+
+          <p lang="en" className="method__note">
+            Failing this way round is the safer of the two — unhelpful rather
+            than confidently wrong — but it is still a failure, so the engine
+            declares itself uncalibrated and the interface does not refuse on
+            your behalf. Ranking within a question is a different claim from
+            knowing whether the book has anything to say, and only the first
+            one is measured at {" "}
+            <span className="mono">0.85</span>. The threshold returns when a
+            measurement earns it.
           </p>
         </div>
 

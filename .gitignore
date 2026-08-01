@@ -13,7 +13,9 @@ models/
 # saved embeddings — regenerable, and large
 *.npy
 *.npz
-*.faiss
+# the sidecar that records WHAT each .npy holds, so a stale cache is caught
+# rather than silently served. Regenerable with the .npy it describes.
+data/*_vectors.meta.json
 
 # editor / OS noise
 .vscode/

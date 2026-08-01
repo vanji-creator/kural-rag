@@ -126,6 +126,22 @@ For every new concept, follow this exact order:
 10. **Small checkpoints only.** Never dump a whole phase of code at once.
     Build one small piece → I run it → I trace it → then next.
 
+## 3.5 EXACT ONLY — NEVER APPROXIMATE (added 2026-08-02, standing rule)
+
+**Full accuracy and highest quality, always. This outranks speed everywhere.**
+
+- Retrieval compares the question against **all 1330 kurals, every time**. No
+  approximate nearest-neighbour, no sampling, no early exit, no index that
+  might miss the true best match.
+- **FAISS is removed from this project.** Not as a lesson, not later. At 1330
+  verses an exact scan takes 4 ms, and an approximate index would trade real
+  accuracy for speed we do not need. Removed from Phase 6 by my decision.
+- Any future optimisation must be proven on the scorecard to cost **zero**
+  accuracy, or it does not go in. "Nearly as good and much faster" is not a
+  trade I am making here.
+- The same applies to model choices, quantization, caching and cutoffs: if it
+  can change an answer, it must be measured, and a drop is a rejection.
+
 ## 4. LEARNING-FIRST RULES (specific to this repo)
 
 These exist because my known failure mode is jumping to the heavy/optimal
@@ -136,8 +152,9 @@ thing and stalling. Enforce them even if I ask you not to.
   did for me. Specifically:
   - Compute similarity between two vectors **by hand in plain Python**
     before ever using a library function.
-  - Build retrieval as a **plain Python loop over all 1330 kurals** before
-    introducing FAISS or any vector database.
+  - Build retrieval as a **plain Python loop over all 1330 kurals** first.
+    DONE — `src/retrieve.py`, 125.1 ms by hand vs 4.0 ms with numpy. No vector
+    database follows it: see §3.5, this project stays exact.
   - Build the full retrieve → prompt → answer flow with **plain function
     calls** before introducing LangChain / LlamaIndex. Frameworks come last
     or never. They hide exactly what I am here to learn.
@@ -183,8 +200,10 @@ there. Teach 3–6 **just in time**, right before the phase that needs them.
 2. **Similarity / semantic search.** Cosine similarity. Why "find similar
    meaning" becomes "find nearby numbers." This is *why* an English question
    can match a Tamil verse.
-3. **Vector databases.** Storing and searching vectors fast. FAISS (free,
-   local) — only after the plain Python loop version.
+3. **Vector databases.** ~~FAISS~~ — dropped 2026-08-02 (§3.5). What I keep
+   from this: why an exact scan is affordable at 1330, and what an approximate
+   index would have cost in accuracy. Revisit only if the corpus grows enough
+   that an exact scan stops being cheap.
 4. **Calling an LLM + prompting.** Sending retrieved kurals to a model and
    constraining it to answer only from them.
 5. **RAG architecture.** The retrieve → augment → generate loop tying 1–4
@@ -221,8 +240,11 @@ Each phase: teach the concept → build the smallest working piece → I trace i
   verses appear in top-k. **This is what turns "I built a RAG" into "I
   improved retrieval recall from X to Y by changing Z."** Do not let me skip
   or postpone this phase.
-- **Phase 6 — Vector database.** Swap the naive loop for FAISS. I should see
-  exactly what changed and what stayed the same.
+- **Phase 6 — REMOVED (2026-08-02).** Was "swap the naive loop for FAISS".
+  Cut by my decision: an approximate index trades accuracy for speed we do not
+  need at 1330 verses, and this project is exact-only (see §3.5). The naive
+  loop stays in `src/retrieve.py` as the teaching artifact; production uses an
+  exact numpy scan over all 1330.
 - **Phase 7 — Generation with citations.** LLM answers using only retrieved
   kurals, always citing kural numbers. Deliberately test hallucination; show
   me how grounding fails and how to tighten it.

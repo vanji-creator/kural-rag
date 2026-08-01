@@ -1,6 +1,6 @@
 import "server-only";
 
-import { allKurals } from "./corpus";
+import { allKurals, getKural } from "./corpus";
 import type {
   Confidence,
   Kural,
@@ -11,25 +11,27 @@ import type {
 
 /**
  * ============================================================================
- * THIS IS A STAND-IN. IT DOES NOT UNDERSTAND MEANING.
+ * TWO ENGINES. The real one, and the word-overlap one behind it as a net.
  * ============================================================================
  *
- * The real retriever — embed the question, compare it against 1330 verse
- * vectors, rank by cosine similarity — is Phases 2 to 6 of this project and
- * does not exist yet. This module exists so the interface can be built,
- * exercised and shipped before it does.
+ * `embeddingEngine` is the real retriever, added 2026-08-02: it calls the
+ * Python service in service/app.py, which embeds the question, scores all 1330
+ * verses by meaning and by keyword, and rereads the top 50 with a
+ * cross-encoder. Measured at 85 of 100 on the golden set in data/golden_set.json.
  *
- * What is here instead is word overlap. It finds a verse when the question
- * happens to use the same words the translation uses, and misses completely
- * when it does not. Ask it "how do I stop being controlled by my anger" and
- * it will find the anger chapter, because the word "anger" is right there in
- * the English. Ask it "how do I keep my temper" and it will find much less,
- * because no translation uses the word "temper". That gap is exactly what
- * embeddings are for, and it is why this file is temporary.
+ * `lexicalEngine` is what shipped before it, and it stays. It is word overlap:
+ * it finds a verse when the question happens to use the same words the
+ * translation uses, and misses when it does not. Ask it "how do I keep my
+ * temper" and it finds little, because no translation uses the word "temper".
+ * That exact gap is what the embeddings closed — 44 of 100 to 85 of 100.
+ *
+ * It is kept because the real engine lives in another process, and a process
+ * can be down. `resilientEngine` falls back to it and CHANGES THE ENGINE NAME
+ * when it does, so a reader is never shown degraded results under the better
+ * engine's name.
  *
  * Every engine reports its own name and its own thresholds, and the interface
- * displays them. Swapping this for the real thing means writing a second
- * RetrievalEngine and changing ACTIVE_ENGINE below. Nothing in the UI changes.
+ * displays them. A score is never presented without its source.
  */
 
 export interface RetrievalEngine {
@@ -52,7 +54,14 @@ export interface RetrievalEngine {
    * lexicalEngine below for the measurement behind this flag.
    */
   calibrated: boolean;
-  search(query: string, limit: number): RetrievalOutcome;
+  /**
+   * Async because the real engine is a network call to a separate Python
+   * process (service/app.py). It has to be: LaBSE takes seconds and about a
+   * gigabyte to load, so the models are held in a long-running process rather
+   * than loaded per request. The word-overlap engine does no I/O at all and
+   * simply satisfies the same signature.
+   */
+  search(query: string, limit: number): Promise<RetrievalOutcome>;
 }
 
 // ---------------------------------------------------------------------------
@@ -274,7 +283,7 @@ export const lexicalEngine: RetrievalEngine = {
   highConfidence: 1.01, // unreachable on purpose: this engine cannot say "high"
   floor: 0.001,
 
-  search(query, limit) {
+  async search(query, limit) {
     const startedAt = performance.now();
     const language = detectQueryLanguage(query);
     const { documents, wordWeight } = getIndex(language);
@@ -333,9 +342,127 @@ export const lexicalEngine: RetrievalEngine = {
   },
 };
 
+// ---------------------------------------------------------------------------
+// the real engine
+// ---------------------------------------------------------------------------
+
 /**
- * The engine the app uses. Phase 6 replaces this line, and only this line.
+ * Where the Python retrieval service listens. See service/app.py for why it is
+ * a separate process at all: LaBSE takes seconds and about a gigabyte to load,
+ * so it is loaded once and held, not loaded per request.
  */
-export const ACTIVE_ENGINE: RetrievalEngine = lexicalEngine;
+const RETRIEVAL_SERVICE_URL =
+  process.env.RETRIEVAL_SERVICE_URL ?? "http://127.0.0.1:8000";
+
+/** Give up rather than leave a reader watching a spinner forever. */
+const SERVICE_TIMEOUT_MS = 20_000;
+
+/** What service/app.py sends back. Mirrors its /search response. */
+interface ServiceResponse {
+  query: string;
+  queryLanguage: QueryLanguage;
+  searchedFor: string;
+  results: { kural: { number: number }; score: number }[];
+  topScore: number;
+  confidence: Confidence;
+  calibrated: boolean;
+  engine: string;
+  elapsedMs: number;
+  cached: boolean;
+}
+
+export const embeddingEngine: RetrievalEngine = {
+  name: "LaBSE + BM25 + cross-encoder rerank",
+  description:
+    "Rewrites the question to its bare topic, scores every one of the 1330 verses by meaning and by keyword, blends in the chapter signal, then rereads the top 50 against the question with a cross-encoder. Measured at 85 of 100 on a hand-built English question set.",
+
+  /*
+   * STILL FALSE, AND STILL FOR A MEASURED REASON.
+   *
+   * This engine ranks far better than the word-overlap one it replaced — 85 of
+   * 100 against a 44 baseline. That is a statement about ORDER within a
+   * question, and it is not the same claim as "the score knows when the book
+   * has nothing to say".
+   *
+   * src/calibrate.py runs the same on-topic/off-topic test that condemned the
+   * placeholder engine. Until it reports a clean separation, this stays false
+   * and the interface must not refuse or claim confidence on this engine's
+   * behalf. Python is the source of truth: pipeline.py exports the same flag,
+   * and the service reports it on /health.
+   */
+  calibrated: false,
+  highConfidence: 1.01, // unreachable on purpose while uncalibrated
+  floor: 0,
+
+  async search(query, limit) {
+    const startedAt = performance.now();
+    const url = `${RETRIEVAL_SERVICE_URL}/search?q=${encodeURIComponent(query)}&limit=${limit}`;
+
+    const response = await fetch(url, {
+      signal: AbortSignal.timeout(SERVICE_TIMEOUT_MS),
+      cache: "no-store",
+    });
+    if (!response.ok) {
+      throw new Error(`retrieval service returned ${response.status}`);
+    }
+    const payload = (await response.json()) as ServiceResponse;
+
+    // Resolve verses from THIS app's own corpus rather than rendering whatever
+    // the wire sent. The service and the interface must agree on what kural
+    // 301 says, and the only way to guarantee that is to look it up here.
+    const results: RetrievedKural[] = [];
+    for (const item of payload.results) {
+      const kural = getKural(item.kural.number);
+      if (!kural) continue; // a number the corpus does not have is not shown
+      results.push({ kural, score: item.score });
+    }
+
+    return {
+      query,
+      queryLanguage: payload.queryLanguage,
+      results,
+      topScore: payload.topScore,
+      confidence: payload.confidence,
+      engine: this.name,
+      // measured here, not there: this includes the network hop the reader
+      // actually waits through
+      elapsedMs: Math.round((performance.now() - startedAt) * 10) / 10,
+    };
+  },
+};
+
+/**
+ * The real engine, with the word-overlap one behind it as a net.
+ *
+ * If the Python service is down, the reader still gets results — but the
+ * engine name they are shown changes to say so. The interface displays that
+ * field on every screen, so degraded mode announces itself rather than quietly
+ * serving worse answers under the better engine's name. Silently falling back
+ * would be the same sin as an unmeasured metric.
+ */
+export const resilientEngine: RetrievalEngine = {
+  ...embeddingEngine,
+
+  async search(query, limit) {
+    try {
+      return await embeddingEngine.search(query, limit);
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : "unknown error";
+      console.warn(`[retrieval] service unavailable (${reason}); falling back`);
+
+      const fallback = await lexicalEngine.search(query, limit);
+      return {
+        ...fallback,
+        engine: `${lexicalEngine.name} — FALLBACK, the embedding service is unreachable`,
+      };
+    }
+  },
+};
+
+/**
+ * The engine the app uses. This is the one line the file was written to have
+ * changed, and this is the change.
+ */
+export const ACTIVE_ENGINE: RetrievalEngine = resilientEngine;
 
 export const DEFAULT_RESULT_LIMIT = 5;

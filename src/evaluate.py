@@ -13,6 +13,7 @@ Run it:
 """
 
 import json
+import sys
 import time
 from pathlib import Path
 
@@ -20,6 +21,13 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 
 from keyword_search import BM25Index
+# Everything below comes from pipeline.py on purpose. That file is the single
+# definition of how a question is answered; importing the constants means this
+# harness cannot drift away from what the app actually serves.
+from pipeline import (CHAPTER_BLEND_WEIGHT, EMBEDDING_MODEL_NAME,
+                      KEYWORD_WEIGHT, KURALS_PER_CHAPTER,
+                      RERANK_CANDIDATE_COUNT, KuralRetriever,
+                      build_chapter_descriptions, normalise, searchable_text)
 from rerank import (DEFAULT_CANDIDATE_COUNT, MULTILINGUAL_MODEL_NAME,
                     RERANKER_MODEL_NAME, Reranker, rerankable_text,
                     rerankable_text_with_tamil)
@@ -29,8 +37,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 CORPUS_PATH = PROJECT_ROOT / "data" / "kurals.json"
 GOLDEN_SET_PATH = PROJECT_ROOT / "data" / "golden_set.json"
 
-MODEL_NAME = "sentence-transformers/LaBSE"
-KURALS_PER_CHAPTER = 10
+MODEL_NAME = EMBEDDING_MODEL_NAME
 TOP_K = 5
 
 
@@ -58,27 +65,6 @@ def correct_kural_numbers_for(question_entry):
             correct_numbers.add(first_kural_in_chapter + offset)
     correct_numbers.update(question_entry["correct_extra_kurals"])
     return correct_numbers
-
-
-def kural_searchable_text(kural_record):
-    """The text the retriever searches - English plus Tamil, glued together."""
-    return (kural_record["english_translation"] + " "
-            + kural_record["english_explanation"] + " "
-            + kural_record["tamil_meaning_mu_varadarajan"])
-
-
-def build_chapter_descriptions(kurals):
-    """One block of text per chapter: its 10 English explanations glued.
-
-    A stand-in for a real hand-written chapter description. It is repetitive
-    and LaBSE truncates it, so treat it as a floor, not a ceiling.
-    """
-    chapter_descriptions = []
-    for chapter_start in range(0, len(kurals), KURALS_PER_CHAPTER):
-        chapter_block = kurals[chapter_start:chapter_start + KURALS_PER_CHAPTER]
-        chapter_descriptions.append(
-            " ".join(record["english_explanation"] for record in chapter_block))
-    return chapter_descriptions
 
 
 def normalise_each_row(score_table):
@@ -156,10 +142,16 @@ def score_one_method(all_question_scores, kurals, golden_questions):
                 break
 
     question_count = len(golden_questions)
+    # MRR - mean reciprocal rank. For each question take 1/(rank of the first
+    # correct verse), then average. First place scores 1.0, second 0.5, tenth
+    # 0.1. It rewards being right at the TOP, not merely being right somewhere,
+    # which is what matters when a reader only looks at the first result.
+    reciprocal_ranks = [1.0 / rank for rank in ranks_of_first_correct]
     return {
         "hits": questions_with_a_hit,
         "avg_correct_in_top_k": total_correct_in_top_k / question_count,
         "median_first_rank": int(np.median(ranks_of_first_correct)),
+        "mrr": sum(reciprocal_ranks) / question_count,
     }
 
 
@@ -172,7 +164,7 @@ def main():
 
     print("embedding the corpus...")
     kural_vectors = model.encode(
-        [kural_searchable_text(record) for record in kurals],
+        [searchable_text(record) for record in kurals],
         show_progress_bar=False)
 
     print("embedding the chapter descriptions...")
@@ -197,12 +189,12 @@ def main():
 
     # The blend knob. weight 0.0 is pure kural, weight 1.0 is pure chapter.
     # 0.5 measured best last run; keep the neighbours so we can see the shape.
-    best_blend_weight = 0.5
+    best_blend_weight = CHAPTER_BLEND_WEIGHT
     blended_scores = (best_blend_weight * handed_down_scores
                       + (1 - best_blend_weight) * kural_level_scores)
 
     print("building the BM25 keyword index...")
-    keyword_index = BM25Index([kural_searchable_text(record)
+    keyword_index = BM25Index([searchable_text(record)
                                for record in kurals])
     keyword_scores = np.array([
         keyword_index.scores_for_query(entry["question"])
@@ -312,7 +304,7 @@ def main():
         total_seconds = 0.0
         for question_index, question_entry in enumerate(golden_questions):
             candidate_positions = np.argsort(
-                stage_one_scores[question_index])[::-1][:DEFAULT_CANDIDATE_COUNT]
+                stage_one_scores[question_index])[::-1][:RERANK_CANDIDATE_COUNT]
             candidate_records = [kurals[position]
                                  for position in candidate_positions]
 
@@ -330,7 +322,7 @@ def main():
         print(f"  {label}: {milliseconds:.0f} ms per question")
         methods.append((label, reranked_scores))
 
-    print(f"reranking {DEFAULT_CANDIDATE_COUNT} candidates x "
+    print(f"reranking {RERANK_CANDIDATE_COUNT} candidates x "
           f"{len(golden_questions)} questions...")
 
     english_reranker = Reranker(RERANKER_MODEL_NAME)
@@ -339,21 +331,59 @@ def main():
     # The multilingual challenger, measured two ways so the model change and
     # the text change are separated. If only the second row moves, Tamil is
     # what mattered. If both move together, the model is what mattered.
-    multilingual_reranker = Reranker(MULTILINGUAL_MODEL_NAME, max_length=1024)
-    run_reranker("RERANK bge en-only", multilingual_reranker, rerankable_text)
-    run_reranker("RERANK bge en+tamil", multilingual_reranker,
-                 rerankable_text_with_tamil)
+    # The multilingual reranker was measured and REJECTED: 91 of 100 for 24x
+    # the latency (11,840 ms per question against 498 ms), and the Tamil
+    # variant cost another 5.6 seconds to gain exactly nothing. Running it
+    # again takes about 40 minutes, so it is off unless asked for. The code
+    # stays so the claim can be re-checked rather than taken on trust.
+    if "--full" in sys.argv:
+        multilingual_reranker = Reranker(MULTILINGUAL_MODEL_NAME,
+                                         max_length=1024)
+        run_reranker("RERANK bge en-only", multilingual_reranker,
+                     rerankable_text)
+        run_reranker("RERANK bge en+tamil", multilingual_reranker,
+                     rerankable_text_with_tamil)
+    else:
+        print("  (skipping the rejected multilingual reranker; "
+              "pass --full to include it)")
+
+    # ------------------------------------------------------------------
+    # THE ONE THAT MATTERS: the actual production pipeline, end to end.
+    #
+    # Every row above is this harness reimplementing the steps in batched
+    # form. This row calls src/pipeline.py itself - the same object the web
+    # service holds - so it measures what a user really gets, not a
+    # description of it. If this disagrees with "RERANK en-only top-50",
+    # production and the harness have drifted and one of them is wrong.
+    # ------------------------------------------------------------------
+    print("running the production pipeline end to end...")
+    retriever = KuralRetriever(use_reranker=True)
+
+    production_scores = np.zeros_like(stage_one_scores)
+    production_seconds = 0.0
+    for question_index, question_entry in enumerate(golden_questions):
+        started_at = time.time()
+        ranking_scores, _, _, _ = retriever.rank_everything(
+            question_entry["question"])
+        production_seconds += time.time() - started_at
+        production_scores[question_index] = ranking_scores
+
+    print(f"  pipeline.py: "
+          f"{production_seconds / len(golden_questions) * 1000:.0f} ms "
+          f"per question")
+    methods.append(("PIPELINE (what ships)", production_scores))
 
     print()
     print("=" * 70)
     print(f"{'method':26s} {'hits/100':>9s} {'avg in top5':>12s} "
-          f"{'median rank':>12s}")
-    print("=" * 70)
+          f"{'median rank':>12s} {'MRR':>7s}")
+    print("=" * 78)
     for method_name, all_question_scores in methods:
         result = score_one_method(all_question_scores, kurals, golden_questions)
         print(f"{method_name:26s} {result['hits']:9d} "
               f"{result['avg_correct_in_top_k']:12.2f} "
-              f"{result['median_first_rank']:12d}")
+              f"{result['median_first_rank']:12d} "
+              f"{result['mrr']:7.3f}")
 
 
 if __name__ == "__main__":

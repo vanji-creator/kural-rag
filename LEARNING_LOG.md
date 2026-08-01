@@ -922,3 +922,115 @@ bad" - the smoke test on three known pairs is what caught it.
 
 Re-measuring ms-marco through the new plain-transformers path returned exactly
 85, confirming the wrapper bug never touched it.
+
+---
+
+## 2026-08-02 — the measured pipeline becomes the served pipeline
+
+Yesterday's 85 existed only inside `src/evaluate.py`. The web app was still
+running word overlap — the 44-point method. Today closed that gap.
+
+### The rule that shaped the design
+
+**The thing we measure must be the exact thing we serve.**
+
+`src/pipeline.py` is now the single definition of how a question is answered.
+`evaluate.py` imports from it. `service/app.py` imports from it. There is no
+second copy of the blend arithmetic to drift.
+
+And the harness proves it rather than assuming it. A new row calls the real
+`KuralRetriever` object end to end:
+
+```
+RERANK en-only top-50             85         2.25            1
+PIPELINE (what ships)             85         2.26            1
+```
+
+Both 85. The 0.01 gap in the second column is one kural out of 500 slots,
+caused by a batched matrix multiply and a single-vector multiply differing in
+the last floating-point bits and flipping a near-tie.
+
+### FAISS removed from the project
+
+Decided today: this project is **exact only**. Every question is compared
+against all 1330 verses, every time. An approximate index would trade real
+accuracy for speed we do not need at this size. Written into CLAUDE.md §3.5 as
+a standing rule that outranks speed everywhere, and Phase 6 is deleted.
+
+### Calibration — measured, and the answer was no
+
+`src/calibrate.py` ran 20 on-topic and 15 off-topic questions.
+
+```
+median on-topic   0.125          median off-topic  0.000
+worst on-topic    0.000          best  off-topic   0.003
+```
+
+**Not calibrated** — but the failure mode REVERSED, and that is the finding.
+
+Fourteen of fifteen off-topic questions scored *exactly* zero. The only one
+that did not — "which king won the most gold in the war" — borrows three words
+the book genuinely uses. The old word-overlap engine put "who won the football
+world cup" at 0.85, above almost every real question.
+
+So the overlap now comes from real questions scoring low ("how do I finish
+what I start" scored 0.000), not fake ones scoring high. Unhelpful rather than
+confidently wrong — the safer direction — but still an overlap, so a floor
+above 0.003 would refuse four genuine questions to catch one fake.
+
+`calibrated: false` stays in both Python and TypeScript. **Ranking well inside
+a question and knowing whether the book has anything to say are two different
+claims, and only the first is measured.**
+
+### Published numbers
+
+```
+n = 100
+recall@5      0.85    85 of 100 questions found a correct verse in the top 5
+precision@5   0.45    2.26 of the 5 shown are correct, on average
+MRR           0.71    1.00 would mean the first result is always right
+latency       766 ms  (the reranker is ~500 of that)
+```
+
+Regenerate with `venv/bin/python src/report_metrics.py`. If /method disagrees
+with that output, /method is wrong.
+
+### Two processes, and an honest fallback
+
+LaBSE takes seconds and ~1 GB to load, so it cannot be loaded per request.
+`service/app.py` holds the models; Next.js calls it over localhost.
+
+A process can be down, so the word-overlap engine stays as a fallback — and
+when it takes over it **changes the engine name the reader sees**:
+
+```
+engine: word overlap · no embeddings yet — FALLBACK, the embedding service is unreachable
+```
+
+Verified by stopping the service mid-session. Silently degrading would be the
+same sin as an unmeasured metric.
+
+### A failure worth keeping
+
+`lib/retrieval.ts` was written months ago predicting that word overlap would
+fail on "how do I keep my temper", because no translation uses the word
+"temper", and that embeddings would fix it. Tested today through the whole
+stack:
+
+```
+820  Evil Friendship                Keep aloof from those that smile...
+793  Investigation in Friendships   Temper, descent, defects and kins...
+876  Knowing the Quality of Hate    Trust or distrust; during distress...
+305  Restraining Anger              Thyself to save, from wrath away!
+308  Restraining Anger              Save thy soul from burning ire
+```
+
+Partly fixed. Anger verses now reach the top 5 where word overlap found none —
+but positions 1 to 3 are wrong, and the reason is visible: after the rewrite
+strips "how do I my", BM25 searches for "keep temper", and kural 793 contains
+the literal word "temper" meaning *disposition*, not anger. Kural 820 contains
+"Keep".
+
+The keyword half that is worth six points on the golden set is the half that
+loses this question. That is what a blend is: an average of two different
+mistakes, and the golden set only tells us the average is better.
