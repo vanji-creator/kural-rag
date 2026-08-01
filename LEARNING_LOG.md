@@ -1034,3 +1034,50 @@ the literal word "temper" meaning *disposition*, not anger. Kural 820 contains
 The keyword half that is worth six points on the golden set is the half that
 loses this question. That is what a blend is: an average of two different
 mistakes, and the golden set only tells us the average is better.
+
+### Session close — what I actually learned (2026-08-02)
+
+Not what got coded. What I understand now that I did not this morning.
+
+**1. A metric that rewards the thing you are testing is not a metric.**
+Chapter weight 0.8 measured "best" on a test that defined correct as "in the
+right chapter". On an honest scorecard it scores below doing nothing at all.
+I now check what a metric is structurally biased toward before trusting it.
+
+**2. The order you test things in changes the conclusion.**
+Keyword search was worth zero before the query rewrite and six points after.
+Same code. A measurement is a fact about a technique *in that pipeline at that
+moment*, not about the technique.
+
+**3. Removing noise beat adding cleverness.**
+The biggest single gain of the whole project — 44 to 69 — came from deleting
+four words from the question. Every clever thing I built afterwards was worth
+less than that.
+
+**4. Calibration is a separate claim from ranking.**
+A retriever can order five verses well and still have no idea whether the book
+addresses the question. Same split as a classifier that ranks well but whose
+0.7 does not mean 70%. Only the first one is measured here.
+
+**5. Libraries fail silently, and the scorecard will not catch it.**
+sentence-transformers returned 0.000 for every pair on one model - no error. A
+smoke test on three pairs where I already knew the answer caught it. The
+scorecard would only have said "that model is bad".
+
+**6. Exact beats approximate when you can afford exact.**
+1330 verses compared in full, every time, 4 ms. I chose to delete FAISS from
+the project rather than trade accuracy I do not need to trade.
+
+**7. Measured and served must be the same code.**
+An 85 that lives in the test harness is not an 85. The harness now calls the
+production object so the two cannot drift.
+
+### Where things stand
+
+- Phases 0-5: done. Retrieval 44 -> 85, measured, committed, and running in
+  the app.
+- Phase 6: deleted (see §3.5 - exact only).
+- Phase 7: not started. Generation with citations. This is the actual product.
+- Phase 9: not started.
+
+Branch `phase5-evaluation-harness`, four commits, not yet merged to main.
