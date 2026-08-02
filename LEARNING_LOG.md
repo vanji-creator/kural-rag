@@ -1136,3 +1136,106 @@ twice as many distinct verses.
    entry itself is wrong.
 5. **Real hand-written chapter descriptions.** The fake glued ones are worth
    +3 already. Phase 4 measured real ones better. Never written.
+
+---
+
+## 2026-08-02 — real chapter descriptions, and the first properly powered test
+
+### The stand-in was finally replaced
+
+`build_chapter_descriptions()` used to glue a chapter's 10 English explanations
+together. That is not a description - it is the chapter's own text repeated. It
+was labelled a stand-in in its own docstring and shipped anyway.
+
+133 real descriptions now exist in `data/chapter_descriptions.json`, each with
+three parts written from that chapter's ten verses:
+
+```
+topic          2-3 sentences of plain modern English
+modern_words   the vocabulary bridge: the verses say sloth, idleness,
+               sluggishness - a reader says lazy, procrastination
+questions      questions the chapter answers        <- DROPPED, see below
+```
+
+Grounded in **doc2query / document expansion**, whose useful property is
+**term injection** - adding words the document does not contain but should.
+The Unsluggishness chapter never contains the word "lazy". Now it does.
+
+### I leaked, and the check caught it
+
+121 of the 798 questions I wrote were WORD-FOR-WORD copies of golden-set
+questions. I had written in the plan that I would keep the golden set closed.
+I did - but the questions were already in my head from the conversation.
+
+**Closing the file was never the safeguard.**
+
+They were stripped. Then the measurement showed something better: including
+those questions scored **90 - identical to leaving them out**. The leak was
+worth nothing, so the whole `questions` part was dropped from the pipeline
+rather than merely labelled. What ships was written from the verses.
+
+### The result, and the discipline that nearly lost it
+
+First measurement, on 100 questions:
+
+```
+glued          85     the old stand-in
+topic          88
+topic+words    90     <- shipping
+all            90     leaked, and worth zero
+```
+
+Then the significance check - which I skipped at first, one day after writing
+it into LEARNING_GAPS.md as GAP 1, the biggest gap:
+
+```
+glued right, topic+words wrong:  1
+glued wrong, topic+words right:  6
+p = 0.1250  -> NOT ESTABLISHED
+```
+
+**Only 7 questions disagreed.** 6-1 is suggestive and not proof. A power
+calculation said 200 questions would settle it, and that at 100 we would have
+needed 8 wins to 1 loss. **We were two questions short.**
+
+So the question set was grown to 233 and re-run:
+
+```
+question set          glued   topic+words    gain
+A  original 100      85/100        90/100      +5
+B  new 133           49/133        54/133      +5
+A + B  all 233      134/233       144/233     +10
+
+glued right, topic+words wrong:   2
+glued wrong, topic+words right:  12
+p = 0.0129  -> REAL
+```
+
+**Set A and set B moved by exactly +5 independently.** They were built
+differently with different answer keys, and they agree. That consistency is
+better evidence than the p-value on its own.
+
+Set B scores lower in absolute terms (49/133) because its answer key accepts
+only the chapter each question was written for - a correct verse from a
+neighbouring chapter counts as wrong. It penalises both methods identically,
+so the comparison holds while the absolute number does not mean what set A's
+does.
+
+### Leakage control on the new questions
+
+The same author wrote the descriptions AND the new questions, so they could
+echo each other. Every new question was checked: if half or more of its
+meaningful words also appeared in that author's description for its own
+chapter, it was rewritten. 17 failed the first pass, 3 the second, 0 the
+third.
+
+**That check removes obvious echoes. It cannot prove independence.**
+
+### What this cost and what it bought
+
+The claim "hand-written chapter descriptions beat concatenated chapter text"
+went from an opinion, to a number, to a number that survives the correct test.
+It took one extra measurement and 133 more questions.
+
+The alternative was shipping "85 -> 90" as a fact when the evidence did not
+support it.

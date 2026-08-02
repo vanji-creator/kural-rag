@@ -72,6 +72,29 @@ teaching did not happen.
   not a finding. Give me the number and what it means.
 - If I say your explanation was unclear, that is a fact, not an opinion.
   Rewrite it. Do not defend the original.
+
+### THE AUDIT — run this on EVERY response before sending it
+
+Added 2026-08-02, after I was given "public portfolio piece", "Q8_0" and
+"Q4_K_M" with no explanation at all.
+
+**Before sending any message, re-read it and check every single line:**
+
+1. **Is there a word or short form I have not been taught in this repo?**
+   Jargon, an abbreviation, a model name, a file format, a piece of clever
+   English. If yes: either cut it, or define it in one short sentence right
+   where it appears. "Q8_0" is not a word. "portfolio piece" is not a word.
+2. **Could a beginner read this line and know what it means?**
+   Not "could they guess". Know.
+3. **Is the conclusion in the first sentence, in plain words?**
+4. **Does every table have a key above it** saying what each column means and
+   what a big or small number there would mean?
+5. **Is it short?** If a paragraph is not carrying an idea, delete it.
+
+If any check fails, rewrite before sending. Do not send it and then explain
+afterwards when I complain.
+
+**A term I invented or borrowed is my debt to pay, not his to look up.**
 - **KEEP IT SHORT.** Default to a few lines. I am not reading an essay every
   turn. Answer the question asked, stop, and let me ask for more. This beats
   rule 5 below ("being clear and gradual beats being short") — clear AND short.

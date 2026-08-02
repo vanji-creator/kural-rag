@@ -158,19 +158,64 @@ def searchable_text(kural_record):
             + kural_record["tamil_meaning_mu_varadarajan"])
 
 
-def build_chapter_descriptions(kurals):
-    """One block of text per chapter: its 10 English explanations glued.
+CHAPTER_DESCRIPTIONS_PATH = PROJECT_ROOT / "data" / "chapter_descriptions.json"
 
-    A stand-in for a real hand-written chapter description. Repetitive, and
-    long enough that LaBSE truncates it - so treat what it scores as a floor,
-    not a ceiling. Even so, blending it in is worth 3 points.
+# Which parts of a hand-written chapter description to actually use.
+#
+#   "glued"        the old stand-in: the chapter's 10 English explanations
+#                  concatenated. Not a description at all - the chapter's own
+#                  text repeated. This is the baseline to beat.
+#   "topic"        the hand-written 2-3 sentence summary.
+#   "topic+words"  plus the modern vocabulary bridge. The corpus says sloth,
+#                  a reader says lazy - this is where "lazy" gets written in.
+#   "all"          plus questions the chapter answers.
+#
+# The last one is NOT trustworthy and must not be reported as a clean result.
+# The questions were written by an author who had already seen the golden set
+# in conversation; 121 verbatim copies were found and stripped, but paraphrase
+# leakage cannot be stripped. Treat "all" as an optimistic ceiling only.
+CHAPTER_TEXT_MODE = "topic+words"
+
+
+def load_chapter_descriptions():
+    """Read the hand-written descriptions, or None if they are not there."""
+    if not CHAPTER_DESCRIPTIONS_PATH.exists():
+        return None
+    with open(CHAPTER_DESCRIPTIONS_PATH, encoding="utf-8") as open_file:
+        return json.load(open_file)
+
+
+def build_chapter_descriptions(kurals, mode=None):
+    """One block of text per chapter, in chapter order.
+
+    Falls back to the glued stand-in if the hand-written file is missing, so
+    nothing breaks if data/chapter_descriptions.json is deleted.
     """
-    chapter_descriptions = []
-    for chapter_start in range(0, len(kurals), KURALS_PER_CHAPTER):
-        chapter_block = kurals[chapter_start:chapter_start + KURALS_PER_CHAPTER]
-        chapter_descriptions.append(
-            " ".join(record["english_explanation"] for record in chapter_block))
-    return chapter_descriptions
+    mode = mode or CHAPTER_TEXT_MODE
+
+    def glued(chapter_index):
+        chapter_start = chapter_index * KURALS_PER_CHAPTER
+        block = kurals[chapter_start:chapter_start + KURALS_PER_CHAPTER]
+        return " ".join(record["english_explanation"] for record in block)
+
+    chapter_count = len(kurals) // KURALS_PER_CHAPTER
+    if mode == "glued":
+        return [glued(index) for index in range(chapter_count)]
+
+    written = load_chapter_descriptions()
+    if written is None:
+        return [glued(index) for index in range(chapter_count)]
+
+    descriptions = []
+    for index in range(chapter_count):
+        entry = written[str(index + 1)]
+        parts = [entry["topic"]]
+        if mode in ("topic+words", "all"):
+            parts.append(entry["modern_words"])
+        if mode == "all":
+            parts.extend(entry["questions_clean"])
+        descriptions.append(" ".join(parts))
+    return descriptions
 
 
 # ----------------------------------------------------------------------

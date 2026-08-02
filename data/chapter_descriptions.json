@@ -1,0 +1,1477 @@
+{
+  "1": {
+    "topic": "Praise of God as the beginning of everything. Just as the letter A begins the alphabet, God begins the world. Those who hold to God escape endless rebirth and find peace of mind.",
+    "modern_words": "God, divine, faith, worship, devotion, prayer, spirituality, belief, surrender, peace of mind, meaning of life",
+    "questions_clean": [
+      "what does Thirukkural say about God?",
+      "why should I believe in God?",
+      "how do I find peace of mind?",
+      "what is the point of worship?",
+      "does faith actually help a person?",
+      "how do I escape suffering and rebirth?"
+    ]
+  },
+  "2": {
+    "topic": "Rain as the thing everything else depends on. Without rain there is no food, no farming, no charity, no worship, no life at all. It is the clearest example of how fragile everything is.",
+    "modern_words": "rain, water, drought, monsoon, climate, environment, nature, food supply, farming, famine, sustainability",
+    "questions_clean": [
+      "why is rain so important?",
+      "what happens when there is no rain?",
+      "what does Thirukkural say about nature?",
+      "why does water matter so much?",
+      "what does the world depend on?",
+      "what happens in a drought?"
+    ]
+  },
+  "3": {
+    "topic": "The greatness of people who have given up desire and mastered their senses. Their power comes from self-denial, and the world cannot measure what they have achieved.",
+    "modern_words": "monk, saint, ascetic, renunciation, discipline, self-denial, spiritual practice, meditation, sage, holy person",
+    "questions_clean": [
+      "what makes a saint or monk great?",
+      "why do people give up worldly life?",
+      "what does self-denial achieve?",
+      "who are the truly great people?",
+      "what does Thirukkural say about sages?",
+      "is spiritual discipline worth it?"
+    ]
+  },
+  "4": {
+    "topic": "Virtue is not abstract - it is the source of both happiness and wealth. Do good now, do not put it off, and avoid the four faults of lust, anger, envy and harsh speech.",
+    "modern_words": "doing good, being a good person, ethics, morality, right and wrong, character, good deeds, values, integrity",
+    "questions_clean": [
+      "why should I be a good person?",
+      "does being good actually pay off?",
+      "what are the main faults to avoid?",
+      "should I put off doing good?",
+      "what is virtue and why does it matter?",
+      "how do I live a good life?"
+    ]
+  },
+  "5": {
+    "topic": "Family life is not lesser than monkhood - it is the foundation that supports everyone else. The householder who earns honestly and shares supports monks, guests, ancestors and family alike.",
+    "modern_words": "family life, marriage, household, settling down, having a family, domestic life, providing for people, homemaker",
+    "questions_clean": [
+      "is family life worse than being a monk?",
+      "what makes a good household?",
+      "should I settle down or renounce the world?",
+      "what does Thirukkural say about married life?",
+      "what is the duty of the head of a family?",
+      "how do I run a good home?"
+    ]
+  },
+  "6": {
+    "topic": "What makes a wife valuable - her character, her thrift, her faithfulness. The verses say a home with a good wife has everything and a home without one has nothing.",
+    "modern_words": "wife, spouse, partner, marriage, faithfulness, loyalty, trust in marriage, good partner, household management",
+    "questions_clean": [
+      "what makes a good life partner?",
+      "what does Thirukkural say about marriage?",
+      "how important is faithfulness in marriage?",
+      "what does a good spouse bring to a home?",
+      "what makes a happy marriage?"
+    ]
+  },
+  "7": {
+    "topic": "Children as the greatest wealth a person can have. The joy of a child's touch, their words, and seeing them surpass you. A father's duty is to make his child learned.",
+    "modern_words": "children, kids, sons, daughters, parenting, raising children, being a parent, family, education of children",
+    "questions_clean": [
+      "what is the joy of being a parent?",
+      "what is a parent's duty to a child?",
+      "what does Thirukkural say about children?",
+      "what is the greatest wealth a person can have?",
+      "how should I raise my child?"
+    ]
+  },
+  "8": {
+    "topic": "Love as the thing that makes a person alive rather than just a body. Without love a person is only skin and bone. Love shows itself even when hidden, through tears.",
+    "modern_words": "love, affection, caring, warmth, emotional connection, compassion, feeling for others, empathy, tenderness",
+    "questions_clean": [
+      "why does love matter so much?",
+      "what happens to a person without love?",
+      "what does Thirukkural say about affection?",
+      "can love be hidden?",
+      "is love just for family or for everyone?",
+      "what makes life worth living?"
+    ]
+  },
+  "9": {
+    "topic": "How to treat guests. Feed the guest before yourself, welcome them with a smiling face, and never turn one away. A sour face withers a guest the way heat withers a delicate flower.",
+    "modern_words": "guests, hospitality, visitors, welcoming people, entertaining, generosity to strangers, being a good host",
+    "questions_clean": [
+      "what does Thirukkural say about hospitality?",
+      "why should I feed guests first?",
+      "how do I welcome visitors properly?",
+      "what happens if I neglect a guest?",
+      "what makes someone a good host?"
+    ]
+  },
+  "10": {
+    "topic": "Speaking pleasantly costs nothing and gives more joy than charity. Sweet words with a smiling face and a kind look. Choosing harsh words when kind ones would serve is like eating unripe fruit while ripe fruit hangs there.",
+    "modern_words": "kind words, being polite, speaking nicely, tone of voice, communication, saying things gently, kindness in speech",
+    "questions_clean": [
+      "why should I use gentle words?",
+      "what does Thirukkural say about how we talk to people?",
+      "does being polite actually matter?",
+      "why do harsh words hurt so much?",
+      "how should I speak to others?"
+    ]
+  },
+  "11": {
+    "topic": "Gratitude for help received. A small help given at the right moment is worth more than the world. Forgetting a good turn is the one wrong that cannot be forgiven.",
+    "modern_words": "gratitude, thankfulness, saying thank you, remembering favours, being grateful, appreciation, ingratitude, repaying kindness",
+    "questions_clean": [
+      "what does Thirukkural say about gratitude?",
+      "how important is it to remember a favour?",
+      "is ingratitude really that bad?",
+      "how do I repay someone's kindness?",
+      "why should I remember who helped me?"
+    ]
+  },
+  "12": {
+    "topic": "Being fair and even-handed. Give each person their due, refuse profit that comes unjustly, and keep a level mind whether you gain or lose.",
+    "modern_words": "fairness, being fair, impartiality, justice, treating people equally, unbiased, being neutral, honest dealing",
+    "questions_clean": [
+      "what does it mean to be impartial?",
+      "should I refuse money that comes unfairly?",
+      "how do I keep a level head in gain and loss?",
+      "what does Thirukkural say about fairness?",
+      "how should I treat everyone equally?"
+    ]
+  },
+  "13": {
+    "topic": "Self-control as the greatest treasure a person can guard. Especially control of the tongue - a wound from fire heals, a wound from words never does.",
+    "modern_words": "self-control, self-discipline, restraint, controlling yourself, willpower, humility, watching your words, holding back",
+    "questions_clean": [
+      "how do I control myself better?",
+      "why is controlling my tongue so important?",
+      "what is the greatest treasure to guard?",
+      "how do I stop saying things I regret?",
+      "why does humility matter?"
+    ]
+  },
+  "14": {
+    "topic": "Good conduct and manners as what actually raises a person. Learning can be recovered if forgotten, but conduct once lost never returns.",
+    "modern_words": "good behaviour, manners, conduct, how you carry yourself, decency, character, reputation, upbringing, propriety",
+    "questions_clean": [
+      "why does good behaviour matter?",
+      "what does Thirukkural say about manners?",
+      "can a person recover from bad conduct?",
+      "what shows a person's upbringing?",
+      "why is character more important than learning?",
+      "how should I behave?"
+    ]
+  },
+  "15": {
+    "topic": "Not desiring someone else's wife. Adultery is called the worst breach of law, and it stains a person with hatred, sin, fear and shame for life.",
+    "modern_words": "adultery, cheating, affair, unfaithfulness, someone else's partner, betraying a marriage, temptation, infidelity",
+    "questions_clean": [
+      "what does Thirukkural say about cheating?",
+      "what happens to someone who has an affair?",
+      "why is adultery so serious?",
+      "what does infidelity do to a person?",
+      "should I stay faithful to my partner?"
+    ]
+  },
+  "16": {
+    "topic": "Patience and putting up with people who wrong you. Bearing insults the way the earth bears those who dig it. Forgiving is good, forgetting is better.",
+    "modern_words": "patience, forgiveness, putting up with people, tolerance, letting go, forgetting insults, not reacting, staying calm",
+    "questions_clean": [
+      "how do I forgive someone?",
+      "what does Thirukkural say about patience?",
+      "should I take revenge or let it go?",
+      "how do I put up with difficult people?",
+      "how do I stay calm when wronged?"
+    ]
+  },
+  "17": {
+    "topic": "Not envying what others have. Envy ruins a person even when no enemy touches them. Fortune leaves the envious and misfortune moves in.",
+    "modern_words": "envy, jealousy, comparing yourself, resentment, wanting what others have, bitterness, being happy for others",
+    "questions_clean": [
+      "what does envy do to a person?",
+      "why do I resent other people's success?",
+      "what does Thirukkural say about jealousy?",
+      "how do I stop comparing myself to others?",
+      "why does envy hurt the envious most?"
+    ]
+  },
+  "18": {
+    "topic": "Not coveting other people's property. Greed for what belongs to another ruins your own house. Those free from wanting are the ones fortune actually follows.",
+    "modern_words": "greed, coveting, wanting what others have, materialism, craving, avarice, contentment, being satisfied",
+    "questions_clean": [
+      "what does greed do to a person?",
+      "how do I become content with what I have?",
+      "what does Thirukkural say about greed?",
+      "why does wanting more ruin people?",
+      "how do I stop craving things?"
+    ]
+  },
+  "19": {
+    "topic": "Not speaking ill of people behind their back. Slandering someone in their absence is worse than criticising them to their face, and worse than open treachery.",
+    "modern_words": "gossip, backbiting, talking behind someone's back, slander, badmouthing, rumours, two-faced, criticising people",
+    "questions_clean": [
+      "what does Thirukkural say about gossip?",
+      "is backbiting worse than open criticism?",
+      "what happens to people who slander others?",
+      "why is being two-faced so bad?",
+      "should I point out other people's faults?"
+    ]
+  },
+  "20": {
+    "topic": "Against empty and pointless talk. Words with no substance make a person a laughing stock, and speaking nonsense before a crowd destroys respect.",
+    "modern_words": "empty talk, pointless chatter, babbling, talking too much, meaningless words, small talk, saying nothing useful",
+    "questions_clean": [
+      "why is empty chatter bad?",
+      "should I speak less?",
+      "what happens when someone talks nonsense?",
+      "why do people lose respect by talking too much?",
+      "how do I speak only what matters?"
+    ]
+  },
+  "21": {
+    "topic": "Fearing to do evil more than fearing fire. Evil returns to the person who does it, following like a shadow. Even a small evil thought should be refused.",
+    "modern_words": "doing wrong, sin, evil deeds, bad actions, consequences, karma, guilt, harming others, wrongdoing",
+    "questions_clean": [
+      "do bad actions come back to you?",
+      "what does Thirukkural say about sin?",
+      "why should I fear doing wrong?",
+      "what happens to people who harm others?",
+      "does wrongdoing catch up with you?"
+    ]
+  },
+  "22": {
+    "topic": "What a person owes to society. Wealth earned by work exists to serve those who need it. Duty asks nothing in return, the way rain asks nothing.",
+    "modern_words": "social duty, giving back, responsibility to society, helping the community, public good, service, obligation to others",
+    "questions_clean": [
+      "why should I give back to the community?",
+      "what does Thirukkural say about social responsibility?",
+      "what is wealth actually for?",
+      "should I expect anything in return for helping?",
+      "how should I serve other people?"
+    ]
+  },
+  "23": {
+    "topic": "Giving to the poor. Only giving to those in need is real charity - everything else is a loan or vanity. Relieving another's hunger is greater than long austerity.",
+    "modern_words": "charity, giving, donating, helping the poor, generosity, giving to those in need, philanthropy, alms",
+    "questions_clean": [
+      "what counts as real charity?",
+      "what does Thirukkural say about giving?",
+      "is giving better than religious practice?",
+      "how should I help poor people?",
+      "what is the point of generosity?"
+    ]
+  },
+  "24": {
+    "topic": "Fame that outlasts a person. Nothing on earth lasts except the good name of one who gave. A life without renown is a burden on the land.",
+    "modern_words": "fame, reputation, legacy, being remembered, good name, renown, what you leave behind, honour after death",
+    "questions_clean": [
+      "what lasts after a person dies?",
+      "what does Thirukkural say about reputation?",
+      "how do I build a good name?",
+      "what legacy should I leave?",
+      "is a life without recognition wasted?"
+    ]
+  },
+  "25": {
+    "topic": "Compassion and grace towards all living beings. The wealth of kindness is the real wealth - anyone can have money. Think how you feel before someone stronger before you wrong someone weaker.",
+    "modern_words": "compassion, kindness, mercy, empathy, being kind to animals, caring for the weak, grace, gentleness",
+    "questions_clean": [
+      "why should I be compassionate?",
+      "how should I treat those weaker than me?",
+      "what is the real wealth in life?",
+      "why does mercy matter?",
+      "how do I become a kinder person?"
+    ]
+  },
+  "26": {
+    "topic": "Refusing to eat meat. One cannot be kind while feeding on another body. Killing for food is called disgraceful, and abstaining is said to be greater than a thousand sacrifices.",
+    "modern_words": "meat, vegetarian, vegetarianism, eating animals, killing for food, diet, veganism, animal cruelty, non-violence",
+    "questions_clean": [
+      "what does Thirukkural say about vegetarianism?",
+      "why should I not eat meat?",
+      "is killing animals for food acceptable?",
+      "what is the connection between diet and compassion?",
+      "should I become vegetarian?"
+    ]
+  },
+  "27": {
+    "topic": "Penance and voluntary hardship. Bearing pain yourself while causing pain to no one. Life is purified by austerity the way gold is purified by fire.",
+    "modern_words": "penance, austerity, self-discipline, spiritual practice, enduring hardship, fasting, sacrifice, inner strength",
+    "questions_clean": [
+      "why do people put themselves through hardship?",
+      "what does Thirukkural say about austerity?",
+      "does self-discipline actually change a person?",
+      "what is the point of fasting or sacrifice?",
+      "how does suffering purify someone?"
+    ]
+  },
+  "28": {
+    "topic": "Hypocrisy - pretending to be holy while rotten inside. A false saint is compared to a cow-grazer wearing a tiger skin, and to a hunter hiding to strike birds.",
+    "modern_words": "hypocrisy, hypocrite, fake, pretending, two-faced, false piety, putting on a show, phoney, insincere",
+    "questions_clean": [
+      "what does Thirukkural say about fake people?",
+      "why is pretending to be good so bad?",
+      "how do I tell if someone is genuine?",
+      "what is worse than open wrongdoing?",
+      "should I judge people by their appearance or actions?"
+    ]
+  },
+  "29": {
+    "topic": "Not taking what belongs to others by trickery. Even the thought of gaining another's wealth by fraud is itself a sin. Gains from fraud grow fast and vanish faster.",
+    "modern_words": "stealing, theft, fraud, cheating, dishonest gain, scamming, taking what is not yours, corruption, honesty",
+    "questions_clean": [
+      "what does Thirukkural say about fraud?",
+      "is it wrong to even think about cheating someone?",
+      "do dishonest gains last?",
+      "why should I be honest in business?",
+      "what happens to people who scam others?"
+    ]
+  },
+  "30": {
+    "topic": "Truthfulness. Truth is speaking in a way that harms no one. Water cleans the outside, truth cleans the inside. Even a lie counts as truth if it does undeniable good.",
+    "modern_words": "truth, honesty, lying, telling the truth, being truthful, deception, sincerity, white lies, integrity",
+    "questions_clean": [
+      "what does Thirukkural say about lying?",
+      "is it ever right to lie?",
+      "what does truth do to a person inside?",
+      "how important is honesty?",
+      "what actually counts as truth?"
+    ]
+  },
+  "31": {
+    "topic": "Restraining anger. Anger against the weak is wrong and against the strong it is useless. Anger burns the person who holds it, kills their smile, and destroys friendships.",
+    "modern_words": "anger, temper, rage, losing your cool, irritation, controlling anger, calm, patience, fury, frustration",
+    "questions_clean": [
+      "what does anger do to a person?",
+      "how do I stop losing my temper?",
+      "what does Thirukkural say about rage?",
+      "why should I not get angry?",
+      "how do I stay calm when provoked?"
+    ]
+  },
+  "32": {
+    "topic": "Not harming others, even in thought. Do not do to another what you would feel as pain yourself. Harm done in the morning finds you by afternoon.",
+    "modern_words": "harming others, hurting people, doing damage, revenge, retaliation, cruelty, malice, non-violence, forgiveness",
+    "questions_clean": [
+      "should I take revenge on someone who hurt me?",
+      "what does Thirukkural say about hurting people?",
+      "does harm come back to the person who does it?",
+      "how should I treat people who wrong me?",
+      "is it wrong to even think of harming someone?"
+    ]
+  },
+  "33": {
+    "topic": "Not killing any living thing. Killing causes every other ill, and not killing is called the single greatest virtue. Sharing food and protecting life is the law above all laws.",
+    "modern_words": "killing, taking life, murder, violence, non-violence, ahimsa, sparing life, animals, protecting living things",
+    "questions_clean": [
+      "what does Thirukkural say about taking life?",
+      "what is the greatest virtue?",
+      "why is killing worse than other wrongs?",
+      "should life be protected at any cost?",
+      "what is the law above all other laws?"
+    ]
+  },
+  "34": {
+    "topic": "Nothing lasts. Wealth gathers like a crowd at a play and leaves the same way. Yesterday a person was here, today they are not. Do good while there is time.",
+    "modern_words": "impermanence, nothing lasts, temporary, change, death, mortality, life is short, uncertainty, letting go",
+    "questions_clean": [
+      "why is wealth temporary?",
+      "how should I live knowing life is short?",
+      "what does Thirukkural say about death?",
+      "why should I do good things now?",
+      "what does impermanence teach us?"
+    ]
+  },
+  "35": {
+    "topic": "Giving up attachment. The more you let go of, the less torment you feel. Curb the five senses and give up craving all at once. Owning nothing is the rule of the vow.",
+    "modern_words": "letting go, giving up, detachment, renunciation, simplifying, non-attachment, freedom from possessions, minimalism",
+    "questions_clean": [
+      "how do I stop being attached to things?",
+      "what does letting go actually achieve?",
+      "why do people renounce possessions?",
+      "how do I find freedom from craving?"
+    ]
+  },
+  "36": {
+    "topic": "Seeing things as they truly are, past illusion. Knowledge of the five senses is empty without knowing the truth within. Sorrow ends when craving, anger and confusion end.",
+    "modern_words": "truth, seeing clearly, illusion, delusion, reality, self-knowledge, insight, wisdom, understanding, clarity",
+    "questions_clean": [
+      "what does Thirukkural say about illusion?",
+      "what is true knowledge?",
+      "how do I understand myself?",
+      "what stops a person from seeing clearly?",
+      "how do sorrows finally end?"
+    ]
+  },
+  "37": {
+    "topic": "Cutting off desire. Desire is the seed from which endless births grow. There is no wealth like the wealth of wanting nothing, and destroying desire brings the greatest joy.",
+    "modern_words": "desire, craving, wanting, lust, longing, greed, contentment, satisfaction, letting go of wants, freedom",
+    "questions_clean": [
+      "what does desire do to a person?",
+      "how do I stop craving?",
+      "what does Thirukkural say about wanting things?",
+      "why is wanting nothing called wealth?",
+      "how do I become content?"
+    ]
+  },
+  "38": {
+    "topic": "Fate and what is destined. Two forces shape life - one that makes wealth and one that makes wisdom. Nothing surpasses fate, and what is not yours will not stay.",
+    "modern_words": "fate, destiny, luck, karma, chance, things beyond control, predestination, fortune, what is meant to be",
+    "questions_clean": [
+      "how much control do I have over my life?",
+      "what does Thirukkural say about destiny?",
+      "why do some people prosper and others not?",
+      "can effort beat fate?",
+      "should I accept what happens to me?"
+    ]
+  },
+  "39": {
+    "topic": "What makes a great ruler. Six things a king must own - people, army, wealth, forts, counsel and allies. Courage, giving, knowledge and energy. Being easy to approach and gentle in speech.",
+    "modern_words": "leader, leadership, boss, manager, king, ruler, running a country, being in charge, being approachable, governing",
+    "questions_clean": [
+      "what qualities should a leader have?",
+      "what does Thirukkural say about leadership?",
+      "should a boss be easy to approach?",
+      "how do I lead people well?",
+      "what does a country need from its ruler?"
+    ]
+  },
+  "40": {
+    "topic": "Learning as the only wealth that cannot be destroyed. Learn thoroughly and live by what you learn. The more you dig sand the more water flows - the more you learn the more knowledge grows.",
+    "modern_words": "learning, education, study, knowledge, school, skills, lifelong learning, self-improvement, reading, training",
+    "questions_clean": [
+      "what does Thirukkural say about learning?",
+      "should I keep learning all my life?",
+      "what is the wealth nobody can take from me?",
+      "how deeply should I study something?",
+      "why is knowledge worth more than money?"
+    ]
+  },
+  "41": {
+    "topic": "The condition of the unlearned. An untaught person speaking before the wise fails badly. Their minds are called barren land, and wealth in a fool's hand is worse than a scholar's empty purse.",
+    "modern_words": "ignorance, being uneducated, not knowing, lack of learning, illiteracy, foolishness, unskilled, untrained",
+    "questions_clean": [
+      "what does Thirukkural say about ignorance?",
+      "why is a fool with money worse off than a poor scholar?",
+      "what does the world think of untaught people?",
+      "should an unlearned person stay silent?",
+      "what does lack of education cost a person?"
+    ]
+  },
+  "42": {
+    "topic": "Listening as the greatest wealth. Feed your ears before your stomach. Even someone with no formal learning becomes steady if they listen well.",
+    "modern_words": "listening, hearing, taking advice, paying attention, learning from others, receiving feedback, being teachable",
+    "questions_clean": [
+      "why is listening so valuable?",
+      "what does Thirukkural say about taking advice?",
+      "can I learn without formal study?",
+      "how do I benefit from listening to wise people?",
+      "why should I listen more than I talk?"
+    ]
+  },
+  "43": {
+    "topic": "Real wisdom. Wisdom is a weapon that wards off harm and a fort no enemy can breach. It holds the senses back, sees what is coming, and moves in step with the world.",
+    "modern_words": "wisdom, good judgement, common sense, discernment, foresight, being wise, thinking clearly, sound judgement",
+    "questions_clean": [
+      "what does wisdom actually protect a person from?",
+      "what does Thirukkural say about good judgement?",
+      "how do I learn to see what is coming?",
+      "what is the difference between knowledge and wisdom?",
+      "how do wise people behave?"
+    ]
+  },
+  "44": {
+    "topic": "Removing your own faults. Guard freedom from faults like a treasure - your own default is your worst enemy. Fix your own faults before examining anyone else's.",
+    "modern_words": "faults, flaws, weaknesses, self-improvement, bad habits, defects, correcting yourself, self-awareness, blind spots",
+    "questions_clean": [
+      "should I fix myself before judging others?",
+      "what does Thirukkural say about self-improvement?",
+      "how do small faults grow into big ones?",
+      "what is a person's worst enemy?",
+      "how do I become aware of my weaknesses?"
+    ]
+  },
+  "45": {
+    "topic": "Seeking out great and capable people. Weigh their worth, then win their friendship. Having betters as close companions is the power above all powers, and a leader nobody dares correct destroys himself.",
+    "modern_words": "mentors, good company, being around better people, advisors, networking, learning from others, good influences",
+    "questions_clean": [
+      "why do I need people who correct me?",
+      "what does Thirukkural say about mentors?",
+      "how do I choose who to be close to?",
+      "why is good company called the greatest power?",
+      "what happens to someone nobody corrects?"
+    ]
+  },
+  "46": {
+    "topic": "Staying away from low company. Water takes the taste of the soil it sits in, and a person takes the character of the people they mix with. Purity of thought and deed comes from good company.",
+    "modern_words": "bad company, wrong crowd, bad influences, peer pressure, who you hang out with, toxic people, friends who drag you down",
+    "questions_clean": [
+      "does the company I keep change me?",
+      "what does Thirukkural say about bad influences?",
+      "why should I avoid certain people?",
+      "how do friends shape a person's character?",
+      "should I cut off toxic people?"
+    ]
+  },
+  "47": {
+    "topic": "Thinking before acting. Weigh the cost, the gain and the method before you start. Think and then dare - daring and then thinking is a disaster. Never begin what you have not made clear.",
+    "modern_words": "planning, thinking ahead, preparation, weighing options, deliberation, acting rashly, impulsiveness, strategy",
+    "questions_clean": [
+      "why do plans fail?",
+      "what does Thirukkural say about planning?",
+      "is it better to act fast or think first?",
+      "how do I weigh risk against reward?",
+      "what happens if I start without a plan?"
+    ]
+  },
+  "48": {
+    "topic": "Knowing your own strength before acting. Many do not know how weak they are and their pride breaks in a fight. Know the limit, spend within it - and even a peacock's feather breaks a cart if piled too high.",
+    "modern_words": "knowing your limits, self-assessment, overconfidence, biting off more than you can chew, capacity, living within means",
+    "questions_clean": [
+      "what happens when people overestimate themselves?",
+      "what does Thirukkural say about knowing your limits?",
+      "why does overconfidence destroy people?",
+      "how do I live within my means?",
+      "how much should I take on?"
+    ]
+  },
+  "49": {
+    "topic": "Acting at the right moment. By day the crow beats the owl - timing decides the winner. Wait unruffled for your time, and when the moment comes, strike hard.",
+    "modern_words": "timing, right moment, patience, waiting, opportunity, seizing the moment, being early or late, biding your time",
+    "questions_clean": [
+      "when is the right moment to act?",
+      "what does Thirukkural say about patience and opportunity?",
+      "should I wait or act now?",
+      "how do I know when to strike?",
+      "why does the same action succeed at one time and fail at another?"
+    ]
+  },
+  "50": {
+    "topic": "Choosing the right ground. A crocodile wins in water and loses on land. Survey the place before acting, because a small force in the right position beats a large one in the wrong place.",
+    "modern_words": "location, position, choosing the right place, home ground, terrain, environment, setting, where you compete",
+    "questions_clean": [
+      "why does position decide a fight?",
+      "what does Thirukkural say about choosing ground?",
+      "how does the right setting make a weak person strong?",
+      "should I fight on my own territory?",
+      "why do people fail in the wrong environment?"
+    ]
+  },
+  "51": {
+    "topic": "Testing people before trusting them. Test by four things - pleasure, money, fear and virtue. Trust nobody untested, and once you have tested and trusted, do not then doubt.",
+    "modern_words": "trust, choosing who to trust, background check, vetting, judging character, reliability, betrayal, testing people",
+    "questions_clean": [
+      "how do I test someone's character?",
+      "what does Thirukkural say about trust?",
+      "should I trust a stranger?",
+      "what happens if I trust without checking?",
+      "is doubting someone after trusting them a mistake?"
+    ]
+  },
+  "52": {
+    "topic": "Matching the right person to the right job. Look at the work, look at the person, then assign. Once you have judged their fitness, leave them to do it their own way.",
+    "modern_words": "hiring, delegation, assigning work, choosing the right person, recruitment, management, job fit, micromanaging",
+    "questions_clean": [
+      "should I let people do work their own way?",
+      "what does Thirukkural say about delegation?",
+      "how do I match a task to a person?",
+      "why does the wrong person ruin good work?",
+      "should I check on someone after giving them a job?"
+    ]
+  },
+  "53": {
+    "topic": "Holding on to relatives and kin. Wealth without kin is a tank overflowing without a bank. Loving words and an open hand keep family gathered around you.",
+    "modern_words": "family, relatives, kin, extended family, relations, staying close to family, blood ties, keeping family together",
+    "questions_clean": [
+      "why does family matter even when money does not?",
+      "what does Thirukkural say about kin?",
+      "how do I keep my family close?",
+      "what is wealth worth without people to share it with?",
+      "how do I repair a broken family relationship?"
+    ]
+  },
+  "54": {
+    "topic": "Never being careless. Forgetfulness in success is worse than excessive anger. Negligence kills a reputation the way constant want destroys wisdom. Watch with care and nothing is impossible.",
+    "modern_words": "carelessness, negligence, forgetting, being sloppy, attention to detail, complacency, letting your guard down, vigilance",
+    "questions_clean": [
+      "why is forgetting worse than anger?",
+      "what does Thirukkural say about negligence?",
+      "why do successful people become complacent?",
+      "how do I stay alert?",
+      "what does carelessness cost in the end?"
+    ]
+  },
+  "55": {
+    "topic": "Ruling justly. The world leans on the just ruler's staff. Full rain and rich harvest come to a land ruled by a righteous hand, and the sceptre - not the spear - is what wins.",
+    "modern_words": "justice, fair rule, good government, righteous leadership, rule of law, fairness in authority, protecting people",
+    "questions_clean": [
+      "what does Thirukkural say about good government?",
+      "how should a leader use their authority?",
+      "why does a country prosper under a just ruler?",
+      "is force or fairness stronger?",
+      "what is a ruler's real duty?"
+    ]
+  },
+  "56": {
+    "topic": "The cruel ruler. A tyrant who oppresses is worse than a murderer. The tears of the oppressed file away his wealth, and the sky itself withholds rain when a ruler abuses power.",
+    "modern_words": "tyranny, cruel boss, oppression, abuse of power, dictatorship, unfair leadership, exploitation, corrupt rule",
+    "questions_clean": [
+      "what does Thirukkural say about tyranny?",
+      "why does a cruel leader eventually fall?",
+      "what does oppression do to a country?",
+      "how bad is abusing power?",
+      "why is a tyrant worse than a murderer?"
+    ]
+  },
+  "57": {
+    "topic": "Ruling without terror. Hold the rod firmly but lay it gently. Harsh punishment and rough reproof corrode a ruler's power the way a file corrodes metal.",
+    "modern_words": "fear, ruling by fear, harshness, intimidation, strict punishment, being feared, severity, discipline without cruelty",
+    "questions_clean": [
+      "what does harsh punishment do to authority?",
+      "what does Thirukkural say about being feared?",
+      "is it better to be feared or respected?",
+      "how strict should a leader be?",
+      "why does intimidation weaken power over time?"
+    ]
+  },
+  "58": {
+    "topic": "Kindness in the eyes and in the face. Eyes without grace are not eyes at all. Bearing with those who vex you and remaining gracious is the true form of virtue.",
+    "modern_words": "kindness, graciousness, warmth, a kind look, gentleness, being pleasant, benevolence, having a good heart",
+    "questions_clean": [
+      "what does Thirukkural say about graciousness?",
+      "what is the point of eyes without kindness?",
+      "how should I treat people who annoy me?",
+      "why does warmth matter more than strength?",
+      "how do I become a kinder person?"
+    ]
+  },
+  "59": {
+    "topic": "Gathering information secretly. A ruler needs two eyes - the law and good spies. Verify one spy's report with another, question the three separately, and act only when they agree.",
+    "modern_words": "spies, information, intelligence, finding out the truth, sources, verification, cross-checking, investigation, secrets",
+    "questions_clean": [
+      "how do I verify information?",
+      "what does Thirukkural say about gathering intelligence?",
+      "why check the same fact from several sources?",
+      "how do I know what people are hiding from me?",
+      "should I trust a single report?"
+    ]
+  },
+  "60": {
+    "topic": "Inner energy and drive. To own energy is to own everything - all else is just lethargy. Fortune seeks out the home of the tireless. Great minds stay steady even in defeat.",
+    "modern_words": "energy, drive, motivation, willpower, determination, mental strength, enthusiasm, spirit, inner fire, resilience",
+    "questions_clean": [
+      "where does drive come from?",
+      "how do I stay motivated?",
+      "what is the real wealth a person can have?",
+      "how do strong people handle defeat?",
+      "why do some people keep going when others quit?"
+    ]
+  },
+  "61": {
+    "topic": "Never being lazy. Idleness puts out the lamp of a family line. Sloth, forgetting, idling and dozing are four boats that carry a person to ruin.",
+    "modern_words": "laziness, lazy, procrastination, idleness, sloth, putting things off, lack of motivation, sitting around, wasting time",
+    "questions_clean": [
+      "what does laziness do to a family?",
+      "what does Thirukkural say about procrastination?",
+      "why do I keep putting things off?",
+      "what are the habits that ruin a person?",
+      "how do I get myself moving?"
+    ]
+  },
+  "62": {
+    "topic": "Effort that does not give up. Do not say a thing is too hard - effort brings its own reward. Hard labour pays even when fate is against you, and the tireless hand outruns fate itself.",
+    "modern_words": "effort, hard work, perseverance, persistence, not giving up, grit, trying again, determination, working through difficulty",
+    "questions_clean": [
+      "can effort beat bad luck?",
+      "how do I keep going when something is hard?",
+      "why should I not give up?",
+      "does persistence actually pay off?",
+      "what happens to people who quit their work?"
+    ]
+  },
+  "63": {
+    "topic": "Staying steady in trouble. Laugh at troubles - there is no other way to beat them. Grief itself grieves and retreats before someone who faces it calmly.",
+    "modern_words": "trouble, hard times, adversity, setbacks, difficulty, resilience, coping, staying strong, bouncing back, crisis",
+    "questions_clean": [
+      "how should I face hard times?",
+      "what does Thirukkural say about setbacks?",
+      "how do I stop worrying about troubles?",
+      "why do calm people survive crises better?",
+      "how do I bounce back from failure?"
+    ]
+  },
+  "64": {
+    "topic": "What makes a good minister or advisor. Choosing the right means, time, method and venture. Speaking the truth to a leader even when he refuses to hear it.",
+    "modern_words": "advisor, counsellor, deputy, second in command, consultant, giving advice, speaking truth to power, right-hand person",
+    "questions_clean": [
+      "should an advisor tell a boss uncomfortable truths?",
+      "what does Thirukkural say about counsel?",
+      "what qualities does a deputy need?",
+      "how do I advise someone powerful?",
+      "why is a bitter-minded advisor worse than many enemies?"
+    ]
+  },
+  "65": {
+    "topic": "The power of speech. Speech that holds an audience and wins over those against you. Weigh your words - no wealth surpasses them. Those who cannot express what they know are flowers without fragrance.",
+    "modern_words": "speaking, communication, public speaking, persuasion, eloquence, expressing yourself, presentation, articulating ideas",
+    "questions_clean": [
+      "why does the way I say something matter?",
+      "what does Thirukkural say about persuasion?",
+      "how do I win over people who disagree with me?",
+      "what is the use of knowledge I cannot express?",
+      "how do I choose my words carefully?"
+    ]
+  },
+  "66": {
+    "topic": "Keeping your methods clean. Avoid any act that brings no good or dims your name. Wealth gathered by guilty means is water poured into an unbaked clay pot.",
+    "modern_words": "clean methods, ethics, integrity, honest means, cutting corners, shortcuts, doing things the right way, dirty money",
+    "questions_clean": [
+      "is money earned dishonestly worth having?",
+      "what does Thirukkural say about cutting corners?",
+      "should I do something shameful to succeed?",
+      "why do dishonest gains disappear?",
+      "how much do the means matter versus the result?"
+    ]
+  },
+  "67": {
+    "topic": "Strength of will in carrying something out. The will to do achieves the deed when the mind behind it is strong. Do not display work half done. The world knows no strength but the strength of will.",
+    "modern_words": "willpower, determination, follow through, finishing things, resolve, commitment, seeing it through, mental toughness",
+    "questions_clean": [
+      "where does the strength to complete something come from?",
+      "what does Thirukkural say about willpower?",
+      "should I show my work before it is done?",
+      "why do some people finish and others do not?",
+      "how do I stay committed to a hard task?"
+    ]
+  },
+  "68": {
+    "topic": "How to carry work out. Delay what needs delay, never delay what needs speed. Decide five things - money, means, time, place and the deed - then proceed. Work left unfinished flares up like an unquenched fire.",
+    "modern_words": "execution, getting things done, method, approach, prioritising, unfinished work, loose ends, how to do a task",
+    "questions_clean": [
+      "what should I decide before beginning work?",
+      "what does Thirukkural say about unfinished business?",
+      "when should I delay and when should I hurry?",
+      "why is half-finished work dangerous?",
+      "how do I approach a difficult task?"
+    ]
+  },
+  "69": {
+    "topic": "The envoy or messenger. One who carries a message must have love for their side, learning, courage, and the judgement to say the right thing at the right moment - even facing death.",
+    "modern_words": "messenger, negotiator, diplomat, representative, go-between, ambassador, negotiation, carrying a message, mediator",
+    "questions_clean": [
+      "what qualities does a diplomat need?",
+      "what does Thirukkural say about negotiation?",
+      "how should someone represent another person?",
+      "how do I deliver a difficult message?",
+      "what courage does a go-between need?"
+    ]
+  },
+  "70": {
+    "topic": "How to behave around powerful people. Move with them as with fire - neither too close nor too far. Do not whisper, do not exchange smiles in their assembly, and never ask about their secrets.",
+    "modern_words": "boss, authority, powerful people, workplace politics, dealing with superiors, court, hierarchy, professional conduct",
+    "questions_clean": [
+      "how close should I get to my boss?",
+      "what does Thirukkural say about dealing with authority?",
+      "should I ask about things I am not told?",
+      "what mistakes get people in trouble at work?",
+      "how do I stay safe near power?"
+    ]
+  },
+  "71": {
+    "topic": "Reading what people do not say. The face reflects what stirs in the mind the way a mirror reflects what is near it. Standing in front is enough for those who can read a face.",
+    "modern_words": "body language, reading people, facial expressions, unspoken feelings, intuition, sensing moods, non-verbal signals",
+    "questions_clean": [
+      "how do I read people?",
+      "what does Thirukkural say about unspoken thoughts?",
+      "what do the eyes reveal?",
+      "how do I know if someone is friend or foe?",
+      "what is the use of eyes that cannot read a mind?"
+    ]
+  },
+  "72": {
+    "topic": "Knowing your audience. Fit your words to the people in front of you. Speaking learned words to those who cannot take them is pouring nectar into a gutter.",
+    "modern_words": "audience, reading the room, knowing who you are talking to, pitching your message, adapting, context, tone",
+    "questions_clean": [
+      "should I change how I speak for different people?",
+      "what does Thirukkural say about matching words to listeners?",
+      "why do good ideas fail with the wrong audience?",
+      "how do I judge who I am talking to?",
+      "when should I stay quiet?"
+    ]
+  },
+  "73": {
+    "topic": "Not being frightened of an assembly. Many face enemies in battle but few can face a room of wise people. Learning that fears an audience is a eunuch's sword on a battlefield.",
+    "modern_words": "stage fright, fear of public speaking, nervousness, confidence, speaking in front of a crowd, presentation anxiety, boldness",
+    "questions_clean": [
+      "why is facing a crowd harder than facing an enemy?",
+      "what does Thirukkural say about confidence?",
+      "what is the use of learning I am too afraid to share?",
+      "how do I speak boldly in front of experts?",
+      "how do I overcome nervousness?"
+    ]
+  },
+  "74": {
+    "topic": "What makes a country good. Unfailing harvests, wealth, no famine, no plague, no destructive factions, and people of worth. A land that yields without hard labour is a true land.",
+    "modern_words": "country, nation, land, economy, prosperity, national wealth, good place to live, resources, social stability",
+    "questions_clean": [
+      "what does a good nation need?",
+      "what does Thirukkural say about a country's wealth?",
+      "why do some places thrive and others fail?",
+      "what ruins a land from inside?",
+      "what makes somewhere good to live?"
+    ]
+  },
+  "75": {
+    "topic": "The fortification. A good fort is high, broad, hard to enter, well stocked with food and weapons, and holds brave defenders. Without brave people inside, the grandest fort is nothing.",
+    "modern_words": "fort, defence, protection, security, walls, stronghold, safety, preparation, guarding against attack",
+    "questions_clean": [
+      "what does Thirukkural say about defence?",
+      "is a strong wall enough without brave people?",
+      "how should I prepare against attack?",
+      "what does a good stronghold need?",
+      "what makes protection actually work?"
+    ]
+  },
+  "76": {
+    "topic": "Making wealth. Nothing but wealth can make the worthless seem worthy. Wealth from honest means brings both virtue and happiness - riches without love and grace should be thrown away.",
+    "modern_words": "money, wealth, earning, income, making money, savings, treasure, business, financial success, honest earning",
+    "questions_clean": [
+      "what does Thirukkural say about wealth?",
+      "does money change how people treat you?",
+      "is dishonest wealth worth having?",
+      "why should I build savings?",
+      "what is money actually for?"
+    ]
+  },
+  "77": {
+    "topic": "What makes an army strong. Not numbers but courage that holds under wounds. Stately bearing, loyalty, honour and valour. An army without generals cannot march however large its rolls.",
+    "modern_words": "army, military, soldiers, team strength, defence force, courage under pressure, discipline, leadership in a team",
+    "questions_clean": [
+      "is a big team better than a good one?",
+      "what does Thirukkural say about courage?",
+      "why does an army need leaders?",
+      "what holds a group together under pressure?",
+      "what makes fighters stand firm?"
+    ]
+  },
+  "78": {
+    "topic": "Military spirit and honour in battle. The brave count as wasted any day that brought no wound. They fear losing glory, not losing life, and the death they want is one their ruler weeps over.",
+    "modern_words": "bravery, courage, valour, honour, sacrifice, fearlessness, heroism, facing danger, dying for a cause",
+    "questions_clean": [
+      "what makes a person truly brave?",
+      "what does Thirukkural say about heroism?",
+      "why do some people fear disgrace more than death?",
+      "what is the honour of a soldier?",
+      "how do brave people see danger?",
+      "what does it mean to give your life for something?"
+    ]
+  },
+  "79": {
+    "topic": "Friendship. Good friendship grows like a waxing moon, bad friendship shrinks like a waning one. Real friendship is not smiling with the face but embracing with the heart, and it corrects a friend who errs.",
+    "modern_words": "friendship, friends, close friends, real friends, companionship, loyalty, being there for someone, true friend",
+    "questions_clean": [
+      "what makes a real friend?",
+      "should a friend correct me when I am wrong?",
+      "how does good friendship grow?",
+      "is a smiling face the same as friendship?",
+      "what does a friend do in hard times?"
+    ]
+  },
+  "80": {
+    "topic": "Testing before making a friend. Friendship formed without testing is the worst thing there is, because contacts once made rarely end. Trace a person's temper, family, faults and relations first.",
+    "modern_words": "choosing friends, testing people, checking someone out, first impressions, being careful who you befriend, vetting",
+    "questions_clean": [
+      "how do I test a person's character first?",
+      "what does Thirukkural say about choosing friends?",
+      "why is an untested friendship dangerous?",
+      "how do I know if someone is worth knowing?",
+      "what should I look at before trusting someone?"
+    ]
+  },
+  "81": {
+    "topic": "Long familiarity between friends. True closeness means a friend can act without asking. Real friends do not abandon you when you lose everything, and they do not listen to tales against you.",
+    "modern_words": "closeness, old friends, familiarity, long friendship, comfort with someone, loyalty over time, standing by someone",
+    "questions_clean": [
+      "what does Thirukkural say about old friends?",
+      "should a friend need permission to help me?",
+      "how do friends behave when I lose everything?",
+      "what makes a friendship last?",
+      "should I listen to gossip about a friend?",
+      "what is real closeness between people?"
+    ]
+  },
+  "82": {
+    "topic": "Bad friendship. Friends who fawn when you have money and vanish in hard times. Friends who calculate are like thieves. Being alone is better than trusting those who throw you in the field.",
+    "modern_words": "fake friends, bad friends, using people, fair-weather friends, opportunists, false friendship, being used, disloyalty",
+    "questions_clean": [
+      "what does Thirukkural say about fair-weather friends?",
+      "is being alone better than bad company?",
+      "how do I spot someone using me?",
+      "what happens to friends when money runs out?",
+      "should I keep a friend who never helps?"
+    ]
+  },
+  "83": {
+    "topic": "Friendship that is really enmity. An enemy's friendship is an anvil waiting to strike. Fear those whose faces smile while their hearts scheme, and never trust the humble words of a foe.",
+    "modern_words": "false friends, hidden enemies, betrayal, two-faced people, pretending to be friendly, scheming, backstabbers, deceit",
+    "questions_clean": [
+      "how do I spot a hidden enemy?",
+      "what does Thirukkural say about false friendship?",
+      "should I trust an enemy who acts friendly?",
+      "what do smiling faces hide?",
+      "how do I recognise a backstabber?"
+    ]
+  },
+  "84": {
+    "topic": "Folly. The mark of a fool is choosing loss over gain. Shameless, aimless, callous and listless. The greatest fool is one who learns and teaches but has no self-control.",
+    "modern_words": "foolishness, stupidity, being a fool, poor judgement, senselessness, acting without thinking, bad decisions",
+    "questions_clean": [
+      "what are the signs of a fool?",
+      "why is a learned person without self-control the biggest fool?",
+      "how do foolish people handle money?",
+      "what separates a fool from a wise person?",
+      "why do fools choose loss over gain?"
+    ]
+  },
+  "85": {
+    "topic": "Ignorance as the want above all wants. Fools pretend to knowledge they do not have, which casts doubt on what they do know. They do not listen and do not know themselves.",
+    "modern_words": "ignorance, not knowing, pretending to know, overconfidence, arrogance, refusing to learn, know-it-all, self-deception",
+    "questions_clean": [
+      "why is pretending to know worse than not knowing?",
+      "what does Thirukkural say about arrogance?",
+      "why do some people refuse to listen?",
+      "what is the greatest lack a person can have?",
+      "how does self-deception harm someone?"
+    ]
+  },
+  "86": {
+    "topic": "Hostility and quarrelling. Hatred is a plague that divides and stirs ill-will everywhere. Turning away from enmity brings gain, and all goodness flows from friendly relations.",
+    "modern_words": "conflict, quarrel, hostility, enmity, fighting, disputes, hatred, making enemies, falling out, discord",
+    "questions_clean": [
+      "what does hatred do to a person?",
+      "what does Thirukkural say about quarrels?",
+      "should I fight back or turn away?",
+      "why is making enemies so costly?",
+      "how do I end a conflict?"
+    ]
+  },
+  "87": {
+    "topic": "Who invites hatred safely and who does not. Turn from strife with the too-strong. A leader without love, aid or power cannot withstand a strong enemy. Those blind with rage and lust invite attack.",
+    "modern_words": "picking fights, choosing your battles, weakness, vulnerability, who to avoid fighting, being an easy target",
+    "questions_clean": [
+      "when should I avoid a fight?",
+      "what makes a person an easy target?",
+      "what does Thirukkural say about picking battles?",
+      "why do angry people get attacked?",
+      "how do I know if I can win?"
+    ]
+  },
+  "88": {
+    "topic": "Understanding the nature of hatred. Never court enmity even as a sport. Cut a thorn tree while it is young - grown hard it cuts your hands. If facing two enemies, make one an ally.",
+    "modern_words": "handling enemies, early action, small problems growing, strategy, alliances, dividing opponents, prevention",
+    "questions_clean": [
+      "should I fix a problem while it is small?",
+      "what does Thirukkural say about making allies?",
+      "how do I handle two enemies at once?",
+      "why do small conflicts become big ones?",
+      "should I ever start a quarrel for fun?"
+    ]
+  },
+  "89": {
+    "topic": "Enemies inside the household. You need not fear an open enemy - fear those who pretend to be family. Living with traitors in the house is living with a snake in the same hut.",
+    "modern_words": "internal conflict, betrayal at home, family disputes, insiders, traitors, trouble within, disloyalty in a group",
+    "questions_clean": [
+      "what does Thirukkural say about betrayal by close people?",
+      "who is more dangerous - an open enemy or a hidden one?",
+      "how does a house fall apart from inside?",
+      "what happens when a group has traitors?",
+      "how do I spot a false ally close to me?"
+    ]
+  },
+  "90": {
+    "topic": "Not offending great and powerful people. To walk unmindful of the great creates endless trouble. One can escape a fire but not the anger of a great person offended.",
+    "modern_words": "disrespect, offending someone powerful, insulting people, rudeness to seniors, consequences, respect, humility",
+    "questions_clean": [
+      "what happens when someone offends the powerful?",
+      "what does Thirukkural say about respect?",
+      "can a person escape the anger of the great?",
+      "why is insulting a wise person dangerous?",
+      "how should I treat those above me?"
+    ]
+  },
+  "91": {
+    "topic": "A man ruled by his wife. One who is servile to his wife feels ashamed before the wise, does no good to friends, and loses the gains that active people win.",
+    "modern_words": "henpecked, controlled by a partner, being dominated in marriage, servile husband, losing independence in a relationship",
+    "questions_clean": [
+      "what does Thirukkural say about being dominated by a partner?",
+      "what happens to a man who fears his wife?",
+      "should one partner rule the other?",
+      "how does a one-sided marriage harm a person?",
+      "why does servility bring shame?"
+    ]
+  },
+  "92": {
+    "topic": "Women who sell affection. Their words are for gold, not love. Their embrace is called false and empty, and the wise who seek real worth do not look for it there.",
+    "modern_words": "prostitution, paid affection, false love, being used for money, sex work, exploitation, insincere relationships",
+    "questions_clean": [
+      "what does Thirukkural say about paid affection?",
+      "is love bought with money real?",
+      "why do the wise avoid such relationships?",
+      "what ruins men according to these verses?",
+      "what is false about an embrace given for gold?",
+      "what does Thirukkural warn men about?"
+    ]
+  },
+  "93": {
+    "topic": "Not drinking. The addict loses respect daily and gives foes nothing to fear. A drunkard's joy pains even his mother's face, and reason cannot reach someone raving drunk.",
+    "modern_words": "alcohol, drinking, drunk, liquor, addiction, alcoholism, substance abuse, intoxication, sobriety, quitting drink",
+    "questions_clean": [
+      "what does drinking do to a person's reputation?",
+      "why should I stop drinking?",
+      "how does alcohol affect family?",
+      "can you reason with a drunk person?",
+      "what does addiction cost someone?"
+    ]
+  },
+  "94": {
+    "topic": "Gambling. Winning is the bait on the hook. Gambling ruins wealth, grace, truth and reputation, and love for the game grows with every loss.",
+    "modern_words": "gambling, betting, casino, dice, addiction, losing money, games of chance, financial ruin, compulsive behaviour",
+    "questions_clean": [
+      "what does Thirukkural say about betting?",
+      "why does losing make gamblers play more?",
+      "what does gambling destroy in a person's life?",
+      "is winning at gambling still bad?",
+      "how does gambling ruin a family?"
+    ]
+  },
+  "95": {
+    "topic": "Medicine and health. Eat only after the last meal has digested, and to the right measure. Know the disease, its cause and its cure. Patient, doctor, medicine and nurse are the four parts of treatment.",
+    "modern_words": "health, medicine, doctor, illness, diet, eating habits, digestion, treatment, staying healthy, overeating, nutrition",
+    "questions_clean": [
+      "what does Thirukkural say about eating habits?",
+      "how much should I eat?",
+      "what does a doctor need to know before treating?",
+      "why is overeating harmful?",
+      "what are the parts of good medical care?"
+    ]
+  },
+  "96": {
+    "topic": "Nobility of birth and bearing. Good conduct, truth and modesty. The noble will not stoop to a degrading act even for a fortune, and their faults show like spots on the moon.",
+    "modern_words": "nobility, good breeding, class, family background, refinement, dignity, upbringing, being well-raised, decency",
+    "questions_clean": [
+      "what does Thirukkural say about good breeding?",
+      "can money buy nobility?",
+      "why are the faults of respected people so visible?",
+      "what marks a well-raised person?",
+      "does birth or behaviour make someone noble?"
+    ]
+  },
+  "97": {
+    "topic": "Honour and self-respect. Refuse degrading acts even when your life depends on it. Better to die alone than live as a slave to those who scorn you.",
+    "modern_words": "honour, self-respect, dignity, pride, standing up for yourself, humiliation, losing face, self-worth, integrity",
+    "questions_clean": [
+      "what does Thirukkural say about self-respect?",
+      "is life worth living without dignity?",
+      "should I accept humiliation to survive?",
+      "how do small mistakes destroy a reputation?",
+      "why do some people choose death over disgrace?"
+    ]
+  },
+  "98": {
+    "topic": "Greatness. All beings are the same at birth - what they do decides their worth. Greatness bends with modesty while meanness swells with vanity.",
+    "modern_words": "greatness, being great, achievement, worth, what makes someone important, humility, arrogance, true value of a person",
+    "questions_clean": [
+      "are people born great or made great?",
+      "what does Thirukkural say about greatness?",
+      "why is humility a sign of greatness?",
+      "what separates the great from the mean?",
+      "does birth decide a person's worth?"
+    ]
+  },
+  "99": {
+    "topic": "Completeness of character. Love, truth, regard, modesty and grace - these five are where virtue rests. Bearing insult even from the mean is the test of a worthy person.",
+    "modern_words": "character, integrity, being a complete person, moral excellence, principles, good qualities, perfection of conduct",
+    "questions_clean": [
+      "what are the qualities of a complete person?",
+      "what does Thirukkural say about character?",
+      "how do I test if someone is truly worthy?",
+      "should I respond to insults from lesser people?",
+      "what is the foundation of good character?"
+    ]
+  },
+  "100": {
+    "topic": "Courtesy and good manners. Likeness in limbs is not real likeness - likeness in courtesy is. The courteous do not despise even their foes, because contempt hurts even in jest.",
+    "modern_words": "courtesy, politeness, good manners, being nice, respect, civility, treating people well, kindness in behaviour",
+    "questions_clean": [
+      "what does Thirukkural say about manners?",
+      "should I be courteous even to people I dislike?",
+      "is contempt in a joke still harmful?",
+      "what makes people truly alike?",
+      "why do good manners hold the world together?"
+    ]
+  },
+  "101": {
+    "topic": "Wealth that is never shared. A miser who hoards and gives nothing is a burden on the earth. Unused wealth is a poison-fruit tree in the middle of a town.",
+    "modern_words": "hoarding, miser, stingy, not sharing, greed, selfish wealth, saving without spending, wealth without generosity",
+    "questions_clean": [
+      "what does Thirukkural say about hoarding?",
+      "why is a miser worse than a poor person?",
+      "what happens to wealth nobody enjoys?",
+      "should I spend on myself or others?",
+      "why is unused money worthless?"
+    ]
+  },
+  "102": {
+    "topic": "Shame in the right sense - shrinking from doing wrong. Food and clothing are common to all, and modesty is what marks the higher person. Those without it move like puppets on strings.",
+    "modern_words": "shame, conscience, guilt, modesty, sense of right and wrong, embarrassment about wrongdoing, moral sense",
+    "questions_clean": [
+      "what does Thirukkural say about conscience?",
+      "what separates a person from an animal?",
+      "what happens to someone with no sense of shame?",
+      "is shame a weakness or a strength?",
+      "why do the shameless act like puppets?"
+    ]
+  },
+  "103": {
+    "topic": "Raising your family and household. There is no greatness like saying I shall work without slacking. Ardent effort and ripe wisdom raise a home, while sloth and pride destroy honour.",
+    "modern_words": "family, providing, supporting a household, raising your family's status, responsibility, breadwinner, family duty",
+    "questions_clean": [
+      "what does Thirukkural say about supporting a family?",
+      "what does it take to raise a household?",
+      "what destroys a family's standing?",
+      "how much responsibility rests on one person?",
+      "what should I resolve if I want my family to rise?"
+    ]
+  },
+  "104": {
+    "topic": "Farming as the foundation of everything. Ploughmen lead, the rest follow. Those who plough and eat live truly - the rest bow to them and eat. Even monks suffer if farmers fold their hands.",
+    "modern_words": "farming, agriculture, ploughing, food production, farmers, growing crops, land, cultivation, food supply",
+    "questions_clean": [
+      "what does Thirukkural say about farmers?",
+      "what happens if farmers stop working?",
+      "why are ploughmen called the foundation of the world?",
+      "what does the land give to those who work it?",
+      "why does everyone depend on agriculture?"
+    ]
+  },
+  "105": {
+    "topic": "Poverty. Nothing pinches like being poor. Want kills good speech and family standing, makes even a mother look like a stranger, and takes away sleep entirely.",
+    "modern_words": "poverty, being poor, hardship, financial struggle, want, lack of money, deprivation, struggling to survive",
+    "questions_clean": [
+      "what does Thirukkural say about being poor?",
+      "why do poor people's words get ignored?",
+      "how does money affect family relationships?",
+      "what is the worst pain a person can feel?",
+      "why can the poor not sleep?"
+    ]
+  },
+  "106": {
+    "topic": "Asking for help when there is real need. Ask those who can give - the fault is theirs if they refuse. Asking becomes a joy when the thing comes without humiliation.",
+    "modern_words": "asking for help, requesting, seeking support, needing assistance, appealing to others, asking without shame",
+    "questions_clean": [
+      "when is it right to ask for help?",
+      "what does Thirukkural say about asking?",
+      "whose fault is it when someone refuses to give?",
+      "how should I ask without losing dignity?",
+      "why does the world need both givers and askers?"
+    ]
+  },
+  "107": {
+    "topic": "The dread of having to beg. Not begging is worth more than any treasure. Thin gruel earned by your own sweat is sweeter than anything given. The word no kills the beggar.",
+    "modern_words": "begging, dependence, relying on others, self-reliance, earning your own way, dignity of work, humiliation of asking",
+    "questions_clean": [
+      "why is earning my own food better?",
+      "what does Thirukkural say about dependence?",
+      "how does it feel to be refused?",
+      "why is self-reliance so important?",
+      "what does begging cost a person's dignity?"
+    ]
+  },
+  "108": {
+    "topic": "Baseness. The mean look like people only in shape. They cannot keep a secret, they act only from fear or craving, and they will sell themselves to escape trouble.",
+    "modern_words": "base people, low character, mean people, worthless person, contemptible, cannot keep secrets, unprincipled",
+    "questions_clean": [
+      "what marks a person of low character?",
+      "why can the base not keep secrets?",
+      "what drives people with no principles?",
+      "how do mean people treat others?",
+      "what is the difference between the good and the base?"
+    ]
+  },
+  "109": {
+    "topic": "The shock of falling in love at first sight. Is she an angel, a peacock, a jewelled woman? Her glances are darts. Nothing delights like love at first sight.",
+    "modern_words": "love at first sight, attraction, falling in love, first meeting, infatuation, being struck by someone, beauty, desire",
+    "questions_clean": [
+      "what does Thirukkural say about attraction?",
+      "why does one look change everything?",
+      "how does love begin?",
+      "what do her eyes do to him?",
+      "is love at first sight real?"
+    ]
+  },
+  "110": {
+    "topic": "Reading the signs that she feels the same. Her glance darts and returns, she looks and lowers her head, she smiles sideways. When eyes agree, words are unnecessary.",
+    "modern_words": "signs she likes me, mutual attraction, flirting, reading signals, does she like me back, unspoken feelings, eye contact",
+    "questions_clean": [
+      "what are the signs someone is interested?",
+      "what does Thirukkural say about unspoken love?",
+      "can eyes say what words cannot?",
+      "what does a sideways smile mean?",
+      "how do lovers understand each other without speaking?"
+    ]
+  },
+  "111": {
+    "topic": "The joy of the embrace. In her dwell the joys of sight, sound, touch, taste and smell. The best embrace is the one that lets no air pass between two people.",
+    "modern_words": "embrace, hugging, physical closeness, intimacy, touch, holding someone, being close, physical love, affection",
+    "questions_clean": [
+      "why does closeness feel like all five senses at once?",
+      "what is the perfect embrace?",
+      "what does physical intimacy mean in love?",
+      "why is being held by someone you love so powerful?",
+      "what does touch do that words cannot?"
+    ]
+  },
+  "112": {
+    "topic": "Praising the beauty of the woman he loves. Comparing her to flowers, the moon and pearls - and finding every comparison falls short. Even soft flowers feel like nettles to her feet.",
+    "modern_words": "beauty, praising someone's looks, compliments, admiration, describing a woman, attraction, adoration, physical beauty",
+    "questions_clean": [
+      "what does Thirukkural say about a woman's beauty?",
+      "how do lovers describe each other?",
+      "why does the moon get compared to a face?",
+      "what compliments does a man give his beloved?",
+      "how does love make someone look?"
+    ]
+  },
+  "113": {
+    "topic": "Declaring that this love is beyond everything. Love between them is like the bond between soul and body. Life with her is existence, separation from her is death.",
+    "modern_words": "deep love, true love, being in love, devotion, one true person, love above everything, soulmate, belonging together",
+    "questions_clean": [
+      "what does Thirukkural say about deep love?",
+      "how does it feel to love someone completely?",
+      "what is life without the person you love?",
+      "why is love compared to soul and body?",
+      "can one person mean everything?"
+    ]
+  },
+  "114": {
+    "topic": "Losing all reserve because of love. Passion sweeps away shame and dignity like a flood taking a raft. Love roams the public street believing nobody knows.",
+    "modern_words": "losing control, shamelessness in love, obsession, giving up dignity, desperate love, being consumed, unable to hide feelings",
+    "questions_clean": [
+      "what does love do to a person's dignity?",
+      "why can people not hide when they are in love?",
+      "what does Thirukkural say about losing self-control in love?",
+      "how does passion overwhelm shame?",
+      "why do lovers act foolishly?",
+      "can love be kept secret?"
+    ]
+  },
+  "115": {
+    "topic": "When the town starts talking about the lovers. Rumour actually feeds this love rather than killing it - scandal is manure and the mother's scolding is water for the plant.",
+    "modern_words": "gossip, rumours, people talking, scandal, town talk, reputation, being talked about, secret relationship exposed",
+    "questions_clean": [
+      "what does Thirukkural say about scandal?",
+      "does gossip destroy or strengthen love?",
+      "why do lovers welcome rumours?",
+      "how do families react to a secret romance?",
+      "what happens when a relationship becomes public?"
+    ]
+  },
+  "116": {
+    "topic": "Separation that cannot be borne. Tell me the day of your return before you go. Fire burns only what it touches, but parting from someone you love burns deeper.",
+    "modern_words": "separation, being apart, long distance, missing someone, leaving, goodbye, parting, absence, waiting for someone",
+    "questions_clean": [
+      "what does Thirukkural say about separation?",
+      "why does parting hurt more than fire?",
+      "how do I bear being apart from someone?",
+      "what does waiting for someone feel like?",
+      "why is a goodbye so painful?"
+    ]
+  },
+  "117": {
+    "topic": "Complaining about love-sickness. The pain swells like water baled from a spring. It cannot be concealed and it cannot be complained of, out of shame towards the one who caused it.",
+    "modern_words": "heartache, love-sickness, pining, suffering in love, longing, emotional pain, unable to sleep, aching for someone",
+    "questions_clean": [
+      "what is love-sickness?",
+      "why can I not stop thinking about someone?",
+      "what does Thirukkural say about longing?",
+      "how do I bear a pain I cannot speak about?",
+      "why does night feel longest when you miss someone?"
+    ]
+  },
+  "118": {
+    "topic": "Eyes worn out with crying. The eyes that first showed him now weep endlessly. It is strange that the eyes which chose him are the ones now suffering for it.",
+    "modern_words": "crying, tears, weeping, sleepless eyes, sadness, heartbreak, grief in love, sorrow, eyes swollen from crying",
+    "questions_clean": [
+      "what does Thirukkural say about tears?",
+      "why does heartbreak show in the eyes?",
+      "how does sleeplessness come from love?",
+      "what happens to eyes that chose the wrong person?",
+      "why do I cry over someone who left?"
+    ]
+  },
+  "119": {
+    "topic": "The pale colour that comes over the body when the lover leaves. Pallor claims her the moment his arms let go, the way darkness waits for a light to go out.",
+    "modern_words": "looking pale, losing colour, wasting away, physical signs of grief, appearance changing from sadness, looking ill",
+    "questions_clean": [
+      "what does grief do to the body?",
+      "why does sadness show in a person's face?",
+      "what does Thirukkural say about pining?",
+      "how does the body react to losing someone?",
+      "why do people look ill when they are heartbroken?"
+    ]
+  },
+  "120": {
+    "topic": "The pain of loving alone. One-sided love hurts, while love from both sides balances like a shoulder pole. What can a lover do who does not return your feeling?",
+    "modern_words": "one-sided love, unrequited love, loving someone who does not love back, rejection, unreturned feelings, loneliness",
+    "questions_clean": [
+      "what is one-sided love like?",
+      "what does Thirukkural say about unreturned love?",
+      "why does loving alone hurt so much?",
+      "how is mutual love different from one-sided love?",
+      "what can I do if my love is not returned?"
+    ]
+  },
+  "121": {
+    "topic": "Remembering the beloved. Love is sweeter than wine because even the thought of it brings delight. Pain leaves at the thought of him.",
+    "modern_words": "memories, remembering someone, thinking about a person, nostalgia, missing someone, reminiscing, thoughts of a lover",
+    "questions_clean": [
+      "why is thinking about love sweeter than wine?",
+      "what does Thirukkural say about memories of a lover?",
+      "how do memories ease pain?",
+      "why can I not stop thinking about someone?",
+      "does remembering someone help or hurt?"
+    ]
+  },
+  "122": {
+    "topic": "Meeting the lover in dreams. In waking hours he does not come, but in dreams they meet and linger. Sleep becomes better than being awake.",
+    "modern_words": "dreams, dreaming about someone, sleep, night, seeing someone in a dream, escaping into sleep, imagination",
+    "questions_clean": [
+      "why do I dream about the person I love?",
+      "what does Thirukkural say about dreams?",
+      "is meeting someone in a dream better than not at all?",
+      "why is sleep sweeter than waking when you miss someone?",
+      "what happens in a lover's dreams?"
+    ]
+  },
+  "123": {
+    "topic": "Grief at evening time. Evening is not gentle - it is a killing dart to a woman whose husband is away. The pain buds at dawn, grows all day, and blooms at dusk.",
+    "modern_words": "evening, dusk, nightfall, loneliness at night, sunset sadness, missing someone at the end of the day, twilight grief",
+    "questions_clean": [
+      "why is evening the hardest time?",
+      "what does Thirukkural say about loneliness at dusk?",
+      "why does sadness grow as the day ends?",
+      "how does night change how grief feels?",
+      "what happens to a lonely person at sunset?"
+    ]
+  },
+  "124": {
+    "topic": "The body wasting away in the lover's absence. Arms that swelled on the wedding day now shrink, and bracelets slip off. The body itself announces that he has gone.",
+    "modern_words": "losing weight, wasting away, physical decline, looking thin, body changing from grief, health failing from sadness",
+    "questions_clean": [
+      "what does grief do to the body?",
+      "why do bracelets slip from thin arms?",
+      "what does Thirukkural say about wasting away?",
+      "how does the body show what the heart feels?",
+      "why do people lose weight when they are heartbroken?"
+    ]
+  },
+  "125": {
+    "topic": "Talking to your own heart. O heart, why do you pine for someone who has no love for you? Yet the heart will not desert him.",
+    "modern_words": "talking to yourself, inner conflict, arguing with your own feelings, self-talk, heart versus head, emotional struggle",
+    "questions_clean": [
+      "what does Thirukkural say about arguing with your own heart?",
+      "why does my heart want someone who hurt me?",
+      "how do I stop wanting a person who left?",
+      "what is the conflict between mind and feeling?",
+      "why can I not reason with my own emotions?",
+      "how do I let go of someone?"
+    ]
+  },
+  "126": {
+    "topic": "Reserve finally breaking down. Passion's axe breaks the door that honour bolted. She was proud of her self-restraint and lust betrayed it.",
+    "modern_words": "giving in, losing self-control, restraint breaking, desire winning, willpower failing, being overcome by feeling",
+    "questions_clean": [
+      "what happens when self-control breaks down in love?",
+      "what does Thirukkural say about desire overpowering dignity?",
+      "why does restraint fail?",
+      "how does passion break through honour?",
+      "can a person hide love forever?",
+      "what wins - pride or longing?"
+    ]
+  },
+  "127": {
+    "topic": "Both waiting for each other. Eyes dim, fingers counting the days since he left. If he returns even for a day the joy will drive the pain away.",
+    "modern_words": "waiting, counting days, longing for a return, both missing each other, anticipation, reunion, hoping someone comes back",
+    "questions_clean": [
+      "what is it like to count days until someone returns?",
+      "what does Thirukkural say about waiting for a lover?",
+      "how long does a day feel when you are waiting?",
+      "what happens when both people miss each other?",
+      "how does hope feel during separation?"
+    ]
+  },
+  "128": {
+    "topic": "Reading the signs on her body. She hides it, but her painted eyes report what she surmises. Something shines through her jewelled charm like a thread through a wreath.",
+    "modern_words": "reading signals, body language, hidden feelings showing, guessing what someone feels, subtle signs, unspoken thoughts",
+    "questions_clean": [
+      "what does Thirukkural say about hidden feelings?",
+      "how do feelings show even when hidden?",
+      "what do the eyes reveal that the mouth does not?",
+      "how do lovers read each other?"
+    ]
+  },
+  "129": {
+    "topic": "Wanting to be together again. Rapture at the thought and joy at the sight belong to love, not to wine. When passion grows tall, sulking is wrong.",
+    "modern_words": "reunion, wanting to be together, making up, longing for someone, ending a quarrel, desire to reconcile",
+    "questions_clean": [
+      "what does Thirukkural say about wanting someone back?",
+      "how does it feel to see someone you have missed?",
+      "should I keep sulking when I want them back?",
+      "what happens when lovers reunite?",
+      "why does love beat wine for joy?"
+    ]
+  },
+  "130": {
+    "topic": "Arguing with your own heart for betraying you. His heart is his alone - why is mine not my own? The heart follows him at will despite the slights.",
+    "modern_words": "inner conflict, self-reproach, heart not obeying, blaming yourself, emotional weakness, wanting someone who hurts you",
+    "questions_clean": [
+      "what does Thirukkural say about arguing with your own heart?",
+      "why does my heart betray me?",
+      "how do I stop wanting someone who slights me?",
+      "why can I not control my own feelings?",
+      "what does self-reproach in love feel like?",
+      "why is my heart not my own?"
+    ]
+  },
+  "131": {
+    "topic": "The lover's sulk. Pretend to sulk so his distress shows. Sulking is the salt of love - but too much of it spoils the taste.",
+    "modern_words": "sulking, pouting, playful arguments, mock anger, teasing, lovers' quarrel, pretending to be upset, making up",
+    "questions_clean": [
+      "what does Thirukkural say about sulking in love?",
+      "why do lovers pretend to be angry?",
+      "how much sulking is too much?",
+      "why is a small quarrel called the salt of love?",
+      "what happens when a sulk goes on too long?"
+    ]
+  },
+  "132": {
+    "topic": "Pretended anger between lovers. She takes offence at everything he says - if he praises her she asks compared to whom, if he sneezes she asks whose thought caused it.",
+    "modern_words": "mock anger, playful jealousy, teasing, pretend fights, lovers' games, taking offence for fun, feigned annoyance",
+    "questions_clean": [
+      "why does she take offence at everything?",
+      "what does Thirukkural say about playful jealousy?",
+      "how do lovers tease each other?",
+      "why do small things start pretend fights?",
+      "what makes a quarrel affectionate rather than real?"
+    ]
+  },
+  "133": {
+    "topic": "The pleasure of a short falling-out. Love fades first and then blooms brighter after a small quarrel. Sulking after an embrace is sweeter than the embrace itself.",
+    "modern_words": "making up, reconciliation, quarrel and reunion, the sweetness of making peace, short fights, love growing after a fight",
+    "questions_clean": [
+      "why do lovers fight and then feel closer?",
+      "what does Thirukkural say about making up?",
+      "is a small quarrel good for love?",
+      "why is reunion sweeter after a fight?",
+      "how does love grow after a disagreement?"
+    ]
+  }
+}

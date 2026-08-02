@@ -89,8 +89,20 @@ throws it away.
 **What to learn:** confidence intervals on a proportion; paired vs unpaired
 comparison; McNemar's test; why n=100 is small; bootstrap resampling.
 
-**How to close it:** add a significance column to `evaluate.py` so no future
-change gets accepted on a difference that could be noise. Half a day.
+**PARTLY CLOSED 2026-08-02.** McNemar's test is now built into
+`src/measure_chapters.py` and `src/benchmark_chapters.py`, and it did real
+work on its first outing: a 5-point gain measured p = 0.125 on 100 questions
+and was NOT claimed. A power calculation said 200 questions would settle it;
+the set was grown to 233 and the same change came back p = 0.0129. The claim
+is now earned rather than assumed.
+
+**Still open:** `evaluate.py` itself has no significance column, so the main
+comparison table can still hand back differences that might be noise.
+
+**What this exposed:** the 100-question golden set was the limiting factor on
+the whole project. It caught 44->52 and 75->85 easily because those were large.
+It cannot settle 5-point changes, and every improvement from here will be that
+size or smaller. **The ruler, not the model, is what needs to grow.**
 
 **Why it matters for the career:** "we improved recall by 2%" with n=100 is a
 claim that will be challenged in any serious interview or review. Knowing which
@@ -258,3 +270,13 @@ the work.
 - **2026-08-02** — file created. GAP 1 found by computing confidence intervals
   on our own results and discovering the question had never been asked. GAP 2
   through GAP 7 recorded from evidence across Phases 3–5.
+- **2026-08-02, later** — GAP 1 partly closed: the paired test is now in the
+  code and refused a 5-point claim at p = 0.125, which was then earned at
+  p = 0.0129 on a 233-question set.
+- **2026-08-02, later** — GAP 2 (spotting leakage) got worse before it got
+  better. Writing 133 chapter descriptions, 121 of my 798 generated questions
+  were verbatim copies of golden-set questions. I had planned the safeguard
+  ("keep the file closed") and it did not work, because the questions were
+  already in context. **A plan to not-look is not a control. An automatic
+  check is.** The verbatim check that caught it, and the vocabulary-overlap
+  check written afterwards, are now part of the workflow.
