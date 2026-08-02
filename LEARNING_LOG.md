@@ -1239,3 +1239,108 @@ It took one extra measurement and 133 more questions.
 
 The alternative was shipping "85 -> 90" as a fact when the evidence did not
 support it.
+
+### HyDE — rewriting the question as an ANSWER. 144 -> 163 of 233, p = 0.0034
+
+Vikash's idea, and it turned out to be a published technique: **HyDE**,
+Hypothetical Document Embeddings. His words: *"any question would be
+transformed into answer, how to control anger will be turned into controlling
+anger so that actual answer is looked up not a rhetorical question"*.
+
+From the literature: *"a hypothetical answer shares the vocabulary, length and
+structure of real answers, so its nearest neighbours are real answers rather
+than other similarly-phrased questions."* That last clause is our kural 251
+failure stated exactly.
+
+Model: **Qwen3-1.7B**, Apache 2.0, run at its own bfloat16 precision. No
+quantization (CLAUDE.md 3.5).
+
+```
+question set          word list      HyDE     gain
+A  golden 100            90/100    93/100       +3
+B  per-chapter 133       54/133    70/133      +16
+A + B  all 233          144/233   163/233      +19
+
+word list right, HyDE wrong: 10
+word list wrong, HyDE right: 29
+p = 0.0034  -> REAL
+```
+
+**The prediction held.** Written down before the run: HyDE would help set B far
+more than set A, because set B carries the awkward real-world phrasings a fixed
+word list cannot handle. +16 against +3.
+
+The clearest single case in the project:
+
+```
+Q     "I open my laptop and end up doing nothing for hours"
+
+list  open laptop end doing nothing hours      <- searches for LAPTOP
+hyde  using laptop, wasting time, idleness,
+      procrastination, inactivity              <- finds the sloth chapter
+```
+
+Deleting words has nothing useful to delete here, so it searches a 2000-year-old
+Tamil text for "laptop". The model recognises the situation and writes in
+**idleness** - a word the corpus actually uses. Term injection, doing the exact
+job it was chosen for.
+
+### Where the golden 100 stands
+
+```
+44   plain embedding search
+85   + rewrite, chapter blend, keyword, rerank
+90   + real hand-written chapter descriptions
+93   + HyDE
+```
+
+### The caveat that must not be dropped
+
+**Set A gained only 3 points, and set A is the better-built set.** Its answer
+key includes 200 hand-checked cross-chapter verses; set B's accepts only the
+one chapter a question was written for. Part of that +16 may be HyDE steering
+harder toward a single chapter - which set B rewards by construction and
+reality may not. The honest headline is the combined +19 at p = 0.0034, not
+the +16.
+
+### Three CPU facts measured on the way, all counter-intuitive
+
+**1. Using MORE memory made the model FASTER.**
+
+```
+bfloat16 (as stored)   16.7 s   2.2 GB
+float32  (upcast)      12.6 s  10.6 GB
+```
+
+This CPU (Ryzen 5700U) has no native bfloat16, so every bfloat16 calculation
+was converted up to float32, computed, converted back. Smaller numbers are only
+faster on hardware that can actually do them.
+
+**2. Capping the output changed nothing.** 60, 32 and 24 token limits all took
+16 s, because the model was already stopping at 15 tokens. The cost is
+per-word overhead, not word count.
+
+**3. The right library for one job is the wrong one for another.**
+`transformers` is excellent for the reranker - one pass over 50 pairs, done.
+It is wrong for generation, which runs the whole model once per word and pays
+that overhead fifteen times. 15 words in 16 seconds is about 1 word/second,
+where this machine should manage 10-20.
+
+### Speed is now the blocking question, and it was right to park it
+
+Vikash: *"we are not building for this machine, we are going to host in some
+service"* - correct, and it cuts the other way. The free host we researched
+(Oracle, 2 cores) is WEAKER than this laptop (8 cores), so 16.8 s is an
+optimistic number, not a pessimistic one.
+
+He chose to measure quality before speed. That was the right order: if HyDE had
+not helped, the hosting question would never have needed answering. It helped,
+so now it does.
+
+### A process note worth keeping
+
+The 233 rewrites printed no progress for 51 minutes and looked hung. They were
+not - Python buffers stdout when it is piped instead of going to a terminal.
+`python -u` avoids it. Separately, a wait-loop written as
+`until ! pgrep -f benchmark_hyde` never exits, because the loop's own command
+line contains that text and matches itself.
