@@ -363,7 +363,7 @@ def main():
     production_seconds = 0.0
     for question_index, question_entry in enumerate(golden_questions):
         started_at = time.time()
-        ranking_scores, _, _, _ = retriever.rank_everything(
+        ranking_scores, _, _, _, _ = retriever.rank_everything(
             question_entry["question"])
         production_seconds += time.time() - started_at
         production_scores[question_index] = ranking_scores

@@ -151,6 +151,10 @@ export function getDemoResponse(key: string): SearchResponse | null {
             groundedIn: results.length,
             meta: scenario.meta,
           },
+    // Says plainly that this did not come from a real search, so a demo
+    // screenshot can never be mistaken for a measured result. The API route
+    // replaces it with the real request id for genuine searches.
+    requestId: `demo-${scenario.key}`,
   };
 }
 

@@ -1,6 +1,7 @@
 import "server-only";
 
 import { allKurals, getKural } from "./corpus";
+import { recordError } from "./logger";
 import type {
   Confidence,
   Kural,
@@ -15,15 +16,16 @@ import type {
  * ============================================================================
  *
  * `embeddingEngine` is the real retriever, added 2026-08-02: it calls the
- * Python service in service/app.py, which embeds the question, scores all 1330
- * verses by meaning and by keyword, and rereads the top 50 with a
- * cross-encoder. Measured at 85 of 100 on the golden set in data/golden_set.json.
+ * Python service in service/app.py, which has Sarvam-105B rewrite the question
+ * into the vocabulary the verses use, scores all 1330 verses by meaning and by
+ * keyword, and rereads the top 50 with a cross-encoder. Measured at 90 of 100
+ * on the golden set in data/golden_set.json.
  *
  * `lexicalEngine` is what shipped before it, and it stays. It is word overlap:
  * it finds a verse when the question happens to use the same words the
  * translation uses, and misses when it does not. Ask it "how do I keep my
  * temper" and it finds little, because no translation uses the word "temper".
- * That exact gap is what the embeddings closed — 44 of 100 to 85 of 100.
+ * That exact gap is what the embeddings closed — 44 of 100 to 90 of 100.
  *
  * It is kept because the real engine lives in another process, and a process
  * can be down. `resilientEngine` falls back to it and CHANGES THE ENGINE NAME
@@ -61,7 +63,17 @@ export interface RetrievalEngine {
    * than loaded per request. The word-overlap engine does no I/O at all and
    * simply satisfies the same signature.
    */
-  search(query: string, limit: number): Promise<RetrievalOutcome>;
+  /**
+   * `requestId` is optional and is passed straight through to the Python
+   * service, which writes it into its own log. Both sides logging the same id
+   * is what lets one question's two log lines be read together afterwards.
+   * Engines that make no network call simply ignore it.
+   */
+  search(
+    query: string,
+    limit: number,
+    requestId?: string,
+  ): Promise<RetrievalOutcome>;
 }
 
 // ---------------------------------------------------------------------------
@@ -362,6 +374,14 @@ interface ServiceResponse {
   query: string;
   queryLanguage: QueryLanguage;
   searchedFor: string;
+  /**
+   * What produced `searchedFor`. Either the model's name, or a plain sentence
+   * saying why there was no rewrite. The rewriter is the only part of the
+   * pipeline that leaves the machine, so it is the only part that can be
+   * missing while everything else still works — and a search running without
+   * it scores about 144 of 233 instead of 170. That gap must be visible.
+   */
+  rewrittenBy: string;
   results: { kural: { number: number }; score: number }[];
   topScore: number;
   confidence: Confidence;
@@ -372,9 +392,9 @@ interface ServiceResponse {
 }
 
 export const embeddingEngine: RetrievalEngine = {
-  name: "LaBSE + BM25 + cross-encoder rerank",
+  name: "Sarvam HyDE + LaBSE + BM25 + cross-encoder rerank",
   description:
-    "Rewrites the question to its bare topic, scores every one of the 1330 verses by meaning and by keyword, blends in the chapter signal, then rereads the top 50 against the question with a cross-encoder. Measured at 85 of 100 on a hand-built English question set.",
+    "Rewrites the question into the vocabulary the verses actually use with Sarvam-105B, scores every one of the 1330 verses by meaning and by keyword, blends in the chapter signal, then rereads the top 50 against the original question with a cross-encoder. Measured at 90 of 100 on a hand-built English question set, and 170 of 233 on the wider set.",
 
   /*
    * STILL FALSE, AND STILL FOR A MEASURED REASON.
@@ -394,13 +414,15 @@ export const embeddingEngine: RetrievalEngine = {
   highConfidence: 1.01, // unreachable on purpose while uncalibrated
   floor: 0,
 
-  async search(query, limit) {
+  async search(query, limit, requestId) {
     const startedAt = performance.now();
     const url = `${RETRIEVAL_SERVICE_URL}/search?q=${encodeURIComponent(query)}&limit=${limit}`;
 
     const response = await fetch(url, {
       signal: AbortSignal.timeout(SERVICE_TIMEOUT_MS),
       cache: "no-store",
+      // Carried into the Python service's log line for this same search.
+      headers: requestId ? { "X-Request-Id": requestId } : undefined,
     });
     if (!response.ok) {
       throw new Error(`retrieval service returned ${response.status}`);
@@ -423,7 +445,13 @@ export const embeddingEngine: RetrievalEngine = {
       results,
       topScore: payload.topScore,
       confidence: payload.confidence,
-      engine: this.name,
+      // The rewriter can be down while the rest of the pipeline is fine. When
+      // that happens the reader is looking at a measurably worse search, so
+      // the engine name says so — the same rule as the service-down fallback
+      // below. A degraded search must never wear the full engine's name.
+      engine: payload.rewrittenBy.startsWith("none (rewriter")
+        ? `${this.name} — DEGRADED, the question was not rewritten`
+        : this.name,
       // measured here, not there: this includes the network hop the reader
       // actually waits through
       elapsedMs: Math.round((performance.now() - startedAt) * 10) / 10,
@@ -443,12 +471,17 @@ export const embeddingEngine: RetrievalEngine = {
 export const resilientEngine: RetrievalEngine = {
   ...embeddingEngine,
 
-  async search(query, limit) {
+  async search(query, limit, requestId) {
     try {
-      return await embeddingEngine.search(query, limit);
+      return await embeddingEngine.search(query, limit, requestId);
     } catch (error) {
       const reason = error instanceof Error ? error.message : "unknown error";
-      console.warn(`[retrieval] service unavailable (${reason}); falling back`);
+      recordError({
+        requestId: requestId ?? "-",
+        whatFailed: "retrieval service unreachable",
+        message: reason,
+        query,
+      });
 
       const fallback = await lexicalEngine.search(query, limit);
       return {

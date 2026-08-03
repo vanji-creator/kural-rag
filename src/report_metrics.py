@@ -35,7 +35,7 @@ def main():
     total_seconds = 0.0
     for question_index, question_entry in enumerate(golden_questions):
         started_at = time.perf_counter()
-        ranking_scores, _, _, _ = retriever.rank_everything(
+        ranking_scores, _, _, _, _ = retriever.rank_everything(
             question_entry["question"])
         total_seconds += time.perf_counter() - started_at
         all_scores[question_index] = ranking_scores

@@ -290,7 +290,19 @@ export function SearchExperience({
       notices.push({
         kind: "Scores are not calibrated",
         meta: `top score ${retrieval.topScore.toFixed(2)}`,
-        text: "This number ranks the verses against each other, and nothing more. It cannot tell you whether the Thirukkural addresses your question: measured on this engine, “who won the football world cup” scores 0.85, higher than most real questions, because those three words all appear somewhere in the translations. Until retrieval understands meaning, the interface will not claim confidence and will not refuse on your behalf. Judge the verses yourself.",
+        // MEASURED ON THIS ENGINE, 2026-08-02 — src/calibrate.py.
+        //
+        // The old text here described the WORD-OVERLAP engine, where "who won
+        // the football world cup" scored 0.85. That engine is gone. Leaving
+        // its number on screen under a different engine's results was the
+        // exact sin this notice exists to prevent, and it sat there for a day.
+        //
+        // What is true now: 14 of 15 off-topic questions score exactly 0.000
+        // — the failure reversed direction. But it did not go away, because a
+        // real question ("how do I finish what I start") also scored 0.000.
+        // So a refusal threshold anywhere above zero would turn away genuine
+        // questions, and the interface still refuses nothing.
+        text: "This number ranks the verses against each other, and nothing more. It cannot tell you whether the Thirukkural addresses your question. Measured on this engine: 14 of 15 off-topic questions score 0.000 — but so does at least one real question, so a cut-off would turn away questions the book does answer. Until that separation is clean the interface will not claim confidence and will not refuse on your behalf. A score of 0.00 means the verses were ranked and none stood out; read them and judge for yourself.",
       });
     } else if (retrieval.confidence === "low") {
       notices.push({
@@ -484,10 +496,6 @@ export function SearchExperience({
               </p>
             </div>
 
-            {notices.map((notice) => (
-              <NoticeBlock key={notice.kind} notice={notice} />
-            ))}
-
             {answer && (
               <div style={{ display: "grid", gap: "var(--s4)" }}>
                 <div className="railhead">
@@ -592,6 +600,21 @@ export function SearchExperience({
                 </p>
               </div>
               <ExampleRow onRun={runSearch} withLabel={false} />
+            </div>
+          )}
+
+          {/*
+            The honesty notices sit BELOW the verses, not above them.
+            They used to come first, which meant three paragraphs of caveat
+            stood between a person and the thing they asked for. The caveats
+            are still shown in full and none has been softened — they are just
+            no longer the first thing on the screen.
+          */}
+          {notices.length > 0 && (
+            <div className="notices-foot" style={{ display: "grid", gap: "var(--s4)" }}>
+              {notices.map((notice) => (
+                <NoticeBlock key={notice.kind} notice={notice} />
+              ))}
             </div>
           )}
         </section>

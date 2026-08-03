@@ -20,3 +20,15 @@ numpy>=1.24
 # the retrieval service
 fastapi>=0.110
 uvicorn[standard]>=0.27
+
+# talking to the hosted language model that rewrites the question.
+#
+# This is the OpenAI company's client library, but it is NOT used to talk to
+# OpenAI. It is used to talk to Sarvam. Every provider copied the request
+# format OpenAI published, so one client reaches all of them by changing the
+# address - which is what makes comparing Sarvam against Gemini or Claude a
+# one-word change instead of a rewrite. See src/llm.py.
+openai>=1.40
+
+# reads the API key out of the .env file, which is in .gitignore
+python-dotenv>=1.0

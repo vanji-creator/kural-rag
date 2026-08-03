@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "service": "venv/bin/uvicorn service.app:app --port 8000",
+    "stack": "./run.sh",
+    "logs": "venv/bin/python src/read_logs.py",
+    "audit": "venv/bin/python src/audit_wiring.py"
   },
   "dependencies": {
     "next": "^15.1.0",

@@ -15,6 +15,24 @@ is what it earned on the 100-question golden set in data/golden_set.json:
     + blend in the chapter signal at weight 0.5                  +3
     + BM25 keyword search alongside, weight 0.3                  75
     + rerank the top 50 with a cross-encoder                     85
+    + hand-written chapter descriptions instead of glued text    90
+
+Set A is close to finished. When stage one hands 50 candidates to the
+reranker, only 94 of those 100 questions have a correct kural in the pile at
+all, so 90 is 90 out of a reachable 94. Further gains have to come from stage
+one, not from anything downstream of it.
+
+The wider 233-question set is where the rewriter was chosen. Same pipeline
+throughout, only the rewrite changed:
+
+    word list, strip 111 words (src/rewrite_query.py)          144 / 233
+    Qwen3-1.7B running on this laptop                          155 / 233
+    Sarvam-105B over the internet                              170 / 233
+
+Sarvam beats the word list with p = 0.0000 - settled. Against the local model
+p = 0.0534, just the wrong side of the line, so it is NOT proven better than
+Qwen and nothing here claims it is. It ships because the local model needs
+about 100 seconds per question on a real host and this needs half a second.
 
 Two of those look obvious and are not:
 
@@ -45,7 +63,8 @@ from sentence_transformers import SentenceTransformer
 
 from keyword_search import BM25Index
 from rerank import (RERANKER_MODEL_NAME, Reranker, rerankable_text)
-from rewrite_query import rewrite
+from rewrite_hyde import (REWRITER_FAILED, REWRITER_SKIPPED_TAMIL,
+                          HydeRewriter)
 
 # ----------------------------------------------------------------------
 # where things live
@@ -128,12 +147,13 @@ def confidence_for(top_score):
     return "none"
 
 
-ENGINE_NAME = "LaBSE + BM25 + cross-encoder rerank"
+ENGINE_NAME = "Sarvam HyDE + LaBSE + BM25 + cross-encoder rerank"
 ENGINE_DESCRIPTION = (
-    "Rewrites the question to its bare topic, scores every verse by meaning "
-    "and by keyword, blends in the chapter signal, then rereads the top 50 "
-    "against the question with a cross-encoder. Measured at 85 of 100 on a "
-    "hand-built English question set."
+    "Rewrites the question into the vocabulary the verses use with "
+    "Sarvam-105B, scores every verse by meaning and by keyword, blends in the "
+    "chapter signal, then rereads the top 50 against the original question "
+    "with a cross-encoder. Measured at 90 of 100 on a hand-built English "
+    "question set, and 170 of 233 on the wider set."
 )
 
 
@@ -304,9 +324,25 @@ class KuralRetriever:
     shells out to.
     """
 
-    def __init__(self, use_reranker=True):
+    def __init__(self, use_reranker=True, use_rewriter=True):
         self.kurals = load_kurals()
         self.use_reranker = use_reranker
+
+        # The only part of this pipeline that leaves the machine. If the key
+        # is missing the whole retriever would refuse to start, which would
+        # take the site down over an optional improvement - so a missing key
+        # degrades to searching the question as typed, loudly.
+        self.rewriter = None
+        if use_rewriter:
+            try:
+                self.rewriter = HydeRewriter()
+                print(f"rewriter ready: "
+                      f"{self.rewriter.model_name}, "
+                      f"{len(self.rewriter.cache)} rewrites already cached")
+            except Exception as error:
+                print(f"NO REWRITER: {error}")
+                print("  searches will use the question as typed. Measured "
+                      "cost of that: 170/233 becomes about 144/233.")
 
         print(f"loading {EMBEDDING_MODEL_NAME}...")
         self.embedding_model = SentenceTransformer(EMBEDDING_MODEL_NAME)
@@ -328,6 +364,8 @@ class KuralRetriever:
 
         # question text -> finished results, most recently used last
         self.query_cache = OrderedDict()
+        # Filled in by rank_everything on every search, read by search().
+        self.last_timing_ms = {}
         print("retriever ready")
 
     # ------------------------------------------------------------------
@@ -363,28 +401,52 @@ class KuralRetriever:
     def rank_everything(self, question):
         """Score all 1330 kurals the way this pipeline really ranks them.
 
-        Returns three things:
+        Returns five things:
           ranking_scores  - order by these. Reranked candidates are lifted
                             above every non-candidate.
           display_scores  - what a number MEANS to a reader: stage-1 score
                             for most kurals, the reranker's 0-to-1 reading
                             for the ones it looked at.
           search_text     - what was actually searched for, after rewriting.
+          is_tamil        - was the question typed in Tamil script.
+          rewritten_by    - what produced search_text, in plain words. This
+                            travels to the browser so a degraded search can
+                            never quietly pass for a full one.
 
         search() shows the top few of this; evaluate.py grades the whole
         ordering. Both call THIS, so neither can drift from the other.
         """
-        # The rewrite strips an ENGLISH question-word list. Applied to Tamil
-        # it would do nothing useful, so Tamil questions are searched as
-        # typed - and reported as such, because our 85 is an English-only
-        # number and must never be implied to cover Tamil.
-        is_tamil = looks_like_tamil_script(question)
-        search_text = question if is_tamil else rewrite(question)
+        # Our 170/233 is an English-only number. The rewrite instruction is
+        # written in English and was measured on English questions only, so a
+        # Tamil question is searched exactly as typed and says so. Sarvam is
+        # an Indian-language model and may well rewrite Tamil beautifully -
+        # that is a reason to MEASURE it, not a reason to assume it.
+        # Each stage is timed separately. A single total tells you a search
+        # was slow; it cannot tell you WHICH part was slow, and those need
+        # completely different fixes - a slow rewrite is the network, a slow
+        # rerank is this machine's processor.
+        self.last_timing_ms = {}
 
+        is_tamil = looks_like_tamil_script(question)
+        started_at = time.perf_counter()
+        if is_tamil:
+            search_text, rewritten_by = question, REWRITER_SKIPPED_TAMIL
+        elif self.rewriter is None:
+            search_text, rewritten_by = question, REWRITER_FAILED
+        else:
+            search_text, rewritten_by = self.rewriter.rewrite(question)
+        self.last_timing_ms["rewrite"] = round(
+            (time.perf_counter() - started_at) * 1000, 1)
+
+        started_at = time.perf_counter()
         stage_one = self.stage_one_scores(search_text)
+        self.last_timing_ms["searchAll1330"] = round(
+            (time.perf_counter() - started_at) * 1000, 1)
+
         ranking_scores = stage_one.copy()
         display_scores = stage_one.copy()
 
+        started_at = time.perf_counter()
         if self.reranker is not None:
             candidate_positions = (
                 np.argsort(stage_one)[::-1][:RERANK_CANDIDATE_COUNT])
@@ -406,7 +468,11 @@ class KuralRetriever:
             # every kural the reranker never looked at.
             ranking_scores[candidate_positions] = 1.0 + reranked
 
-        return ranking_scores, display_scores, search_text, is_tamil
+        self.last_timing_ms["rerank"] = round(
+            (time.perf_counter() - started_at) * 1000, 1)
+
+        return (ranking_scores, display_scores, search_text, is_tamil,
+                rewritten_by)
 
     def search(self, question, top_k=DEFAULT_TOP_K):
         """The whole pipeline. Returns a dict shaped like RetrievalOutcome."""
@@ -420,7 +486,7 @@ class KuralRetriever:
 
         started_at = time.perf_counter()
 
-        ranking_scores, display_scores, search_text, is_tamil = (
+        ranking_scores, display_scores, search_text, is_tamil, rewritten_by = (
             self.rank_everything(question))
 
         best_positions = np.argsort(ranking_scores)[::-1][:top_k]
@@ -435,12 +501,16 @@ class KuralRetriever:
             "query": question,
             "queryLanguage": "ta" if is_tamil else "en",
             "searchedFor": search_text,
+            "rewrittenBy": rewritten_by,
             # Refusing means refusing: below the floor, nothing is listed.
             "results": [] if confidence == "none" else results,
             "topScore": top_score,
             "confidence": confidence,
             "calibrated": SCORES_ARE_CALIBRATED,
             "engine": ENGINE_NAME,
+            # Where the time went, stage by stage. The log records this, and
+            # src/read_logs.py reads it back to say which stage to work on.
+            "timingMs": dict(self.last_timing_ms),
             "elapsedMs": round((time.perf_counter() - started_at) * 1000, 1),
             "cached": False,
         }
@@ -463,6 +533,7 @@ def main():
     print()
     print(f'question:     "{outcome["query"]}"')
     print(f'searched for: "{outcome["searchedFor"]}"')
+    print(f'rewritten by: {outcome["rewrittenBy"]}')
     print(f'read as:      {outcome["queryLanguage"]}   '
           f'in {outcome["elapsedMs"]} ms')
     print()

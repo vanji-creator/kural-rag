@@ -64,9 +64,15 @@ class FastHydeRewriter:
 
     def rewrite(self, question):
         """One question in, one answer-shaped statement out."""
+        # Qwen3 reasons out loud before answering unless told not to. In
+        # transformers that is enable_thinking=False on the chat template;
+        # llama.cpp has no such flag, so we use the "/no_think" marker Qwen3
+        # itself recognises. Without it the model spends its whole token
+        # budget inside a <think> block and never reaches the answer.
         response = self.model.create_chat_completion(
             messages=[{"role": "system", "content": INSTRUCTION},
-                      {"role": "user", "content": f"question: {question}"}],
+                      {"role": "user",
+                       "content": f"question: {question} /no_think"}],
             max_tokens=MAX_NEW_TOKENS,
             temperature=0.0,  # same question -> same rewrite, every time
         )

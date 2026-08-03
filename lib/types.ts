@@ -131,6 +131,13 @@ export interface SearchResponse {
    * verses without it — an answer is the last thing added, not the first.
    */
   answer: AnswerParts | null;
+  /**
+   * Identifies this exact request in both log files — logs/web.jsonl from the
+   * web app and logs/searches.jsonl from the Python service. Returned to the
+   * browser so that "this search was wrong" can be reported with something
+   * that finds the request rather than something that describes it.
+   */
+  requestId: string;
 }
 
 export interface AnswerParts {

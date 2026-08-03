@@ -1,0 +1,2376 @@
+[
+  {
+    "question": "my nephew does wrong things and feels nothing",
+    "suppliedNumbers": [
+      865,
+      1297,
+      1243,
+      1248,
+      1245
+    ],
+    "verses": {
+      "865": {
+        "translation": "Crooked, cruel, tactless and base Any foe can fell him with ease",
+        "explanation": "(A) pleasing (object) to his foes is he who reads not moral works, does nothing that is enjoined by them cares not for reproach and is not possessed of good qualities",
+        "chapter": "The Might of Hatred"
+      },
+      "1297": {
+        "translation": "I forget shame but not his thought In mean foolish mind I'm caught",
+        "explanation": "I have even forgotten my modesty, having been caught in my foolish mind which is not dignified enough to forget him",
+        "chapter": "Expostulation with Oneself"
+      },
+      "1243": {
+        "translation": "O mind, why pine and sit moody? Who made you so pale lacks pity",
+        "explanation": "O my soul! why remain (here) and suffer thinking (of him)? There are no lewd thoughts (of you) in him who has caused you this disease of sorrow",
+        "chapter": "Soliloquy"
+      },
+      "1248": {
+        "translation": "Without pity he would depart! You sigh and seek his favour, poor heart!",
+        "explanation": "You are a fool, O my soul! to go after my departed one, while you mourn that he is not kind enough to favour you",
+        "chapter": "Soliloquy"
+      },
+      "1245": {
+        "translation": "He spurns our love and yet, O mind, Can we desert him as unkind?",
+        "explanation": "O my soul! can he who loves not though he is beloved, be forsaken saying he hates me (now)?",
+        "chapter": "Soliloquy"
+      }
+    },
+    "answer": "A person who does wrong things and feels no remorse is like a crooked and cruel person who can be easily defeated by their enemies [865]. This is because such a person does not read moral works, does not care for what is right, and lacks good qualities [865]. They are like a fool whose mind is not dignified enough to forget the person who has caused them sorrow [1297]. This foolish mind is caught in thoughts that lead to a lack of shame and modesty [1297]. The mind that pines and suffers for such a person is a poor heart that sighs and seeks the favour of someone who has departed without pity [1248]. Even though this person spurns love, the mind may feel it cannot desert them as unkind [1245].",
+    "parts": [
+      {
+        "text": "A person who does wrong things and feels no remorse is like a crooked and cruel person who can be easily defeated by their enemies ",
+        "cite": 865
+      },
+      {
+        "text": ". This is because such a person does not read moral works, does not care for what is right, and lacks good qualities ",
+        "cite": 865
+      },
+      {
+        "text": ". They are like a fool whose mind is not dignified enough to forget the person who has caused them sorrow ",
+        "cite": 1297
+      },
+      {
+        "text": ". This foolish mind is caught in thoughts that lead to a lack of shame and modesty ",
+        "cite": 1297
+      },
+      {
+        "text": ". The mind that pines and suffers for such a person is a poor heart that sighs and seeks the favour of someone who has departed without pity ",
+        "cite": 1248
+      },
+      {
+        "text": ". Even though this person spurns love, the mind may feel it cannot desert them as unkind ",
+        "cite": 1245
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        865,
+        865,
+        1297,
+        1297,
+        1248,
+        1245
+      ],
+      "real": [
+        865,
+        865,
+        1297,
+        1297,
+        1248,
+        1245
+      ],
+      "invented": [],
+      "distinctReal": [
+        865,
+        1245,
+        1248,
+        1297
+      ]
+    }
+  },
+  {
+    "question": "how does a king find out what is really happening?",
+    "suppliedNumbers": [
+      582,
+      542,
+      933,
+      588,
+      589
+    ],
+    "verses": {
+      "582": {
+        "translation": "All that happens, always, to all The king should know in full detail",
+        "explanation": "It is the duty of a king to know quickly (by a spy) what all happens, daily, amongst all men.",
+        "chapter": "Detectives"
+      },
+      "542": {
+        "translation": "The earth looks up to sky and thrives And mankind to king's rod of justice",
+        "explanation": "When there is rain, the living creation thrives; and so when the king rules justly, his subjects thrive",
+        "chapter": "The Right Sceptre"
+      },
+      "933": {
+        "translation": "If kings indulge in casting dice All their fortune will flow to foes",
+        "explanation": "If the king is incessantly addicted to the rolling dice in the hope of gain, his wealth and the resources thereof will take their departure and fall into other's hands",
+        "chapter": "Gambling"
+      },
+      "588": {
+        "translation": "The reports given by one spy By another spy verify",
+        "explanation": "Let not a king receive the information which a spy has discovered and made known to him, until he has examined it by another spy",
+        "chapter": "Detectives"
+      },
+      "589": {
+        "translation": "Engage the spies alone, apart When three agree confirm report",
+        "explanation": "Let a king employ spies so that one may have no knowledge of the other; and when the information of three agrees together, let him receive it",
+        "chapter": "Detectives"
+      }
+    },
+    "answer": "A king should know all that happens to everyone in his kingdom in full detail [582]. He must verify the reports from one spy by using another spy [588]. The king should engage spies so they do not know each other, and only when the information from three different spies agrees should he accept it as true [589].",
+    "parts": [
+      {
+        "text": "A king should know all that happens to everyone in his kingdom in full detail ",
+        "cite": 582
+      },
+      {
+        "text": ". He must verify the reports from one spy by using another spy ",
+        "cite": 588
+      },
+      {
+        "text": ". The king should engage spies so they do not know each other, and only when the information from three different spies agrees should he accept it as true ",
+        "cite": 589
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        582,
+        588,
+        589
+      ],
+      "real": [
+        582,
+        588,
+        589
+      ],
+      "invented": [],
+      "distinctReal": [
+        582,
+        588,
+        589
+      ]
+    }
+  },
+  {
+    "question": "how do I protect my honour?",
+    "suppliedNumbers": [
+      956,
+      443,
+      969,
+      962,
+      766
+    ],
+    "verses": {
+      "956": {
+        "translation": "Who guard their family prestige pure Stoop not to acts of cunning lure",
+        "explanation": "Those who seek to preserve the irreproachable honour of their families will not viciously do what is detrimental thereto",
+        "chapter": "Nobility"
+      },
+      "443": {
+        "translation": "Honour and have the great your own Is rarest of the rare things known",
+        "explanation": "To cherish great men and make them his own, is the most difficult of all difficult things",
+        "chapter": "Seeking the Aid of Great Men"
+      },
+      "969": {
+        "translation": "Honour lost, the noble expire Like a yak that loses its hair",
+        "explanation": "Those who give up (their) life when (their) honour is at stake are like the yark which kills itself at the loss of (even one of) its hairs",
+        "chapter": "Honour"
+      },
+      "962": {
+        "translation": "Who seek honour and manly fame Don't do mean deeds even for name",
+        "explanation": "Those who desire (to maintain their) honour, will surely do nothing dishonourable, even for the sake of fame",
+        "chapter": "Honour"
+      },
+      "766": {
+        "translation": "Manly army has merits four:- Stately-march, faith, honour, valour",
+        "explanation": "Valour, honour, following in the excellent-footsteps (of its predecessors) and trust-worthiness; these four alone constitute the safeguard of an army",
+        "chapter": "The Excellence of an Army"
+      }
+    },
+    "answer": "To protect your honour, you must not do mean deeds, even for the sake of fame [962]. Those who guard their family prestige pure will not stoop to acts of cunning lure [956]. When honour is lost, the noble expire like a yak that loses its hair [969]. A manly army has four merits, including honour, which serves as a safeguard [766].",
+    "parts": [
+      {
+        "text": "To protect your honour, you must not do mean deeds, even for the sake of fame ",
+        "cite": 962
+      },
+      {
+        "text": ". Those who guard their family prestige pure will not stoop to acts of cunning lure ",
+        "cite": 956
+      },
+      {
+        "text": ". When honour is lost, the noble expire like a yak that loses its hair ",
+        "cite": 969
+      },
+      {
+        "text": ". A manly army has four merits, including honour, which serves as a safeguard ",
+        "cite": 766
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        962,
+        956,
+        969,
+        766
+      ],
+      "real": [
+        962,
+        956,
+        969,
+        766
+      ],
+      "invented": [],
+      "distinctReal": [
+        766,
+        956,
+        962,
+        969
+      ]
+    }
+  },
+  {
+    "question": "what does Thirukkural say about self control?",
+    "suppliedNumbers": [
+      121,
+      123,
+      490,
+      834,
+      122
+    ],
+    "verses": {
+      "121": {
+        "translation": "Self-rule leads to realms of gods Indulgence leads to gloomy hades",
+        "explanation": "Self-control will place (a man) among the Gods; the want of it will drive (him) into the thickest darkness (of hell)",
+        "chapter": "The Possession of Self-restraint"
+      },
+      "123": {
+        "translation": "Knowing wisdom who lives controlled Name and fame seek him untold",
+        "explanation": "Knowing that self-control is knowledge, if a man should control himself, in the prescribed course, such self-control will bring him distinction among the wise",
+        "chapter": "The Possession of Self-restraint"
+      },
+      "490": {
+        "translation": "In waiting time feign peace like stork In fighting time strike like its peck",
+        "explanation": "At the time when one should use self-control, let him restrain himself like a heron; and, let him like it, strike, when there is a favourable opportunity",
+        "chapter": "Knowing the fitting Time"
+      },
+      "834": {
+        "translation": "No fool equals the fool who learns Knows, teaches, but self-control spurns",
+        "explanation": "There are no greater fools than he who, though he has read and understood (a great deal) and even taught it to others, does not walk according to his own teaching",
+        "chapter": "Folly"
+      },
+      "122": {
+        "translation": "No gains with self-control measure Guard with care this great treasure",
+        "explanation": "Let self-control be guarded as a treasure; there is no greater source of good for man than that",
+        "chapter": "The Possession of Self-restraint"
+      }
+    },
+    "answer": "The Thirukkural states that self-control is a great treasure that brings distinction and wisdom [123]. It is the highest form of knowledge, and those who possess it are honored by the wise [123]. Practicing self-control at the right time is crucial, as one should restrain themselves like a heron when necessary [490]. Without self-control, even a learned person is considered a fool [834]. Ultimately, self-control leads a person to a divine state, while its absence leads to darkness [121].",
+    "parts": [
+      {
+        "text": "The Thirukkural states that self-control is a great treasure that brings distinction and wisdom ",
+        "cite": 123
+      },
+      {
+        "text": ". It is the highest form of knowledge, and those who possess it are honored by the wise ",
+        "cite": 123
+      },
+      {
+        "text": ". Practicing self-control at the right time is crucial, as one should restrain themselves like a heron when necessary ",
+        "cite": 490
+      },
+      {
+        "text": ". Without self-control, even a learned person is considered a fool ",
+        "cite": 834
+      },
+      {
+        "text": ". Ultimately, self-control leads a person to a divine state, while its absence leads to darkness ",
+        "cite": 121
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        123,
+        123,
+        490,
+        834,
+        121
+      ],
+      "real": [
+        123,
+        123,
+        490,
+        834,
+        121
+      ],
+      "invented": [],
+      "distinctReal": [
+        121,
+        123,
+        490,
+        834
+      ]
+    }
+  },
+  {
+    "question": "she matters more to me than anything else does",
+    "suppliedNumbers": [
+      1122,
+      1198,
+      1110,
+      1201,
+      148
+    ],
+    "verses": {
+      "1122": {
+        "translation": "Love between me and this lady Is like bond between soul and body",
+        "explanation": "The love between me and this damsel is like the union of body and soul",
+        "chapter": "Declaration of Love\"s special Excellence"
+      },
+      "1198": {
+        "translation": "None is so firm as she who loves Without kind words from whom she dotes",
+        "explanation": "There is no one in the world so hard-hearted as those who can live without receiving (even) a kind word from their beloved",
+        "chapter": "The Solitary Anguish"
+      },
+      "1110": {
+        "translation": "As knowledge reveals past ignorance So is the belle as love gets close",
+        "explanation": "As (one's) ignorance is discovered the more one learns, so does repeated intercourse with a welladorned female (only create a desire for more)",
+        "chapter": "Rejoicing in the Embrace"
+      },
+      "1201": {
+        "translation": "Love is sweeter than wine; for vast Is its delight at very thought",
+        "explanation": "Sexuality is sweeter than liquor, because when remembered, it creates a most rapturous delight",
+        "chapter": "Sad Memories"
+      },
+      "148": {
+        "translation": "They lead a high-souled manly life The pure who eye not another's wife",
+        "explanation": "That noble manliness which looks not at the wife of another is the virtue and dignity of the great",
+        "chapter": "Not coveting another\"s Wife"
+      }
+    },
+    "answer": "The love between me and this damsel is like the union of body and soul [1122]. Love is sweeter than wine; for vast is its delight at very thought [1201]. As knowledge reveals past ignorance, so is the belle as love gets close [1110]. None is so firm as she who loves without kind words from whom she dotes [1198]. They lead a high-souled manly life, the pure who eye not another's wife [148].",
+    "parts": [
+      {
+        "text": "The love between me and this damsel is like the union of body and soul ",
+        "cite": 1122
+      },
+      {
+        "text": ". Love is sweeter than wine; for vast is its delight at very thought ",
+        "cite": 1201
+      },
+      {
+        "text": ". As knowledge reveals past ignorance, so is the belle as love gets close ",
+        "cite": 1110
+      },
+      {
+        "text": ". None is so firm as she who loves without kind words from whom she dotes ",
+        "cite": 1198
+      },
+      {
+        "text": ". They lead a high-souled manly life, the pure who eye not another's wife ",
+        "cite": 148
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        1122,
+        1201,
+        1110,
+        1198,
+        148
+      ],
+      "real": [
+        1122,
+        1201,
+        1110,
+        1198,
+        148
+      ],
+      "invented": [],
+      "distinctReal": [
+        148,
+        1110,
+        1122,
+        1198,
+        1201
+      ]
+    }
+  },
+  {
+    "question": "a rival suddenly started being very warm to me",
+    "suppliedNumbers": [
+      1290,
+      789,
+      1246,
+      830,
+      1327
+    ],
+    "verses": {
+      "1290": {
+        "translation": "She feigned dislike awhile but flew Faster for embrace than I do",
+        "explanation": "She once feigned dislike in her eyes, but the warmth of her embrace exceeded my own",
+        "chapter": "Desire for Reunion"
+      },
+      "789": {
+        "translation": "Friendship is enthroned on the strength That always helps with utmost warmth",
+        "explanation": "Friendship may be said to be on its throne when it possesses the power of supporting one at all times and under all circumstances, (in the practice or virtue and wealth)",
+        "chapter": "Friendship"
+      },
+      "1246": {
+        "translation": "Wrath is false, O heart, face-to face Sans huff, you rush to his sweet embrace",
+        "explanation": "O my soul! when you see the dear one who remove dislike by intercourse, you are displeased and continue to be so Nay, your displeasure is (simply) false",
+        "chapter": "Soliloquy"
+      },
+      "830": {
+        "translation": "When foes, in time, play friendship's part Feign love on face but not in heart",
+        "explanation": "When one's foes begin to affect friendship, one should love them with one's looks, and, cherishing no love in the heart, give up (even the former)",
+        "chapter": "Unreal Friendship"
+      },
+      "1327": {
+        "translation": "The yielder wins in lover's pout Reunited joy brings it out",
+        "explanation": "Those are conquerors whose dislike has been defeated and that is proved by the love (which",
+        "chapter": "The Pleasures of Temporary Variance"
+      }
+    },
+    "answer": "This sudden warmth from a rival might be a feigned affection rather than true friendship [830]. True friendship is established by consistent support and warmth, not by sudden changes in behavior [789]. The verses suggest that such a change could be false, as what appears to be dislike turning to love may be a pretense [1246].",
+    "parts": [
+      {
+        "text": "This sudden warmth from a rival might be a feigned affection rather than true friendship ",
+        "cite": 830
+      },
+      {
+        "text": ". True friendship is established by consistent support and warmth, not by sudden changes in behavior ",
+        "cite": 789
+      },
+      {
+        "text": ". The verses suggest that such a change could be false, as what appears to be dislike turning to love may be a pretense ",
+        "cite": 1246
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        830,
+        789,
+        1246
+      ],
+      "real": [
+        830,
+        789,
+        1246
+      ],
+      "invented": [],
+      "distinctReal": [
+        789,
+        830,
+        1246
+      ]
+    }
+  },
+  {
+    "question": "twilight brings the worst of it when he is far",
+    "suppliedNumbers": [
+      1230,
+      313,
+      1229,
+      1223,
+      1295
+    ],
+    "verses": {
+      "1230": {
+        "translation": "Thinking of him whose quest is wealth My life outlives the twilight stealth",
+        "explanation": "My (hitherto) unextinguished life is now lost in this bewildering night at the thought of him who has the nature of wealth",
+        "chapter": "Lamentations at Eventide"
+      },
+      "313": {
+        "translation": "Revenging even causeless hate Bad-blood breeds and baneful heat",
+        "explanation": "In an ascetic inflict suffering even on those who hate him, when he has not done them any evil, it will afterwards give him irretrievable sorrow",
+        "chapter": "Not doing Evil"
+      },
+      "1229": {
+        "translation": "Deluding eve if it prolongs The whole town will suffer love-pangs",
+        "explanation": "When night comes on confusing (everyone's) mind, the (whole) town will lose its sense and be plunged in sorrow",
+        "chapter": "Lamentations at Eventide"
+      },
+      "1223": {
+        "translation": "Wet eve came pale and trembling then Now it makes bold with growing pain",
+        "explanation": "The evening that (once) came in with trembling and dimness (now) brings me an aversion for life and increasing sorrow",
+        "chapter": "Lamentations at Eventide"
+      },
+      "1295": {
+        "translation": "Frets to gain and fears loss in gain O my heart suffers ceaseless pain",
+        "explanation": "My soul fears when it is without him; it also fears when it is with him; it is subject to incessant sorrow",
+        "chapter": "Expostulation with Oneself"
+      }
+    },
+    "answer": "The verses do not address this.",
+    "parts": [
+      {
+        "text": "The verses do not address this.",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [],
+      "real": [],
+      "invented": [],
+      "distinctReal": []
+    }
+  },
+  {
+    "question": "my son started spending time with a rough crowd",
+    "suppliedNumbers": [
+      302,
+      459,
+      301,
+      455,
+      448
+    ],
+    "verses": {
+      "302": {
+        "translation": "Vain is wrath against men of force Against the meek it is still worse",
+        "explanation": "Anger is bad, even when it cannot injure; when it can injure; there is no greater evil",
+        "chapter": "Restraining Anger"
+      },
+      "459": {
+        "translation": "Good mind decides the future bliss Good company gains strength to this",
+        "explanation": "Future bliss is (the result) of goodness of mind; and even this acquires strength from the society of the good",
+        "chapter": "Avoiding mean Associations"
+      },
+      "301": {
+        "translation": "Anger against the weak is wrong It is futile against the strong",
+        "explanation": "He restrains his anger who restrains it when it can injure; when it cannot injure, what does it matter whether he restrain it, or not ?",
+        "chapter": "Restraining Anger"
+      },
+      "455": {
+        "translation": "Purity of the thought and deed Comes from good company indeed",
+        "explanation": "Chaste company is the staff on which come, these two things, viz, purity of mind and purity of conduct",
+        "chapter": "Avoiding mean Associations"
+      },
+      "448": {
+        "translation": "The careless king whom none reproves Ruins himself sans harmful foes",
+        "explanation": "The king, who is without the guard of men who can rebuke him, will perish, even though there be no one to destroy him",
+        "chapter": "Seeking the Aid of Great Men"
+      }
+    },
+    "answer": "Good company gives strength to a good mind and leads to future bliss [459]. Purity of thought and deed comes from good company [455]. The careless king who is not rebuked by good men will ruin himself [448].",
+    "parts": [
+      {
+        "text": "Good company gives strength to a good mind and leads to future bliss ",
+        "cite": 459
+      },
+      {
+        "text": ". Purity of thought and deed comes from good company ",
+        "cite": 455
+      },
+      {
+        "text": ". The careless king who is not rebuked by good men will ruin himself ",
+        "cite": 448
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        459,
+        455,
+        448
+      ],
+      "real": [
+        459,
+        455,
+        448
+      ],
+      "invented": [],
+      "distinctReal": [
+        448,
+        455,
+        459
+      ]
+    }
+  },
+  {
+    "question": "my team criticises each other when the person is absent",
+    "suppliedNumbers": [
+      184,
+      189,
+      1224,
+      190,
+      1319
+    ],
+    "verses": {
+      "184": {
+        "translation": "Though harsh you speak in one's presence Abuse is worse in his absence",
+        "explanation": "Though you speak without kindness before another's face speak not in his absence words which regard not the evil subsequently resulting from it",
+        "chapter": "Not Backbiting"
+      },
+      "189": {
+        "translation": "The world in mercy bears his load Who rants behind words untoward",
+        "explanation": "The world through charity supports the weight of those who reproach others observing their absence",
+        "chapter": "Not Backbiting"
+      },
+      "1224": {
+        "translation": "Lover away, comes eventide Like slayer to field of homicide",
+        "explanation": "In the absence of my lover, evening comes in like slayers on the field of slaughter",
+        "chapter": "Lamentations at Eventide"
+      },
+      "190": {
+        "translation": "No harm would fall to any man If each his own defect could scan",
+        "explanation": "If they observed their own faults as they observe the faults of others, would any evil happen to men ?",
+        "chapter": "Not Backbiting"
+      },
+      "1319": {
+        "translation": "I try to coax her and she remarks \\\"Your coaxing others thus this marks\\\"",
+        "explanation": "'I see', quoth she, 'to other folks How you are wondrous kind' Even when I try to remove her dislike, she is displeased and says, \"This is the way you behave",
+        "chapter": "Feigned Anger"
+      }
+    },
+    "answer": "Speaking ill of someone when they are not there is considered worse than saying harsh words directly to their face [184]. If people focused on their own faults instead of the faults of others, there would be less harm in the world [190]. The world supports those who do not criticize others behind their backs [189].",
+    "parts": [
+      {
+        "text": "Speaking ill of someone when they are not there is considered worse than saying harsh words directly to their face ",
+        "cite": 184
+      },
+      {
+        "text": ". If people focused on their own faults instead of the faults of others, there would be less harm in the world ",
+        "cite": 190
+      },
+      {
+        "text": ". The world supports those who do not criticize others behind their backs ",
+        "cite": 189
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        184,
+        190,
+        189
+      ],
+      "real": [
+        184,
+        190,
+        189
+      ],
+      "invented": [],
+      "distinctReal": [
+        184,
+        189,
+        190
+      ]
+    }
+  },
+  {
+    "question": "how do I stay healthy?",
+    "suppliedNumbers": [
+      943,
+      945,
+      327,
+      944,
+      154
+    ],
+    "verses": {
+      "943": {
+        "translation": "Eat food to digestive measure Life in body lasts with pleasure",
+        "explanation": "If (one's food has been) digested let one eat with moderation; (for) that is the way to prolong the life of an embodied soul",
+        "chapter": "Medicine"
+      },
+      "945": {
+        "translation": "With fasting adjusted food right Cures ills of life and makes you bright",
+        "explanation": "There will be no disaster to one's life if one eats with moderation, food that is not disagreeable",
+        "chapter": "Medicine"
+      },
+      "327": {
+        "translation": "Kill not life that others cherish Even when your life must perish",
+        "explanation": "Let no one do that which would destroy the life of another, although he should by so doing, lose his own life",
+        "chapter": "Not killing"
+      },
+      "944": {
+        "translation": "Know digestion; with keen appetite Eat what is suitable and right",
+        "explanation": "(First) assure yourself that your food has been digested and never fail to eat, when very hungry, whatever is not disagreeable (to you)",
+        "chapter": "Medicine"
+      },
+      "154": {
+        "translation": "Practice of patient quality Retains intact itegrity",
+        "explanation": "If you desire that greatness should never leave, you preserve in your conduct the exercise of patience",
+        "chapter": "The Possession of Patience, Forbearance"
+      }
+    },
+    "answer": "To stay healthy, eat food in moderation and only when you are truly hungry [943]. Ensure that your previous meal has been fully digested before eating again [944]. Choose foods that are suitable and agreeable to your body [945].",
+    "parts": [
+      {
+        "text": "To stay healthy, eat food in moderation and only when you are truly hungry ",
+        "cite": 943
+      },
+      {
+        "text": ". Ensure that your previous meal has been fully digested before eating again ",
+        "cite": 944
+      },
+      {
+        "text": ". Choose foods that are suitable and agreeable to your body ",
+        "cite": 945
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        943,
+        944,
+        945
+      ],
+      "real": [
+        943,
+        944,
+        945
+      ],
+      "invented": [],
+      "distinctReal": [
+        943,
+        944,
+        945
+      ]
+    }
+  },
+  {
+    "question": "does doing something bad quietly still count?",
+    "suppliedNumbers": [
+      136,
+      209,
+      182,
+      181,
+      1011
+    ],
+    "verses": {
+      "136": {
+        "translation": "The firm from virtue falter not They know the ills of evil thought",
+        "explanation": "Those firm in mind will not slacken in their observance of the proprieties of life, knowing, as they do, the misery that flows from the transgression from them",
+        "chapter": "The Possession of Decorum"
+      },
+      "209": {
+        "translation": "Let none who loves himself at all Think of evil however small",
+        "explanation": "If a man love himself, let him not commit any sin however small",
+        "chapter": "Dread of Evil Deeds"
+      },
+      "182": {
+        "translation": "Who bite behind, and before smile Are worse than open traitors vile",
+        "explanation": "To smile deceitfully (in another's presence) after having reviled him to his destruction (behind his back) is a greater evil than the commission of (every other) sin and the destruction of (every) virtue",
+        "chapter": "Not Backbiting"
+      },
+      "181": {
+        "translation": "Though a man from virtue strays, To keep from slander brings him praise",
+        "explanation": "Though one do not even speak of virtue and live in sin, it will be well if it be said of him \"he does not backbite.\"",
+        "chapter": "Not Backbiting"
+      },
+      "1011": {
+        "translation": "To shrink from evil deed is shame The rest is blush of fair-faced dame",
+        "explanation": "True modesty is the fear of (evil) deeds; all other modesty is (simply) the bashfulness of virtuous maids",
+        "chapter": "Shame"
+      }
+    },
+    "answer": "Yes, doing something bad quietly still counts as a bad deed. The verses state that one should not think of any evil, however small [209]. It also says that true modesty is the fear of evil deeds, implying that the act itself is what matters, not whether it is seen by others [1011]. Furthermore, backbiting is considered a greater evil than other sins, showing that the nature of the act is what defines it as wrong [182].",
+    "parts": [
+      {
+        "text": "Yes, doing something bad quietly still counts as a bad deed. The verses state that one should not think of any evil, however small ",
+        "cite": 209
+      },
+      {
+        "text": ". It also says that true modesty is the fear of evil deeds, implying that the act itself is what matters, not whether it is seen by others ",
+        "cite": 1011
+      },
+      {
+        "text": ". Furthermore, backbiting is considered a greater evil than other sins, showing that the nature of the act is what defines it as wrong ",
+        "cite": 182
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        209,
+        1011,
+        182
+      ],
+      "real": [
+        209,
+        1011,
+        182
+      ],
+      "invented": [],
+      "distinctReal": [
+        182,
+        209,
+        1011
+      ]
+    }
+  },
+  {
+    "question": "what is the value of penance?",
+    "suppliedNumbers": [
+      264,
+      984,
+      262,
+      225,
+      261
+    ],
+    "verses": {
+      "264": {
+        "translation": "In penance lies the power to save The friends and foil the foe and knave",
+        "explanation": "If (the ascetic) desire the destruction of his enemies, or the aggrandizement of his friends, it will be effected by (the power of) his austerities",
+        "chapter": "Penance"
+      },
+      "984": {
+        "translation": "Not to kill is penance pure Not to slander virtue sure",
+        "explanation": "Penance consists in the goodness that kills not , and perfection in the goodness that tells not others' faults",
+        "chapter": "Perfectness"
+      },
+      "262": {
+        "translation": "Penance is fit for penitents Not for him who in vain pretends",
+        "explanation": "Austerities can only be borne, and their benefits enjoyed, by those who have practised them (in a former birth); it will be useless for those who have not done so, to attempt to practise them (now)",
+        "chapter": "Penance"
+      },
+      "225": {
+        "translation": "Higher's power which hunger cures Than that of penance which endures",
+        "explanation": "The power of those who perform penance is the power of enduring hunger It is inferior to the power of those who remove the hunger (of others)",
+        "chapter": "Giving"
+      },
+      "261": {
+        "translation": "Pains endure; pain not beings This is the type of true penance",
+        "explanation": "The nature of religious discipline consists, in the endurance (by the ascetic) of the sufferings which it brings on himself, and in abstaining from giving pain to others",
+        "chapter": "Penance"
+      }
+    },
+    "answer": "Penance has the power to help friends and overcome enemies [264]. It is considered the highest form of virtue, which includes not killing and not slandering others [984]. The true nature of penance is to endure one's own pain without causing pain to others [261]. However, the power of giving to those in need is considered even higher than the power of penance [225]. Penance is only effective for those who are truly penitent and not for those who pretend [262].",
+    "parts": [
+      {
+        "text": "Penance has the power to help friends and overcome enemies ",
+        "cite": 264
+      },
+      {
+        "text": ". It is considered the highest form of virtue, which includes not killing and not slandering others ",
+        "cite": 984
+      },
+      {
+        "text": ". The true nature of penance is to endure one's own pain without causing pain to others ",
+        "cite": 261
+      },
+      {
+        "text": ". However, the power of giving to those in need is considered even higher than the power of penance ",
+        "cite": 225
+      },
+      {
+        "text": ". Penance is only effective for those who are truly penitent and not for those who pretend ",
+        "cite": 262
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        264,
+        984,
+        261,
+        225,
+        262
+      ],
+      "real": [
+        264,
+        984,
+        261,
+        225,
+        262
+      ],
+      "invented": [],
+      "distinctReal": [
+        225,
+        261,
+        262,
+        264,
+        984
+      ]
+    }
+  },
+  {
+    "question": "why should someone want to have children?",
+    "suppliedNumbers": [
+      958,
+      992,
+      1028,
+      960,
+      1026
+    ],
+    "verses": {
+      "958": {
+        "translation": "If manners of the good are rude People deem their pedigree crude",
+        "explanation": "If one of a good family betrays want of affection, his descent from it will be called in question",
+        "chapter": "Nobility"
+      },
+      "992": {
+        "translation": "Humanity and noble birth Develop courtesy and moral worth",
+        "explanation": "Affectionateness and birth in a good family, these two constitute what is called a proper behaviour to all",
+        "chapter": "Courtesy"
+      },
+      "1028": {
+        "translation": "No season have they who raise their race Sloth and pride will honour efface",
+        "explanation": "As a family suffers by (one's) indolence and false dignity there is to be so season (good or bad) to those who strive to raise their family",
+        "chapter": "The Way of Maintaining the Family"
+      },
+      "960": {
+        "translation": "All gain good name by modesty Nobility by humility",
+        "explanation": "He who desires a good name must desire modesty; and he who desires (the continuance of) a family greatness must be submissive to all",
+        "chapter": "Nobility"
+      },
+      "1026": {
+        "translation": "Who raise their race which gave them birth Are deemed as men of manly worth",
+        "explanation": "A man's true manliness consists in making himself the head and benefactor of his family",
+        "chapter": "The Way of Maintaining the Family"
+      }
+    },
+    "answer": "Having children allows a person to raise their family and be seen as a person of true worth [1026]. Those who raise their race are not idle, as sloth and pride will erase any honor [1028]. A good family name is maintained through modesty and humility [960]. Furthermore, if a person of a good family shows affection, it confirms their noble descent [958].",
+    "parts": [
+      {
+        "text": "Having children allows a person to raise their family and be seen as a person of true worth ",
+        "cite": 1026
+      },
+      {
+        "text": ". Those who raise their race are not idle, as sloth and pride will erase any honor ",
+        "cite": 1028
+      },
+      {
+        "text": ". A good family name is maintained through modesty and humility ",
+        "cite": 960
+      },
+      {
+        "text": ". Furthermore, if a person of a good family shows affection, it confirms their noble descent ",
+        "cite": 958
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        1026,
+        1028,
+        960,
+        958
+      ],
+      "real": [
+        1026,
+        1028,
+        960,
+        958
+      ],
+      "invented": [],
+      "distinctReal": [
+        958,
+        960,
+        1026,
+        1028
+      ]
+    }
+  },
+  {
+    "question": "how do I speak well in front of others?",
+    "suppliedNumbers": [
+      646,
+      192,
+      197,
+      95,
+      641
+    ],
+    "verses": {
+      "646": {
+        "translation": "Spotless men speak what is sweet And grasp in others what is meet",
+        "explanation": "It is the opinion of those who are free from defects in diplomacy that the minister should speak so as to make his hearers desire (to hear more) and grasp the meaning of what he hears himself",
+        "chapter": "Power of Speech"
+      },
+      "192": {
+        "translation": "Vain talk before many is worse Than doing to friends deeds adverse",
+        "explanation": "To speak useless things in the presence of many is a greater evil than to do unkind things towards friends",
+        "chapter": "Against Vain Speaking"
+      },
+      "197": {
+        "translation": "Let not men of worth vainly quack Even if they would roughly speak",
+        "explanation": "Let the wise if they will, speak things without excellence; it will be well for them not to speak useless things",
+        "chapter": "Against Vain Speaking"
+      },
+      "95": {
+        "translation": "To be humble and sweet words speak No other jewel do wise men seek",
+        "explanation": "Humility and sweetness of speech are the ornaments of man; all others are not (ornaments)",
+        "chapter": "The Utterance of Pleasant Words"
+      },
+      "641": {
+        "translation": "The goodness called goodness of speech Is goodness which nothing can reach",
+        "explanation": "The possession of that goodness which is called the goodness of speech is (even to others) better than any other goodness",
+        "chapter": "Power of Speech"
+      }
+    },
+    "answer": "To speak well, you should be humble and use sweet words [95]. Avoid speaking useless things in front of many people, as it is worse than doing unkind deeds [192]. Even if you have something to say, it is better not to speak unless your words are excellent [197]. The best speech is one that is good and reaches others [641].",
+    "parts": [
+      {
+        "text": "To speak well, you should be humble and use sweet words ",
+        "cite": 95
+      },
+      {
+        "text": ". Avoid speaking useless things in front of many people, as it is worse than doing unkind deeds ",
+        "cite": 192
+      },
+      {
+        "text": ". Even if you have something to say, it is better not to speak unless your words are excellent ",
+        "cite": 197
+      },
+      {
+        "text": ". The best speech is one that is good and reaches others ",
+        "cite": 641
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        95,
+        192,
+        197,
+        641
+      ],
+      "real": [
+        95,
+        192,
+        197,
+        641
+      ],
+      "invented": [],
+      "distinctReal": [
+        95,
+        192,
+        197,
+        641
+      ]
+    }
+  },
+  {
+    "question": "a colleague keeps humiliating me in meetings",
+    "suppliedNumbers": [
+      820,
+      184,
+      927,
+      181,
+      995
+    ],
+    "verses": {
+      "820": {
+        "translation": "Keep aloof from those that smile At home and in public revile",
+        "explanation": "Avoid even the least approach to a contraction of friendship with those who would love you in private but ridicule you in public",
+        "chapter": "Evil Friendship"
+      },
+      "184": {
+        "translation": "Though harsh you speak in one's presence Abuse is worse in his absence",
+        "explanation": "Though you speak without kindness before another's face speak not in his absence words which regard not the evil subsequently resulting from it",
+        "chapter": "Not Backbiting"
+      },
+      "927": {
+        "translation": "The secret drunkards' senses off Make the prying public laugh",
+        "explanation": "Those who always intoxicate themselves by a private (indulgence in) drink; will have their secrets detected and laughed at by their fellow-townsmen",
+        "chapter": "Not Drinking Palm-Wine"
+      },
+      "181": {
+        "translation": "Though a man from virtue strays, To keep from slander brings him praise",
+        "explanation": "Though one do not even speak of virtue and live in sin, it will be well if it be said of him \"he does not backbite.\"",
+        "chapter": "Not Backbiting"
+      },
+      "995": {
+        "translation": "The courteous don't even foes detest For contempt offends even in jest",
+        "explanation": "Reproach is painful to one even in sport; those (therefore) who know the nature of others exhibit (pleasing) qualities even when they are hated",
+        "chapter": "Courtesy"
+      }
+    },
+    "answer": "The verses suggest avoiding those who are friendly in private but harmful in public [820]. They also teach that contempt and ridicule are painful even in jest, so such behavior should be avoided [995]. Furthermore, it is better to speak kindly in someone's presence than to abuse them, even if you must criticize [184]. While the verses do not directly address how to handle a colleague, they provide principles for avoiding harmful relationships and practicing courtesy.",
+    "parts": [
+      {
+        "text": "The verses suggest avoiding those who are friendly in private but harmful in public ",
+        "cite": 820
+      },
+      {
+        "text": ". They also teach that contempt and ridicule are painful even in jest, so such behavior should be avoided ",
+        "cite": 995
+      },
+      {
+        "text": ". Furthermore, it is better to speak kindly in someone's presence than to abuse them, even if you must criticize ",
+        "cite": 184
+      },
+      {
+        "text": ". While the verses do not directly address how to handle a colleague, they provide principles for avoiding harmful relationships and practicing courtesy.",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        820,
+        995,
+        184
+      ],
+      "real": [
+        820,
+        995,
+        184
+      ],
+      "invented": [],
+      "distinctReal": [
+        184,
+        820,
+        995
+      ]
+    }
+  },
+  {
+    "question": "why should I not talk behind someone's back?",
+    "suppliedNumbers": [
+      182,
+      187,
+      181,
+      185,
+      827
+    ],
+    "verses": {
+      "182": {
+        "translation": "Who bite behind, and before smile Are worse than open traitors vile",
+        "explanation": "To smile deceitfully (in another's presence) after having reviled him to his destruction (behind his back) is a greater evil than the commission of (every other) sin and the destruction of (every) virtue",
+        "chapter": "Not Backbiting"
+      },
+      "187": {
+        "translation": "By pleasing words who make not friends Sever their hearts by hostile trends",
+        "explanation": "Those who know not to live in friendship with amusing conversation will by back-biting estrange even their relatives",
+        "chapter": "Not Backbiting"
+      },
+      "181": {
+        "translation": "Though a man from virtue strays, To keep from slander brings him praise",
+        "explanation": "Though one do not even speak of virtue and live in sin, it will be well if it be said of him \"he does not backbite.\"",
+        "chapter": "Not Backbiting"
+      },
+      "185": {
+        "translation": "Who turns to slander makes it plain His praise of virtue is in vain",
+        "explanation": "The emptiness of that man's mind who (merely) praises virtue will be seen from the meanness of reviling another behind his back",
+        "chapter": "Not Backbiting"
+      },
+      "827": {
+        "translation": "Trust not the humble words of foes Danger darts from bending bows",
+        "explanation": "Since the bending of the bow bespeaks evil, one should not accept (as good) the humiliating speeches of one's foes",
+        "chapter": "Unreal Friendship"
+      }
+    },
+    "answer": "Talking behind someone's back is worse than being an open enemy [182]. It also breaks friendships and can even turn relatives into enemies [187]. Even if a person is not virtuous, they will be praised if they do not slander others [181]. Praising virtue while slandering someone shows a person's true emptiness [185].",
+    "parts": [
+      {
+        "text": "Talking behind someone's back is worse than being an open enemy ",
+        "cite": 182
+      },
+      {
+        "text": ". It also breaks friendships and can even turn relatives into enemies ",
+        "cite": 187
+      },
+      {
+        "text": ". Even if a person is not virtuous, they will be praised if they do not slander others ",
+        "cite": 181
+      },
+      {
+        "text": ". Praising virtue while slandering someone shows a person's true emptiness ",
+        "cite": 185
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        182,
+        187,
+        181,
+        185
+      ],
+      "real": [
+        182,
+        187,
+        181,
+        185
+      ],
+      "invented": [],
+      "distinctReal": [
+        181,
+        182,
+        185,
+        187
+      ]
+    }
+  },
+  {
+    "question": "how do I stay strong when things go wrong?",
+    "suppliedNumbers": [
+      301,
+      798,
+      670,
+      876,
+      988
+    ],
+    "verses": {
+      "301": {
+        "translation": "Anger against the weak is wrong It is futile against the strong",
+        "explanation": "He restrains his anger who restrains it when it can injure; when it cannot injure, what does it matter whether he restrain it, or not ?",
+        "chapter": "Restraining Anger"
+      },
+      "798": {
+        "translation": "Off with thoughts that depress the heart Off with friends that in woe depart",
+        "explanation": "Do not think of things that discourage your mind, nor contract friendship with those who would forsake you in adversity",
+        "chapter": "Investigation in forming Friendships"
+      },
+      "670": {
+        "translation": "The world merits no other strength But strength of will-to-do at length",
+        "explanation": "The great will not esteem those who esteem not firmness of action, whatever other abilities the latter may possess",
+        "chapter": "Power in Action"
+      },
+      "876": {
+        "translation": "Trust or distrust; during distress Keep aloof; don't mix with foes",
+        "explanation": "Though (one's foe is) aware or not of one's misfortune one should act so as neither to join nor separate (from him)",
+        "chapter": "Knowing the Quality of Hate"
+      },
+      "988": {
+        "translation": "No shame there is in poverty To one strong in good quality",
+        "explanation": "Poverty is no disgrace to one who abounds in good qualities",
+        "chapter": "Perfectness"
+      }
+    },
+    "answer": "To stay strong when things go wrong, you should avoid thoughts that depress your heart and distance yourself from friends who abandon you in adversity [798]. The world only values strength of will-to-do, so you must focus on firmness of action [670]. No shame is attached to poverty for one who is strong in good qualities [988]. Additionally, you should keep a distance from your foes during times of distress [876].",
+    "parts": [
+      {
+        "text": "To stay strong when things go wrong, you should avoid thoughts that depress your heart and distance yourself from friends who abandon you in adversity ",
+        "cite": 798
+      },
+      {
+        "text": ". The world only values strength of will-to-do, so you must focus on firmness of action ",
+        "cite": 670
+      },
+      {
+        "text": ". No shame is attached to poverty for one who is strong in good qualities ",
+        "cite": 988
+      },
+      {
+        "text": ". Additionally, you should keep a distance from your foes during times of distress ",
+        "cite": 876
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        798,
+        670,
+        988,
+        876
+      ],
+      "real": [
+        798,
+        670,
+        988,
+        876
+      ],
+      "invented": [],
+      "distinctReal": [
+        670,
+        798,
+        876,
+        988
+      ]
+    }
+  },
+  {
+    "question": "why should I never harm another person?",
+    "suppliedNumbers": [
+      206,
+      190,
+      320,
+      157,
+      319
+    ],
+    "verses": {
+      "206": {
+        "translation": "From wounding others let him refrain Who would from harm himself remain",
+        "explanation": "Let him not do evil to others who desires not that sorrows should pursue him",
+        "chapter": "Dread of Evil Deeds"
+      },
+      "190": {
+        "translation": "No harm would fall to any man If each his own defect could scan",
+        "explanation": "If they observed their own faults as they observe the faults of others, would any evil happen to men ?",
+        "chapter": "Not Backbiting"
+      },
+      "320": {
+        "translation": "No harm is done by peace-lovers For pains rebound on pain-givers",
+        "explanation": "Sorrow will come upon those who cause pain to others; therfore those, who desire to be free from sorrow, give no pain to others",
+        "chapter": "Not doing Evil"
+      },
+      "157": {
+        "translation": "Though others cause you wanton pain Grieve not; from unjust harm refrain",
+        "explanation": "Though others inflict injuries on you, yet compassionating the evil (that will come upon them) it will be well not to do them anything contrary to virtue",
+        "chapter": "The Possession of Patience, Forbearance"
+      },
+      "319": {
+        "translation": "Harm others in the forenoon Harm seeks thee in afternoon",
+        "explanation": "If a man inflict sorrow upon others in the morning, it will come upon him unsought in the very evening",
+        "chapter": "Not doing Evil"
+      }
+    },
+    "answer": "You should never harm another person because the pain you cause will return to you [320]. If you inflict sorrow upon others, it will come back to you unsought [319]. The reason to avoid harming others is to prevent sorrow from pursuing you yourself [206]. Additionally, if people focused on their own faults instead of harming others, no evil would happen to anyone [190]. Even if others cause you pain, you should refrain from causing them harm [157].",
+    "parts": [
+      {
+        "text": "You should never harm another person because the pain you cause will return to you ",
+        "cite": 320
+      },
+      {
+        "text": ". If you inflict sorrow upon others, it will come back to you unsought ",
+        "cite": 319
+      },
+      {
+        "text": ". The reason to avoid harming others is to prevent sorrow from pursuing you yourself ",
+        "cite": 206
+      },
+      {
+        "text": ". Additionally, if people focused on their own faults instead of harming others, no evil would happen to anyone ",
+        "cite": 190
+      },
+      {
+        "text": ". Even if others cause you pain, you should refrain from causing them harm ",
+        "cite": 157
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        320,
+        319,
+        206,
+        190,
+        157
+      ],
+      "real": [
+        320,
+        319,
+        206,
+        190,
+        157
+      ],
+      "invented": [],
+      "distinctReal": [
+        157,
+        190,
+        206,
+        319,
+        320
+      ]
+    }
+  },
+  {
+    "question": "being broke has changed how people speak to me",
+    "suppliedNumbers": [
+      184,
+      1319,
+      98,
+      452,
+      1314
+    ],
+    "verses": {
+      "184": {
+        "translation": "Though harsh you speak in one's presence Abuse is worse in his absence",
+        "explanation": "Though you speak without kindness before another's face speak not in his absence words which regard not the evil subsequently resulting from it",
+        "chapter": "Not Backbiting"
+      },
+      "1319": {
+        "translation": "I try to coax her and she remarks \\\"Your coaxing others thus this marks\\\"",
+        "explanation": "'I see', quoth she, 'to other folks How you are wondrous kind' Even when I try to remove her dislike, she is displeased and says, \"This is the way you behave",
+        "chapter": "Feigned Anger"
+      },
+      "98": {
+        "translation": "Kind words free from meanness delight This life on earth and life the next",
+        "explanation": "Sweet speech, free from harm to others, will give pleasure both in this world and in the next",
+        "chapter": "The Utterance of Pleasant Words"
+      },
+      "452": {
+        "translation": "With soil changes water's taste With mates changes the mental state",
+        "explanation": "As water changes (its nature), from the nature of the soil (in which it flows), so will the character of men resemble that of their associates",
+        "chapter": "Avoiding mean Associations"
+      },
+      "1314": {
+        "translation": "\\\"I love you more than all\\\" I said \\\"Than whom, than whom?\\\" she sulked and chid",
+        "explanation": "When I said I loved her more than any other woman, she said \"more than others, yes, more than others,\" and remained sulky",
+        "chapter": "Feigned Anger"
+      }
+    },
+    "answer": "People's character changes based on who they associate with, so when you are broke, those you associate with may also change [452]. This can lead to them speaking harshly to you, as harsh words said in your presence are still an abuse [184]. Even when you try to be kind, they might find fault and remain displeased [1319]. Kind words, however, are always delightful and free from meanness [98].",
+    "parts": [
+      {
+        "text": "People's character changes based on who they associate with, so when you are broke, those you associate with may also change ",
+        "cite": 452
+      },
+      {
+        "text": ". This can lead to them speaking harshly to you, as harsh words said in your presence are still an abuse ",
+        "cite": 184
+      },
+      {
+        "text": ". Even when you try to be kind, they might find fault and remain displeased ",
+        "cite": 1319
+      },
+      {
+        "text": ". Kind words, however, are always delightful and free from meanness ",
+        "cite": 98
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        452,
+        184,
+        1319,
+        98
+      ],
+      "real": [
+        452,
+        184,
+        1319,
+        98
+      ],
+      "invented": [],
+      "distinctReal": [
+        98,
+        184,
+        452,
+        1319
+      ]
+    }
+  },
+  {
+    "question": "what does Thirukkural say about a worthless person?",
+    "suppliedNumbers": [
+      751,
+      406,
+      193,
+      191,
+      437
+    ],
+    "verses": {
+      "751": {
+        "translation": "Naught exists that can, save wealth Make the worthless as men of worth",
+        "explanation": "Besides wealth there is nothing that can change people of no importance into those of (some) importance",
+        "chapter": "Way of Accumulating Wealth"
+      },
+      "406": {
+        "translation": "People speak of untaught minds \\\"They just exist like barren lands\\\"",
+        "explanation": "The unlearned are like worthless barren land: all that can be said of them is, that they exist",
+        "chapter": "Ignorance"
+      },
+      "193": {
+        "translation": "The babbler's hasty lips proclaim That \\\"good-for-nothing\\\" is his name",
+        "explanation": "That conversation in which a man utters forth useless things will say of him \"he is without virtue.\"",
+        "chapter": "Against Vain Speaking"
+      },
+      "191": {
+        "translation": "With silly words who insults all Is held in contempt as banal",
+        "explanation": "He who to the disgust of many speaks useless things will be despised by all",
+        "chapter": "Against Vain Speaking"
+      },
+      "437": {
+        "translation": "That miser's wealth shall waste and end Who would not for a good cause spend",
+        "explanation": "The wealth of the avaricious man, who does not expend it for the purposes for which he ought to expend it will waste away and not continue",
+        "chapter": "The Correction of Faults"
+      }
+    },
+    "answer": "A worthless person is like barren land, existing but producing nothing [406]. Their words are considered useless, leading others to call them \"good-for-nothing\" [193]. Anyone who speaks silly and insulting words is held in contempt and seen as banal [191]. Wealth cannot make a worthless person into someone of worth [751].",
+    "parts": [
+      {
+        "text": "A worthless person is like barren land, existing but producing nothing ",
+        "cite": 406
+      },
+      {
+        "text": ". Their words are considered useless, leading others to call them \"good-for-nothing\" ",
+        "cite": 193
+      },
+      {
+        "text": ". Anyone who speaks silly and insulting words is held in contempt and seen as banal ",
+        "cite": 191
+      },
+      {
+        "text": ". Wealth cannot make a worthless person into someone of worth ",
+        "cite": 751
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        406,
+        193,
+        191,
+        751
+      ],
+      "real": [
+        406,
+        193,
+        191,
+        751
+      ],
+      "invented": [],
+      "distinctReal": [
+        191,
+        193,
+        406,
+        751
+      ]
+    }
+  },
+  {
+    "question": "someone wronged me and I want to get even",
+    "suppliedNumbers": [
+      317,
+      313,
+      108,
+      152,
+      157
+    ],
+    "verses": {
+      "317": {
+        "translation": "Any, anywhere injure not At any time even in thought",
+        "explanation": "It is the chief of all virtues not knowingly to do any person evil, even in the lowest degree, and at any time",
+        "chapter": "Not doing Evil"
+      },
+      "313": {
+        "translation": "Revenging even causeless hate Bad-blood breeds and baneful heat",
+        "explanation": "In an ascetic inflict suffering even on those who hate him, when he has not done them any evil, it will afterwards give him irretrievable sorrow",
+        "chapter": "Not doing Evil"
+      },
+      "108": {
+        "translation": "To forget good turns is not good Good it is over wrong not to brood",
+        "explanation": "It is not good to forget a benefit; it is good to forget an injury even in the very moment (in which it is inflicted)",
+        "chapter": "Gratitude"
+      },
+      "152": {
+        "translation": "Forgive insults is a good habit Better it is to forget it",
+        "explanation": "Bear with reproach even when you can retaliate; but to forget it will be still better than that",
+        "chapter": "The Possession of Patience, Forbearance"
+      },
+      "157": {
+        "translation": "Though others cause you wanton pain Grieve not; from unjust harm refrain",
+        "explanation": "Though others inflict injuries on you, yet compassionating the evil (that will come upon them) it will be well not to do them anything contrary to virtue",
+        "chapter": "The Possession of Patience, Forbearance"
+      }
+    },
+    "answer": "Do not try to get even with someone who wronged you, as seeking revenge only creates more hatred and suffering [108]. It is better to forgive insults and forget the wrong than to retaliate [152]. You should not even think about harming anyone, as not causing harm is the highest virtue [317]. Even if others cause you pain, you should refrain from causing them harm in return [157].",
+    "parts": [
+      {
+        "text": "Do not try to get even with someone who wronged you, as seeking revenge only creates more hatred and suffering ",
+        "cite": 108
+      },
+      {
+        "text": ". It is better to forgive insults and forget the wrong than to retaliate ",
+        "cite": 152
+      },
+      {
+        "text": ". You should not even think about harming anyone, as not causing harm is the highest virtue ",
+        "cite": 317
+      },
+      {
+        "text": ". Even if others cause you pain, you should refrain from causing them harm in return ",
+        "cite": 157
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        108,
+        152,
+        317,
+        157
+      ],
+      "real": [
+        108,
+        152,
+        317,
+        157
+      ],
+      "invented": [],
+      "distinctReal": [
+        108,
+        152,
+        157,
+        317
+      ]
+    }
+  },
+  {
+    "question": "how important is it to speak kindly to people?",
+    "suppliedNumbers": [
+      97,
+      192,
+      641,
+      197,
+      719
+    ],
+    "verses": {
+      "97": {
+        "translation": "The fruitful courteous kindly words Lead to goodness and graceful deeds",
+        "explanation": "That speech which, while imparting benefits ceases not to please, will yield righteousness (for this world) and merit (for the next world)",
+        "chapter": "The Utterance of Pleasant Words"
+      },
+      "192": {
+        "translation": "Vain talk before many is worse Than doing to friends deeds adverse",
+        "explanation": "To speak useless things in the presence of many is a greater evil than to do unkind things towards friends",
+        "chapter": "Against Vain Speaking"
+      },
+      "641": {
+        "translation": "The goodness called goodness of speech Is goodness which nothing can reach",
+        "explanation": "The possession of that goodness which is called the goodness of speech is (even to others) better than any other goodness",
+        "chapter": "Power of Speech"
+      },
+      "197": {
+        "translation": "Let not men of worth vainly quack Even if they would roughly speak",
+        "explanation": "Let the wise if they will, speak things without excellence; it will be well for them not to speak useless things",
+        "chapter": "Against Vain Speaking"
+      },
+      "719": {
+        "translation": "O ye who speak before the keen Forgetful, address not the mean",
+        "explanation": "Those who are able to speak good things impressively in an assembly of the good should not even forgetfully speak them in that of the low",
+        "chapter": "The Knowledge of the Council Chamber"
+      }
+    },
+    "answer": "Speaking kindly is very important because pleasant words lead to good actions and righteousness [97]. It is better to be good in speech than in any other way [641]. Vain and useless talk is a great evil, even worse than doing unkind deeds to friends [192]. The wise should avoid speaking useless things, even if they are not being kind [197].",
+    "parts": [
+      {
+        "text": "Speaking kindly is very important because pleasant words lead to good actions and righteousness ",
+        "cite": 97
+      },
+      {
+        "text": ". It is better to be good in speech than in any other way ",
+        "cite": 641
+      },
+      {
+        "text": ". Vain and useless talk is a great evil, even worse than doing unkind deeds to friends ",
+        "cite": 192
+      },
+      {
+        "text": ". The wise should avoid speaking useless things, even if they are not being kind ",
+        "cite": 197
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        97,
+        641,
+        192,
+        197
+      ],
+      "real": [
+        97,
+        641,
+        192,
+        197
+      ],
+      "invented": [],
+      "distinctReal": [
+        97,
+        192,
+        197,
+        641
+      ]
+    }
+  },
+  {
+    "question": "my uncle has money and will not spend it on anyone",
+    "suppliedNumbers": [
+      1007,
+      937,
+      363,
+      178,
+      171
+    ],
+    "verses": {
+      "1007": {
+        "translation": "Who loaths to help have-nots, his gold Is like a spinster-belle grown old",
+        "explanation": "The wealth of him who never bestows anything on the destitute is like a woman of beauty growing old without a husband",
+        "chapter": "Wealth without Benefaction"
+      },
+      "937": {
+        "translation": "If men their time in game-den spend Ancestral wealth and virtues end",
+        "explanation": "To waste time at the place of gambling will destroy inherited wealth and goodness of character",
+        "chapter": "Gambling"
+      },
+      "363": {
+        "translation": "No such wealth is here and there As peerless wealth of non-desire",
+        "explanation": "There is in this world no excellence equal to freedom from desire; and even in that world, there is nothing like it",
+        "chapter": "Curbing of Desire"
+      },
+      "178": {
+        "translation": "The mark of lasting wealth is shown By not coveting others' own",
+        "explanation": "If it is weighed, \"what is the indestructibility of wealth,\" it is freedom from covetousness",
+        "chapter": "Not Coveting"
+      },
+      "171": {
+        "translation": "Who covets others' honest wealth That greed ruins his house forthwith",
+        "explanation": "If a man departing from equity covet the property (of others), at that very time will his family be destroyed and guilt be incurred",
+        "chapter": "Not Coveting"
+      }
+    },
+    "answer": "Your uncle's wealth is like a spinster-belle grown old, meaning it is useless because he will not spend it on anyone [1007]. The mark of lasting wealth is shown by not coveting others' own, but his failure to give is not the same as this [178]. If a man covets others' honest wealth, greed ruins his house, but your uncle's problem is the opposite: his greed to keep his own wealth is what makes it worthless [171].",
+    "parts": [
+      {
+        "text": "Your uncle's wealth is like a spinster-belle grown old, meaning it is useless because he will not spend it on anyone ",
+        "cite": 1007
+      },
+      {
+        "text": ". The mark of lasting wealth is shown by not coveting others' own, but his failure to give is not the same as this ",
+        "cite": 178
+      },
+      {
+        "text": ". If a man covets others' honest wealth, greed ruins his house, but your uncle's problem is the opposite: his greed to keep his own wealth is what makes it worthless ",
+        "cite": 171
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        1007,
+        178,
+        171
+      ],
+      "real": [
+        1007,
+        178,
+        171
+      ],
+      "invented": [],
+      "distinctReal": [
+        171,
+        178,
+        1007
+      ]
+    }
+  },
+  {
+    "question": "how do I describe someone who I think is beautiful?",
+    "suppliedNumbers": [
+      1320,
+      1273,
+      1250,
+      572,
+      1262
+    ],
+    "verses": {
+      "1320": {
+        "translation": "I think and gaze at her; she chides: \\\"On whom your thought just now abides?\\\"",
+        "explanation": "Even when I look on her contemplating (her beauty), she is displeased and says, \"With whose thought have you (thus) looked on my person?\"",
+        "chapter": "Feigned Anger"
+      },
+      "1273": {
+        "translation": "Something shines through her jewelled charm Like thread shining through wreathed gem",
+        "explanation": "There is something that is implied in the beauty of this woman, like the thread that is visible in a garland of gems",
+        "chapter": "The Reading of the Signs"
+      },
+      "1250": {
+        "translation": "Without a thought he deserted us To think of him will make us worse",
+        "explanation": "If I retain in my heart him who has left me without befriending me, I shall lose even the (inward) beauty that remains",
+        "chapter": "Soliloquy"
+      },
+      "572": {
+        "translation": "World lives by looks of lovely worth Who lack them are burdens of earth",
+        "explanation": "The prosperity of the world springs from the kindliness, the existence of those who have no (kindliness) is a burden to the earth",
+        "chapter": "Benignity"
+      },
+      "1262": {
+        "translation": "Beauty pales and my bracelets slide; Why not forget him now, bright maid?",
+        "explanation": "O you bright-jewelled maid, if I forget (him) today, my shoulders will lose their beauty even in the other life and make my bracelets loose",
+        "chapter": "Mutual Desire"
+      }
+    },
+    "answer": "You can describe someone as beautiful by saying that something shines through their beauty, like a thread visible in a garland of gems [1273]. A person with lovely worth and kindliness is what makes the world live [572]. If you gaze at someone because you find them beautiful, they might chide you and ask whose thought you are dwelling on [1320].",
+    "parts": [
+      {
+        "text": "You can describe someone as beautiful by saying that something shines through their beauty, like a thread visible in a garland of gems ",
+        "cite": 1273
+      },
+      {
+        "text": ". A person with lovely worth and kindliness is what makes the world live ",
+        "cite": 572
+      },
+      {
+        "text": ". If you gaze at someone because you find them beautiful, they might chide you and ask whose thought you are dwelling on ",
+        "cite": 1320
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        1273,
+        572,
+        1320
+      ],
+      "real": [
+        1273,
+        572,
+        1320
+      ],
+      "invented": [],
+      "distinctReal": [
+        572,
+        1273,
+        1320
+      ]
+    }
+  },
+  {
+    "question": "how does a man praise the beauty of the woman he loves?",
+    "suppliedNumbers": [
+      902,
+      1118,
+      1273,
+      1191,
+      1280
+    ],
+    "verses": {
+      "902": {
+        "translation": "Who dotes, unmanly, on his dame His wealth to him and all is shame",
+        "explanation": "The wealth of him who, regardless (of his manliness), devotes himself to his wife's feminine nature will cause great shame (to ali men) and to himself;",
+        "chapter": "Being led by Women"
+      },
+      "1118": {
+        "translation": "Like my lady's face if you shine All my love to you; hail O moon!",
+        "explanation": "If you can indeed shine like the face of women, flourish, O moon, for then would you be worth loving ?",
+        "chapter": "The Praise of her Beauty"
+      },
+      "1273": {
+        "translation": "Something shines through her jewelled charm Like thread shining through wreathed gem",
+        "explanation": "There is something that is implied in the beauty of this woman, like the thread that is visible in a garland of gems",
+        "chapter": "The Reading of the Signs"
+      },
+      "1191": {
+        "translation": "Stoneless fruit of love they have Who are beloved by those they love",
+        "explanation": "The women who are beloved by those whom they love, have they have not got the stone-less fruit of sexual delight ?",
+        "chapter": "The Solitary Anguish"
+      },
+      "1280": {
+        "translation": "To express love-pangs by eyes and pray Is womanhood's womanly way",
+        "explanation": "To express their love-sickness by their eyes and resort to begging bespeaks more than ordinary female excellence",
+        "chapter": "The Reading of the Signs"
+      }
+    },
+    "answer": "A man can praise a woman's beauty by comparing her face to the moon, as this comparison shows she is worthy of love [1118]. Her beauty is so profound that it is like a thread shining through a garland of jewels, implying a deeper quality beyond just physical appearance [1273]. A woman expresses her own love-sickness through her eyes, which is a sign of her special excellence [1280].",
+    "parts": [
+      {
+        "text": "A man can praise a woman's beauty by comparing her face to the moon, as this comparison shows she is worthy of love ",
+        "cite": 1118
+      },
+      {
+        "text": ". Her beauty is so profound that it is like a thread shining through a garland of jewels, implying a deeper quality beyond just physical appearance ",
+        "cite": 1273
+      },
+      {
+        "text": ". A woman expresses her own love-sickness through her eyes, which is a sign of her special excellence ",
+        "cite": 1280
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        1118,
+        1273,
+        1280
+      ],
+      "real": [
+        1118,
+        1273,
+        1280
+      ],
+      "invented": [],
+      "distinctReal": [
+        1118,
+        1273,
+        1280
+      ]
+    }
+  },
+  {
+    "question": "which traits together make a whole human being?",
+    "suppliedNumbers": [
+      972,
+      992,
+      997,
+      504,
+      793
+    ],
+    "verses": {
+      "972": {
+        "translation": "All beings are the same in birth But work decides their varied worth",
+        "explanation": "All human beings agree as regards their birth but differ as regards their characteristics, because of the different qualities of their actions",
+        "chapter": "Greatness"
+      },
+      "992": {
+        "translation": "Humanity and noble birth Develop courtesy and moral worth",
+        "explanation": "Affectionateness and birth in a good family, these two constitute what is called a proper behaviour to all",
+        "chapter": "Courtesy"
+      },
+      "997": {
+        "translation": "The mannerless though sharp like file Are like wooden blocks indocile",
+        "explanation": "He who is destitute of (true) human qualities (only) resembles a tree, though he may possess the sharpness of a file",
+        "chapter": "Courtesy"
+      },
+      "504": {
+        "translation": "Good and evil in man weigh well Judge him by virtues which prevail",
+        "explanation": "Let (a king) consider (a man's) good qualities, as well as his faults, and then judge (of his character) by that which prevails",
+        "chapter": "Selection and Confidence"
+      },
+      "793": {
+        "translation": "Temper, descent, defects and kins Trace well and take companions",
+        "explanation": "Make friendship (with one) after ascertaining (his) character, birth, defects and the whole of one's relations",
+        "chapter": "Investigation in forming Friendships"
+      }
+    },
+    "answer": "A whole human being is made of several key traits. All beings are the same in birth, but their worth is decided by their actions [972]. Humanity and noble birth develop courtesy and moral worth [992]. A person without true human qualities is like a wooden block, even if they are sharp [997]. To judge a person, you must weigh their good and evil qualities and see which virtues prevail [504]. When choosing friends, you should trace their temper, descent, defects, and relations [793].",
+    "parts": [
+      {
+        "text": "A whole human being is made of several key traits. All beings are the same in birth, but their worth is decided by their actions ",
+        "cite": 972
+      },
+      {
+        "text": ". Humanity and noble birth develop courtesy and moral worth ",
+        "cite": 992
+      },
+      {
+        "text": ". A person without true human qualities is like a wooden block, even if they are sharp ",
+        "cite": 997
+      },
+      {
+        "text": ". To judge a person, you must weigh their good and evil qualities and see which virtues prevail ",
+        "cite": 504
+      },
+      {
+        "text": ". When choosing friends, you should trace their temper, descent, defects, and relations ",
+        "cite": 793
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        972,
+        992,
+        997,
+        504,
+        793
+      ],
+      "real": [
+        972,
+        992,
+        997,
+        504,
+        793
+      ],
+      "invented": [],
+      "distinctReal": [
+        504,
+        793,
+        972,
+        992,
+        997
+      ]
+    }
+  },
+  {
+    "question": "how does it feel to be away from the one you love?",
+    "suppliedNumbers": [
+      1158,
+      1325,
+      1202,
+      1194,
+      1166
+    ],
+    "verses": {
+      "1158": {
+        "translation": "Bitter is life in friendless place; Worse is parting love's embrace!",
+        "explanation": "Painful is it to live in a friendless town; but far more painful is it to part from one's lover",
+        "chapter": "Separation unendurable"
+      },
+      "1325": {
+        "translation": "Though free form faults, one feels the charms Of feigned release from lover's arms",
+        "explanation": "Though free from defects, men feel pleased when they cannot embrace the delicate shoulders of those whom they love",
+        "chapter": "The Pleasures of Temporary Variance"
+      },
+      "1202": {
+        "translation": "Pains are off at the lover's thought In all aspects this love is sweet",
+        "explanation": "Even to think of one's beloved gives one no pain Sexuality, in any degree, is always delightful",
+        "chapter": "Sad Memories"
+      },
+      "1194": {
+        "translation": "Whose love is void of love in turn Are luckless with all esteems they earn",
+        "explanation": "Even those who are esteemed (by other women) are devoid of excellence, if they are not loved by their beloved",
+        "chapter": "The Solitary Anguish"
+      },
+      "1166": {
+        "translation": "The pleasure in love is oceanful But its pangs are more painful",
+        "explanation": "The pleasure of lust is (as great as) the sea; but the pain of lust is far greater",
+        "chapter": "Complainings"
+      }
+    },
+    "answer": "Being away from the one you love is intensely painful, worse than living in a friendless place [1158]. The pangs of such separation are more painful than the pleasure love brings [1166]. Even thinking of your beloved is sweet and removes all other pains [1202].",
+    "parts": [
+      {
+        "text": "Being away from the one you love is intensely painful, worse than living in a friendless place ",
+        "cite": 1158
+      },
+      {
+        "text": ". The pangs of such separation are more painful than the pleasure love brings ",
+        "cite": 1166
+      },
+      {
+        "text": ". Even thinking of your beloved is sweet and removes all other pains ",
+        "cite": 1202
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        1158,
+        1166,
+        1202
+      ],
+      "real": [
+        1158,
+        1166,
+        1202
+      ],
+      "invented": [],
+      "distinctReal": [
+        1158,
+        1166,
+        1202
+      ]
+    }
+  },
+  {
+    "question": "can a person rebuild their reputation after behaving badly?",
+    "suppliedNumbers": [
+      934,
+      988,
+      870,
+      653,
+      135
+    ],
+    "verses": {
+      "934": {
+        "translation": "Nothing will make you poor like game Which adds to woes and ruins fame",
+        "explanation": "There is nothing else that brings (us) poverty like gambling which causes many a misery and destroys (one's) reputation",
+        "chapter": "Gambling"
+      },
+      "988": {
+        "translation": "No shame there is in poverty To one strong in good quality",
+        "explanation": "Poverty is no disgrace to one who abounds in good qualities",
+        "chapter": "Perfectness"
+      },
+      "870": {
+        "translation": "Glory's light he will not gain Who fails to fight a fool and win",
+        "explanation": "The light (of fame) will never be gained by him who gains not the trifling reputation of having fought an unlearned (foe)",
+        "chapter": "The Might of Hatred"
+      },
+      "653": {
+        "translation": "Those in the world desire for fame Should shun the deed that dims their name",
+        "explanation": "Those who say, \"we will become (better)\" should avoid the performance of acts that would destroy (their fame)",
+        "chapter": "Purity in Action"
+      },
+      "135": {
+        "translation": "The envious prosper but ill The ill-behaved sinks lower still",
+        "explanation": "Just as the envious man will be without wealth, so will the man of destitute of propriety of conduct be without greatness",
+        "chapter": "The Possession of Decorum"
+      }
+    },
+    "answer": "The verses do not address whether a person can rebuild their reputation after behaving badly. They state that gambling can destroy fame [934], that poverty is not a disgrace for those with good qualities [988], that glory is not gained from fighting a fool [870], that one should avoid deeds that dim their name [653], and that the ill-behaved will sink lower [135]. These verses describe how reputation is lost or maintained, but do not speak to the possibility of rebuilding it.",
+    "parts": [
+      {
+        "text": "The verses do not address whether a person can rebuild their reputation after behaving badly. They state that gambling can destroy fame ",
+        "cite": 934
+      },
+      {
+        "text": ", that poverty is not a disgrace for those with good qualities ",
+        "cite": 988
+      },
+      {
+        "text": ", that glory is not gained from fighting a fool ",
+        "cite": 870
+      },
+      {
+        "text": ", that one should avoid deeds that dim their name ",
+        "cite": 653
+      },
+      {
+        "text": ", and that the ill-behaved will sink lower ",
+        "cite": 135
+      },
+      {
+        "text": ". These verses describe how reputation is lost or maintained, but do not speak to the possibility of rebuilding it.",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        934,
+        988,
+        870,
+        653,
+        135
+      ],
+      "real": [
+        934,
+        988,
+        870,
+        653,
+        135
+      ],
+      "invented": [],
+      "distinctReal": [
+        135,
+        653,
+        870,
+        934,
+        988
+      ]
+    }
+  },
+  {
+    "question": "who would actually show up if I lost everything tomorrow?",
+    "suppliedNumbers": [
+      812,
+      787,
+      806,
+      808,
+      807
+    ],
+    "verses": {
+      "812": {
+        "translation": "Who fawn in wealth and fail in dearth Gain or lose; such friends have no worth",
+        "explanation": "Of what avail is it to get or lose the friendship of those who love when there is gain and leave when there is none ?",
+        "chapter": "Evil Friendship"
+      },
+      "787": {
+        "translation": "From ruin friendship saves and shares The load of pain and right path shows",
+        "explanation": "(True) friendship turns aside from evil (ways) makes (him) walk in the (good) way, and, in case of loss if shares his sorrow (with him)",
+        "chapter": "Friendship"
+      },
+      "806": {
+        "translation": "They forsake not but continue In friendship's bounds though loss ensue",
+        "explanation": "Those who stand within the limits (of true friendship) will not even in adversity give up the intimacy of long-standing friends",
+        "chapter": "Familiarity"
+      },
+      "808": {
+        "translation": "Fast friends who list not tales of ill Though wronged they say \\\"that day is well\\\"",
+        "explanation": "To those who understand that by which they should not listen to (tales about) the faults of their friends, that is a (profitable) day on which the latter may commit a fault",
+        "chapter": "Familiarity"
+      },
+      "807": {
+        "translation": "Comrades established in firm love Though ruin comes waive not their vow",
+        "explanation": "Those who have (long) stood in the path of affection will not give it up even if their friends cause (them) their ruin",
+        "chapter": "Familiarity"
+      }
+    },
+    "answer": "True friends will stand by you when you lose everything [787]. They will not abandon you even in adversity [806]. These friends will share your pain and help you stay on the right path [787]. They will not listen to bad things said about you and will remain loyal even if you cause them ruin [807, 808].",
+    "parts": [
+      {
+        "text": "True friends will stand by you when you lose everything ",
+        "cite": 787
+      },
+      {
+        "text": ". They will not abandon you even in adversity ",
+        "cite": 806
+      },
+      {
+        "text": ". These friends will share your pain and help you stay on the right path ",
+        "cite": 787
+      },
+      {
+        "text": ". They will not listen to bad things said about you and will remain loyal even if you cause them ruin [807, 808].",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        787,
+        806,
+        787
+      ],
+      "real": [
+        787,
+        806,
+        787
+      ],
+      "invented": [],
+      "distinctReal": [
+        787,
+        806
+      ]
+    }
+  },
+  {
+    "question": "is it wrong to desire another man's wife?",
+    "suppliedNumbers": [
+      150,
+      148,
+      144,
+      141,
+      143
+    ],
+    "verses": {
+      "150": {
+        "translation": "Sinners breaking virtue's behest Lust not for another's wife at least",
+        "explanation": "Though a man perform no virtuous deeds and commit (every) vice, it will be well if he desire not the womanhood of her who is within the limit (of the house) of another",
+        "chapter": "Not coveting another\"s Wife"
+      },
+      "148": {
+        "translation": "They lead a high-souled manly life The pure who eye not another's wife",
+        "explanation": "That noble manliness which looks not at the wife of another is the virtue and dignity of the great",
+        "chapter": "Not coveting another\"s Wife"
+      },
+      "144": {
+        "translation": "Their boasted greatness means nothing When to another's wife they cling",
+        "explanation": "However great one may be, what does it avail if, without at all considering his guilt, he goes unto the wife of another ?",
+        "chapter": "Not coveting another\"s Wife"
+      },
+      "141": {
+        "translation": "Who know the wealth and virtue's way After other's wife do not stray",
+        "explanation": "The folly of desiring her who is the property of another will not be found in those who know (the attributes of) virtue and (the rights of) property",
+        "chapter": "Not coveting another\"s Wife"
+      },
+      "143": {
+        "translation": "The vile are dead who evil aim And put faithful friends' wives to shame",
+        "explanation": "Certainly they are no better than dead men who desire evil towards the wife of those who",
+        "chapter": "Not coveting another\"s Wife"
+      }
+    },
+    "answer": "Yes, it is wrong to desire another man's wife. The verses state that those who do not look at another's wife lead a noble and manly life [148]. Desiring another's wife is considered a sin, even if a person commits other vices [150]. A person's greatness means nothing if they go to another's wife [144]. Those who know the way of virtue and property do not stray after another's wife [141]. The vile are considered dead who aim evil at the wife of a faithful friend [143].",
+    "parts": [
+      {
+        "text": "Yes, it is wrong to desire another man's wife. The verses state that those who do not look at another's wife lead a noble and manly life ",
+        "cite": 148
+      },
+      {
+        "text": ". Desiring another's wife is considered a sin, even if a person commits other vices ",
+        "cite": 150
+      },
+      {
+        "text": ". A person's greatness means nothing if they go to another's wife ",
+        "cite": 144
+      },
+      {
+        "text": ". Those who know the way of virtue and property do not stray after another's wife ",
+        "cite": 141
+      },
+      {
+        "text": ". The vile are considered dead who aim evil at the wife of a faithful friend ",
+        "cite": 143
+      },
+      {
+        "text": ".",
+        "cite": null
+      }
+    ],
+    "citations": {
+      "cited": [
+        148,
+        150,
+        144,
+        141,
+        143
+      ],
+      "real": [
+        148,
+        150,
+        144,
+        141,
+        143
+      ],
+      "invented": [],
+      "distinctReal": [
+        141,
+        143,
+        144,
+        148,
+        150
+      ]
+    }
+  }
+]

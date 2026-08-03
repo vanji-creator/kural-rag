@@ -41,3 +41,6 @@ out/
 next-env.d.ts
 *.tsbuildinfo
 .vercel
+
+# logs — real questions from real people, and machine-local runtime noise
+logs/
