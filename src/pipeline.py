@@ -161,7 +161,48 @@ ENGINE_DESCRIPTION = (
 # what text we search
 # ----------------------------------------------------------------------
 
-def searchable_text(kural_record):
+MODERN_EXPLANATIONS_PATH = (PROJECT_ROOT / "data"
+                            / "modern_explanations.jsonl")
+
+# Which English prose to search each kural by.
+#
+#   "classic"  the 1880s translation prose the corpus shipped with
+#   "modern"   Sarvam's plain-modern-English rewrite instead of it
+#   "both"     both, so the archaic vocabulary stays in the keyword index
+#
+# THIS IS THE ROLLBACK SWITCH. Setting it back to "classic" restores the
+# behaviour measured at 170/233 with no files moved and nothing regenerated.
+CORPUS_TEXT_MODE = "classic"
+
+_modern_explanations = None
+
+
+def load_modern_explanations():
+    """The plain-modern-English rewrite of each kural, or {} if absent.
+
+    Read once and kept, because searchable_text is called 1330 times per
+    process and re-reading a file that often would dominate startup.
+    """
+    global _modern_explanations
+    if _modern_explanations is not None:
+        return _modern_explanations
+
+    _modern_explanations = {}
+    if MODERN_EXPLANATIONS_PATH.exists():
+        with open(MODERN_EXPLANATIONS_PATH, encoding="utf-8") as open_file:
+            for line in open_file:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    entry = json.loads(line)
+                except json.JSONDecodeError:
+                    continue      # a line cut short by a killed process
+                _modern_explanations[entry["number"]] = entry["modern"]
+    return _modern_explanations
+
+
+def searchable_text(kural_record, mode=None):
     """The one block of text a kural is searched by.
 
     Measured in Phase 4 against the alternatives - the actual Tamil verse
@@ -169,12 +210,36 @@ def searchable_text(kural_record):
     classical Tamil is one of the WORST things to search: the model has barely
     seen text like it.
 
-    (src/retrieve.py has an identical copy on purpose. That file is a frozen
-    teaching artifact - the naive Phase 3 loop - and is deliberately
-    self-contained rather than importing from production code.)
+    The English prose here is the thing under test as of 2026-08-03. What the
+    corpus ships with is 1880s English:
+
+        (A) pleasing (object) to his foes is he who reads not moral works...
+
+    LaBSE was trained on modern text, so a modern question has to reach across
+    that gap. HyDE already moves the QUESTION toward the book's vocabulary;
+    the modern mode moves the BOOK toward the question's. Which of them
+    actually helps is decided by src/measure_corpus_text.py, not here.
+
+    Falls back to the classic text for any kural with no rewrite yet, so a
+    half-finished rewrite file degrades one verse at a time instead of
+    crashing.
+
+    (src/retrieve.py has an identical copy of the classic version on purpose.
+    That file is a frozen teaching artifact - the naive Phase 3 loop - and is
+    deliberately self-contained rather than importing from production code.)
     """
+    mode = mode or CORPUS_TEXT_MODE
+    modern = load_modern_explanations().get(kural_record["number"], "")
+
+    if mode == "modern" and modern:
+        prose = modern
+    elif mode == "both" and modern:
+        prose = kural_record["english_explanation"] + " " + modern
+    else:
+        prose = kural_record["english_explanation"]
+
     return (kural_record["english_translation"] + " "
-            + kural_record["english_explanation"] + " "
+            + prose + " "
             + kural_record["tamil_meaning_mu_varadarajan"])
 
 

@@ -56,9 +56,164 @@ degradation at scale
 question: water is coming up through the shower drain
 statement: blocked waste pipe, drainage backflow, obstruction in the soil stack"""
 
-# Sentences a model could copy from the instruction. Any output that matches
-# one of these is mimicry, not comprehension, and the benchmark flags it.
+
+# ----------------------------------------------------------------------
+# The same job, aimed at a MODERN corpus (added 2026-08-03)
+# ----------------------------------------------------------------------
+#
+# The instruction above tells the model to reach for "formal or old-fashioned
+# words". That was right, and measured, while the only English in the corpus
+# was an 1880s translation: the question had to travel to where the text was.
+#
+# We then rewrote the corpus into plain modern English. Pointing the question
+# at archaic vocabulary that the text no longer contains is now working
+# against ourselves - we would be searching for "avarice" in a document that
+# says "greed".
+#
+# WHAT DELIBERATELY DOES NOT CHANGE
+#
+# The core of HyDE stays: turn the question into a STATEMENT of what the
+# answer would say, and name the underlying subject rather than the person's
+# surface situation. That is what stopped kural 251 - a verse about eating
+# meat - from answering 26 of our first 100 questions purely because it is
+# phrased as a question. Only the vocabulary instruction moves.
+#
+# The examples are the same cars/code/plumbing ones for the same reason: they
+# share no subject matter with Thirukkural, so no model can score by copying
+# them. A different set of examples here would make any comparison between
+# the two prompts partly a comparison of their examples.
+
+INSTRUCTION_MODERN = """You rewrite search queries. The search is over a book \
+of short verses about how to live: virtue, wealth, work, friendship, \
+rulership and love. The verses are explained in plain modern English.
+
+Rewrite the user's question as a short STATEMENT describing what the answer \
+would say. Never answer as a question.
+
+Two rules:
+- Name the underlying subject, not the surface details of the person's situation.
+- Use the plain words a clear modern explanation of that subject would use.
+
+Reply with the statement only. No explanation. One line. Under 20 words.
+
+Examples:
+question: my car makes a grinding noise when I brake
+statement: worn brake pads, damaged discs, metal rubbing on metal in the \
+braking system
+
+question: my code gets really slow once the list is big
+statement: the method does not scale, it repeats work, it slows down as the \
+data grows
+
+question: water is coming up through the shower drain
+statement: a blocked waste pipe, water flowing back up, something stuck in \
+the drain"""
+
+
+# ----------------------------------------------------------------------
+# Examples from THIS book's world (added 2026-08-03, Vikash's suggestion)
+# ----------------------------------------------------------------------
+#
+# Both instructions above teach with cars, code and plumbing. That was a
+# deliberate choice and it was right for ONE job: measuring. A model given an
+# anger example can reproduce it for an anger question and score a point
+# without having understood anything - Qwen3-0.6B did exactly that.
+#
+# But that protects a measurement, not a user. In production nobody checks
+# whether the model understood; they want the best rewrite. And an example
+# drawn from the same world as the corpus shows the model what a good answer
+# here actually looks like. That is ordinary few-shot prompting and it usually
+# wins.
+#
+# Vikash's question: "am i correct or were u correct by giving out of context
+# ones". Both, about different things. So it gets measured.
+#
+# TWO CONTROLS, BECAUSE IN-DOMAIN EXAMPLES ARE HOW LEAKAGE HAPPENS
+#
+# 1. None of these example QUESTIONS may resemble a question in the 233-item
+#    test set. "How do I control my anger" is literally question 1 of the
+#    golden set; using it here would be the fourth leakage incident in this
+#    project. src/check_prompt_leakage.py measures the overlap rather than
+#    trusting this paragraph.
+#
+# 2. The example STATEMENTS are added to EXAMPLE_STATEMENTS below, so the
+#    copying check catches a model that parrots them instead of thinking.
+
+INSTRUCTION_IN_DOMAIN = """You rewrite search queries. The search is over a \
+book of short verses about how to live: virtue, wealth, work, friendship, \
+rulership and love. The verses are explained in plain modern English.
+
+Rewrite the user's question as a short STATEMENT describing what the answer \
+would say. Never answer as a question.
+
+Two rules:
+- Name the underlying subject, not the surface details of the person's situation.
+- Use the plain words a clear modern explanation of that subject would use.
+
+Reply with the statement only. No explanation. One line. Under 20 words.
+
+Examples:
+question: the man who lent me money when I had nothing now needs help himself
+statement: gratitude, repaying a kindness received, remembering help given in \
+hard times
+
+question: my business partner keeps promising things and never delivers
+statement: broken promises, failing to keep one's word, unreliable conduct in \
+an agreement
+
+question: I inherited a large sum and I do not know what to do with it
+statement: using wealth well, spending it on worthy things, wasting an \
+inheritance"""
+
+# Which one the pipeline uses. This is the second rollback switch, alongside
+# CORPUS_TEXT_MODE in pipeline.py - and the two belong together. An archaic
+# prompt against a modern corpus, or the reverse, is a mismatch on purpose
+# only when we are measuring it.
+#
+#   "classic"    reach for old-fashioned words  - matches CORPUS_TEXT_MODE classic
+#   "modern"     plain modern words, out-of-domain examples
+#   "in-domain"  plain modern words, examples from this book's world
+PROMPT_MODE = "classic"
+
+_INSTRUCTIONS = {
+    "classic": INSTRUCTION,
+    "modern": INSTRUCTION_MODERN,
+    "in-domain": INSTRUCTION_IN_DOMAIN,
+}
+
+
+def instruction_for(mode=None):
+    """The rewrite instruction to use. One place decides, so nothing drifts."""
+    mode = mode or PROMPT_MODE
+    if mode not in _INSTRUCTIONS:
+        raise ValueError(f"unknown prompt mode {mode!r}. "
+                         f"known: {', '.join(_INSTRUCTIONS)}")
+    return _INSTRUCTIONS[mode]
+
+
+# The example QUESTIONS, kept separately so the leakage check can compare them
+# against the 233 test questions without re-parsing the instructions.
+EXAMPLE_QUESTIONS = [
+    "my car makes a grinding noise when I brake",
+    "my code gets really slow once the list is big",
+    "water is coming up through the shower drain",
+    "the man who lent me money when I had nothing now needs help himself",
+    "my business partner keeps promising things and never delivers",
+    "I inherited a large sum and I do not know what to do with it",
+]
+
+
+# Sentences a model could copy from EITHER instruction. Any output that
+# matches one is mimicry rather than comprehension, and the benchmark flags
+# it. Both prompts' examples are listed because a model given the modern
+# prompt could still parrot it.
 EXAMPLE_STATEMENTS = [
+    "worn brake pads, damaged discs, metal rubbing on metal in the braking system",
+    "the method does not scale, it repeats work, it slows down as the data grows",
+    "a blocked waste pipe, water flowing back up, something stuck in the drain",
+    "gratitude, repaying a kindness received, remembering help given in hard times",
+    "broken promises, failing to keep one's word, unreliable conduct in an agreement",
+    "using wealth well, spending it on worthy things, wasting an inheritance",
     "worn brake pads, scored rotors, metal-on-metal friction in the braking system",
     "poor algorithmic complexity, inefficient iteration, performance degradation at scale",
     "blocked waste pipe, drainage backflow, obstruction in the soil stack",

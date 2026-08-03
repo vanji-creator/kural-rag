@@ -34,6 +34,8 @@ Prices checked 2026-08-02. They change - re-check before quoting them.
 """
 
 import os
+import threading
+import time
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -127,6 +129,11 @@ REQUEST_TIMEOUT_SECONDS = 30
 # between attempts, before the error reaches us.
 REQUEST_RETRIES = 3
 
+# The client's own retries do not cover a rate limit for long enough - the
+# limit is counted per minute and its backoff is measured in seconds. These
+# waits are what actually gets a long run through a busy minute.
+RATE_LIMIT_WAITS = (2, 5, 12, 30, 60, 90)
+
 
 class HostedModel:
     """A language model on someone else's server, with the meter running."""
@@ -168,8 +175,17 @@ class HostedModel:
 
         # Running totals for the whole session, so any script can print what
         # it just spent instead of estimating it.
+        #
+        # The lock is needed because one HostedModel can be shared by several
+        # threads - src/modernise_corpus.py runs 8 calls at once. "count += n"
+        # is read, add, write: two threads can read the same old value and one
+        # update is lost. That would understate what we spent.
+        self._counter_lock = threading.Lock()
         self.input_tokens_used = 0
         self.output_tokens_used = 0
+        # How many times we were told to slow down. Reported so a run
+        # that took twice as long says why.
+        self.rate_limit_waits = 0
 
     def __repr__(self):
         """Deliberately says nothing about the key.
@@ -207,30 +223,53 @@ class HostedModel:
         # pasted page cannot run up a bill.
         user_message = user_message[:MAX_INPUT_CHARACTERS]
 
-        try:
-            response = self.client.chat.completions.create(
-                model=self.settings["model"],
-                messages=[{"role": "system", "content": system_instruction},
-                          {"role": "user", "content": user_message}],
-                max_tokens=max_output_tokens,
-                temperature=0.0,
-                # Anything this provider needs that the others do not, such as
-                # Sarvam's thinking off-switch. Empty for providers with none.
-                extra_body=self.settings.get("extra_body"),
-            )
-        except Exception as error:
-            # Re-raise with the key removed. Never let the original escape:
-            # its message may quote the request that carried the key.
-            raise RuntimeError(
-                f"{self.provider_name} call failed: "
-                f"{self.scrub(error)}") from None
+        # WAIT OUT A RATE LIMIT RATHER THAN THROWING THE WORK AWAY.
+        #
+        # This belongs here and nowhere else. It was first written inside
+        # src/modernise_corpus.py, which fixed that one script and left every
+        # other caller exposed - and the very next long run, in
+        # src/measure_modern_stack.py, died on a 429 after 100 paid rewrites.
+        # A retry that only one caller has is a retry the codebase does not
+        # have.
+        #
+        # Only rate limits are waited out. A bad request or a wrong model name
+        # will fail identically in ninety seconds, so those are raised at once.
+        response = None
+        for attempt, wait_seconds in enumerate(RATE_LIMIT_WAITS, start=1):
+            try:
+                response = self.client.chat.completions.create(
+                    model=self.settings["model"],
+                    messages=[
+                        {"role": "system", "content": system_instruction},
+                        {"role": "user", "content": user_message}],
+                    max_tokens=max_output_tokens,
+                    temperature=0.0,
+                    # Anything this provider needs that the others do not,
+                    # such as Sarvam's thinking off-switch.
+                    extra_body=self.settings.get("extra_body"),
+                )
+                break
+            except Exception as error:
+                message = self.scrub(error)
+                is_rate_limit = ("rate_limit" in message.lower()
+                                 or "429" in message)
+                if not is_rate_limit or attempt == len(RATE_LIMIT_WAITS):
+                    # Re-raise with the key removed. Never let the original
+                    # escape: its message may quote the request that carried
+                    # the key.
+                    raise RuntimeError(
+                        f"{self.provider_name} call failed: "
+                        f"{message}") from None
+                self.rate_limit_waits += 1
+                time.sleep(wait_seconds)
 
         # Every provider reports back exactly how many tokens it charged for.
         # We use their count, not our guess at it.
         usage = response.usage
         if usage is not None:
-            self.input_tokens_used += usage.prompt_tokens
-            self.output_tokens_used += usage.completion_tokens
+            with self._counter_lock:
+                self.input_tokens_used += usage.prompt_tokens
+                self.output_tokens_used += usage.completion_tokens
 
         choice = response.choices[0]
         answer = (choice.message.content or "").strip()
@@ -267,4 +306,6 @@ class HostedModel:
         return (f"{self.provider_name} ({self.settings['model']}): "
                 f"{self.input_tokens_used} tokens in, "
                 f"{self.output_tokens_used} out, "
-                f"Rs {self.rupees_spent():.4f}")
+                f"Rs {self.rupees_spent():.4f}"
+                + (f", waited out {self.rate_limit_waits} rate limits"
+                   if self.rate_limit_waits else ""))

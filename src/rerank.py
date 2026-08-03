@@ -56,20 +56,51 @@ MULTILINGUAL_MODEL_NAME = "BAAI/bge-reranker-v2-m3"
 DEFAULT_CANDIDATE_COUNT = 50
 
 
-def rerankable_text(kural_record):
+def rerankable_prose(kural_record, mode=None):
+    """The prose the reranker reads about one kural.
+
+    WHY THIS TAKES A MODE, AS OF 2026-08-03
+
+    This function used to hand the reranker `english_explanation` and nothing
+    else - the 1880s prose. That was invisible when the corpus had only one
+    English text. It stopped being invisible the moment we added a modern one.
+
+    The audit that found it: we measured three versions of the CORPUS text
+    (classic / modern / both) and got 170, 173, 174 out of 233 - a difference
+    well inside luck. The reason is here. The mode switch changed stage one,
+    which picks 50 candidates; this function feeds the RERANKER, which picks
+    the final 5 out of those 50. So the step that decides what a reader
+    actually sees was reading 1880s English in all three runs.
+
+    A measurement that only reaches half the pipeline is not a measurement of
+    the pipeline.
+    """
+    from pipeline import CORPUS_TEXT_MODE, load_modern_explanations
+
+    mode = mode or CORPUS_TEXT_MODE
+    modern = load_modern_explanations().get(kural_record["number"], "")
+
+    if mode == "modern" and modern:
+        return modern
+    if mode == "both" and modern:
+        return kural_record["english_explanation"] + " " + modern
+    return kural_record["english_explanation"]
+
+
+def rerankable_text(kural_record, mode=None):
     """English only. All our current reranker can read."""
     return (kural_record["english_translation"] + ". "
-            + kural_record["english_explanation"])
+            + rerankable_prose(kural_record, mode))
 
 
-def rerankable_text_with_tamil(kural_record):
+def rerankable_text_with_tamil(kural_record, mode=None):
     """English AND Tamil, for a model that can actually read both.
 
     Only worth passing to a multilingual reranker. Handing this to the
     English-only model would just be feeding it noise.
     """
     return (kural_record["english_translation"] + ". "
-            + kural_record["english_explanation"] + " "
+            + rerankable_prose(kural_record, mode) + " "
             + kural_record["tamil_meaning_mu_varadarajan"])
 
 

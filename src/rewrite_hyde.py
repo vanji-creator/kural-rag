@@ -64,7 +64,7 @@ import os
 import time
 from pathlib import Path
 
-from hyde_prompt import INSTRUCTION, MAX_NEW_TOKENS
+from hyde_prompt import MAX_NEW_TOKENS, instruction_for
 from llm import HostedModel
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -125,10 +125,15 @@ def tidy_reply(text, fallback_question):
 class HydeRewriter:
     """Rewrites questions, remembers every answer, and fails quietly."""
 
-    def __init__(self, provider_name="sarvam", cache_path=CACHE_PATH):
+    def __init__(self, provider_name="sarvam", cache_path=CACHE_PATH,
+                 prompt_mode=None):
         self.model = HostedModel(provider_name)
         self.cache_path = Path(cache_path)
-        self.instruction = INSTRUCTION
+        # instruction_for() reads PROMPT_MODE, so switching prompt style takes
+        # effect everywhere at once. The cache key below includes this text,
+        # so a prompt change correctly invalidates every rewrite made under
+        # the old one rather than silently serving them.
+        self.instruction = instruction_for(prompt_mode)
         self.model_name = self.model.settings["model"]
 
         self.cache = self._load_cache()
