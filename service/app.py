@@ -33,6 +33,7 @@ from fastapi.responses import JSONResponse
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
+from generate import AnswerWriter  # noqa: E402
 from pipeline import (  # noqa: E402  (import must follow the path insert)
     ENGINE_DESCRIPTION, ENGINE_NAME, EMBEDDING_MODEL_NAME,
     RERANK_CANDIDATE_COUNT, SCORES_ARE_CALIBRATED, KuralRetriever)
@@ -44,21 +45,44 @@ from search_log import (  # noqa: E402
 MAX_RESULTS = 20
 DEFAULT_RESULTS = 5
 
+# Repeating a question must not pay Sarvam twice for the same answer.
+ANSWER_CACHE_SIZE = 256
+
 # Filled in at startup. Module-level so every request shares one instance -
 # the entire point of the service.
 retriever = None
+
+# The Phase 7 generator. None when the key is missing - search still works,
+# the answer panel simply stays empty, and /generate says why.
+answer_writer = None
+
+# question (lowercased) -> the finished answer dict. Ordered so the oldest
+# entry can be dropped when the cache is full.
+answer_cache = {}
 
 
 @asynccontextmanager
 async def lifespan(app):
     """Load the models once, before the first request is served."""
-    global retriever
+    global retriever, answer_writer
     log = configure_logging()
     log.info("loading models - the first request waits for this, none after it")
 
     started_at = time.perf_counter()
     retriever = KuralRetriever(use_reranker=True)
     startup_seconds = round(time.perf_counter() - started_at, 1)
+
+    # The generator shares the rewriter's provider and key. If it cannot
+    # start, retrieval still serves - an app with verses and no summary
+    # beats an app that is down.
+    try:
+        answer_writer = AnswerWriter()
+        log.info("answer writer ready (%s)",
+                 answer_writer.model.settings["model"])
+    except Exception as error:
+        answer_writer = None
+        record_error("generate", error)
+        log.warning("NO ANSWER WRITER - searches return verses only")
 
     rewriter = retriever.rewriter
     # A "started" line means every later line in this file can be traced to a
@@ -159,3 +183,88 @@ def search(q: str = Query(..., description="the question, as typed"),
     # Handed back so the browser and both log files can all be joined on it.
     outcome["requestId"] = request_id
     return outcome
+
+
+@app.get("/generate")
+def generate(q: str = Query(..., description="the question, as typed"),
+             limit: int = Query(DEFAULT_RESULTS, ge=1, le=MAX_RESULTS),
+             x_request_id: str = Header(default=None)):
+    """Write a grounded answer from this question's retrieved verses.
+
+    Called AFTER /search for the same question, so the retrieval inside is a
+    cache hit and the only real work here is one Sarvam call (~Rs 0.004).
+
+    Returns {"answer": AnswerParts | null, "reason": ...}. A null answer is
+    never an error: it means "the verses stand alone", and the reason says
+    why. The interface renders verses either way - an answer is an addition,
+    never a requirement.
+
+    THE GROUNDING CONTRACT, enforced here and not just asked for in the
+    prompt: every citation the model writes is checked against the verse
+    numbers it was actually given. Invented numbers are dropped from the
+    displayed parts (src/generate.py) and REPORTED in the log, because
+    tomorrow's Phase 7 breaking work needs to know how often that happens.
+    """
+    request_id = x_request_id or new_request_id()
+
+    if retriever is None:
+        return JSONResponse({"error": "still loading models",
+                             "requestId": request_id}, status_code=503)
+
+    question = q.strip()
+    if not question:
+        return JSONResponse({"error": "empty query",
+                             "requestId": request_id}, status_code=400)
+
+    if answer_writer is None:
+        record("answer_skipped", request_id=request_id, question=question,
+               reason="no generator (missing key?)")
+        return {"answer": None, "reason": "generator unavailable",
+                "requestId": request_id}
+
+    cache_key = question.lower()
+    if cache_key in answer_cache:
+        return {"answer": answer_cache[cache_key], "reason": "cached",
+                "requestId": request_id, "cached": True}
+
+    try:
+        outcome = retriever.search(question, top_k=limit)
+    except Exception as error:
+        record_error("generate", error, request_id=request_id,
+                     question=question)
+        return JSONResponse({"error": "retrieval failed",
+                             "requestId": request_id}, status_code=500)
+
+    # Refusal means refusal all the way down: no verses, no prose about them.
+    if outcome["confidence"] == "none" or not outcome["results"]:
+        record("answer_skipped", request_id=request_id, question=question,
+               reason="nothing retrieved")
+        return {"answer": None, "reason": "nothing retrieved",
+                "requestId": request_id}
+
+    verse_records = [item["kural"] for item in outcome["results"]]
+    try:
+        written = answer_writer.write(question, verse_records)
+    except Exception as error:
+        # A Sarvam outage must not take the verses down with it.
+        record_error("generate", error, request_id=request_id,
+                     question=question)
+        return {"answer": None, "reason": "generation failed",
+                "requestId": request_id}
+
+    # The full citation audit goes to the LOG. The browser gets only the
+    # displayable shape - lib/types.ts AnswerParts.
+    record("answer_written", request_id=request_id, question=question,
+           versesGiven=[record_["number"] for record_ in verse_records],
+           cited=written["citations"]["cited"],
+           invented=written["citations"]["invented"],
+           groundedIn=written["groundedIn"],
+           rupeesThisRun=round(answer_writer.model.rupees_spent(), 4))
+
+    answer = {"parts": written["parts"],
+              "groundedIn": written["groundedIn"],
+              "meta": written["meta"]}
+    answer_cache[cache_key] = answer
+    if len(answer_cache) > ANSWER_CACHE_SIZE:
+        answer_cache.pop(next(iter(answer_cache)))
+    return {"answer": answer, "reason": "written", "requestId": request_id}

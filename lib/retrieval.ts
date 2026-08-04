@@ -3,6 +3,7 @@ import "server-only";
 import { allKurals, getKural } from "./corpus";
 import { recordError } from "./logger";
 import type {
+  AnswerParts,
   Confidence,
   Kural,
   QueryLanguage,
@@ -366,8 +367,20 @@ export const lexicalEngine: RetrievalEngine = {
 const RETRIEVAL_SERVICE_URL =
   process.env.RETRIEVAL_SERVICE_URL ?? "http://127.0.0.1:8000";
 
-/** Give up rather than leave a reader watching a spinner forever. */
-const SERVICE_TIMEOUT_MS = 20_000;
+/**
+ * Give up rather than leave a reader watching a spinner forever.
+ *
+ * Raised from 20 s on 2026-08-04, the day bge-reranker-v2-m3 became the
+ * production reranker: an uncached search now takes 15-25 s on a laptop
+ * CPU (measured), and a timeout below that would abort every cold search
+ * and silently serve the word-overlap fallback instead. On GPU hosting
+ * this goes back down.
+ */
+const SERVICE_TIMEOUT_MS = 45_000;
+
+/** The generation call on top: retrieval inside it is cached, so this only
+ *  covers one Sarvam round-trip. */
+const GENERATE_TIMEOUT_MS = 30_000;
 
 /** What service/app.py sends back. Mirrors its /search response. */
 interface ServiceResponse {
@@ -392,9 +405,9 @@ interface ServiceResponse {
 }
 
 export const embeddingEngine: RetrievalEngine = {
-  name: "Sarvam HyDE + LaBSE + BM25 + cross-encoder rerank",
+  name: "Sarvam HyDE + LaBSE + BM25 + bge-reranker-v2-m3",
   description:
-    "Rewrites the question into the vocabulary the verses actually use with Sarvam-105B, scores every one of the 1330 verses by meaning and by keyword, blends in the chapter signal, then rereads the top 50 against the original question with a cross-encoder. Measured at 90 of 100 on a hand-built English question set, and 170 of 233 on the wider set.",
+    "Rewrites the question into the vocabulary the verses actually use with Sarvam-105B, scores every one of the 1330 verses by meaning and by keyword, blends in the chapter signal, then rereads the top 50 against the original question with a 568M-parameter cross-encoder. Measured: a correct verse reaches the top five for 182 of 233 benchmark questions, and the first verse shown is correct for 131 of 233 (was 105 before this reranker, p = 0.0001).",
 
   /*
    * STILL FALSE, AND STILL FOR A MEASURED REASON.
@@ -458,6 +471,51 @@ export const embeddingEngine: RetrievalEngine = {
     };
   },
 };
+
+/**
+ * Ask the Python service to write a grounded answer from the verses it just
+ * retrieved for this question. Phase 7, wired 2026-08-04.
+ *
+ * Returns null rather than throwing, for every kind of failure: the service
+ * being down, the generator having no key, Sarvam timing out, the retrieval
+ * refusing. A missing answer is a NORMAL state the interface renders
+ * honestly — the verses stand alone. An answer is an addition, never a
+ * requirement, so nothing here is allowed to break a search that already
+ * succeeded.
+ *
+ * Called AFTER the search for the same question, so the retrieval inside the
+ * service is a cache hit and this call's wait is one Sarvam round-trip.
+ */
+export async function generateAnswer(
+  query: string,
+  limit: number,
+  requestId?: string,
+): Promise<AnswerParts | null> {
+  const url = `${RETRIEVAL_SERVICE_URL}/generate?q=${encodeURIComponent(query)}&limit=${limit}`;
+  try {
+    const response = await fetch(url, {
+      signal: AbortSignal.timeout(GENERATE_TIMEOUT_MS),
+      cache: "no-store",
+      headers: requestId ? { "X-Request-Id": requestId } : undefined,
+    });
+    if (!response.ok) {
+      throw new Error(`generate returned ${response.status}`);
+    }
+    const payload = (await response.json()) as {
+      answer: AnswerParts | null;
+      reason?: string;
+    };
+    return payload.answer;
+  } catch (error) {
+    recordError({
+      requestId: requestId ?? "-",
+      whatFailed: "answer generation",
+      message: error instanceof Error ? error.message : "unknown error",
+      query,
+    });
+    return null;
+  }
+}
 
 /**
  * The real engine, with the word-overlap one behind it as a net.

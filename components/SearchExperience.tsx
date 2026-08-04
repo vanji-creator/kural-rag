@@ -321,11 +321,19 @@ export function SearchExperience({
     }
 
     if (!isDemo) {
-      notices.push({
-        kind: "Retrieval only",
-        meta: retrieval.engine,
-        text: `${engine.description} No answer has been written: generating one is a later phase, and retrieval comes first because a perfect writer given the wrong verses still produces a wrong answer.`,
-      });
+      notices.push(
+        answer
+          ? {
+              kind: "How this was made",
+              meta: retrieval.engine,
+              text: `${engine.description} The answer above was written by Sarvam-105B from these retrieved verses only. Every citation was checked against the verses actually supplied; a number the model invents is dropped rather than rendered, because a citation that leads nowhere is a lie a reader can click.`,
+            }
+          : {
+              kind: "Retrieval only",
+              meta: retrieval.engine,
+              text: `${engine.description} No answer was written for this search — the generator or its provider was unavailable, or the search ran degraded — so the verses stand alone. The verses are the product; the answer is an addition.`,
+            },
+      );
     }
   }
 

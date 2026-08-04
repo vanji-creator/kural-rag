@@ -2,16 +2,21 @@ import { NextResponse } from "next/server";
 
 import { getDemoResponse } from "@/lib/demo";
 import { newRequestId, recordError, recordSearch } from "@/lib/logger";
-import { ACTIVE_ENGINE, DEFAULT_RESULT_LIMIT } from "@/lib/retrieval";
+import {
+  ACTIVE_ENGINE,
+  DEFAULT_RESULT_LIMIT,
+  generateAnswer,
+} from "@/lib/retrieval";
 import type { SearchResponse } from "@/lib/types";
 
 /**
- * One question in, retrieved verses out.
+ * One question in, retrieved verses out — and since 2026-08-04, a grounded
+ * answer above them when one can be written.
  *
- * `answer` is null and will stay null until Phase 7 puts a generator behind
- * it. That is not an oversight — retrieval is the ceiling. A perfect model
- * fed the wrong verses produces a confident wrong answer, so the verses come
- * first and the prose comes last.
+ * The order is deliberate and unchanged: retrieval first, prose last. A
+ * perfect model fed the wrong verses produces a confident wrong answer, so
+ * the answer is only attempted after retrieval succeeds, and a failed
+ * generation degrades to `answer: null` — never to a failed search.
  *
  * EVERY REQUEST IS WRITTEN DOWN.
  *
@@ -89,6 +94,22 @@ export async function GET(request: Request) {
       retrieval.engine.includes("FALLBACK"),
   });
 
-  const response: SearchResponse = { retrieval, answer: null, requestId };
+  // Generate only when there is something to ground an answer in, and only
+  // when the real engine answered — the word-overlap fallback retrieves
+  // different verses than the service would, and an answer generated from a
+  // degraded ranking must not appear under a normal search.
+  let answer = null;
+  const retrievalDegraded =
+    retrieval.engine.includes("DEGRADED") ||
+    retrieval.engine.includes("FALLBACK");
+  if (
+    retrieval.confidence !== "none" &&
+    retrieval.results.length > 0 &&
+    !retrievalDegraded
+  ) {
+    answer = await generateAnswer(query, limit, requestId);
+  }
+
+  const response: SearchResponse = { retrieval, answer, requestId };
   return NextResponse.json(response);
 }

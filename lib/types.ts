@@ -127,8 +127,11 @@ export interface AnswerPart {
 export interface SearchResponse {
   retrieval: RetrievalOutcome;
   /**
-   * null until Phase 7 connects a generator. The interface renders retrieved
-   * verses without it — an answer is the last thing added, not the first.
+   * The grounded answer, written by the Phase 7 generator (src/generate.py
+   * behind the service's /generate) since 2026-08-04. Still null whenever
+   * one could not be written — generator down, provider down, retrieval
+   * refused, degraded search — and the interface renders the verses alone
+   * in that case. An answer is an addition, never a requirement.
    */
   answer: AnswerParts | null;
   /**

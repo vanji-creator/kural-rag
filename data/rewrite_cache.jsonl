@@ -240,3 +240,4 @@
 {"key": "e3e1fb23a4892b34192e", "question": "how should I choose my friends?", "model": "sarvam-105b", "rewrite": "Friendship selection, choosing companions wisely, discernment in social bonds."}
 {"key": "1c2a1b9ba408409900b9", "question": "how do I deal with lazy coworkers?", "model": "sarvam-105b", "rewrite": "slothful colleagues, idleness, dereliction of duty among peers"}
 {"key": "44afeab4c99e3611d57c", "question": "Is it ever right to lie to protect someone?", "model": "sarvam-105b", "rewrite": "moral casuistry, the ethics of deception, virtue and expediency in the face of danger"}
+{"key": "e3c1623a1f109de40a37", "question": "how do I control my anger", "model": "sarvam-105b", "rewrite": "mastering one's temper, restraining wrath, mastering one's passions, controlling one's anger"}
