@@ -280,3 +280,14 @@ the work.
   already in context. **A plan to not-look is not a control. An automatic
   check is.** The verbatim check that caught it, and the vocabulary-overlap
   check written afterwards, are now part of the workflow.
+- **2026-08-04** — Concepts moved to "covered": **p values** (derived by
+  hand from coin flips, reproduced the day's own 0.0215) and
+  **correlation vs intervention** (ticket table said "more helps", the
+  50-vs-75 experiment said "more hurts" — I now know why only the second
+  one counts). New gap, uncomfortable and real: **I repeat recorded
+  mistakes when the context changes shape.** The save-at-the-end loss was
+  the same mistake as the July rewrite crash, already written in two log
+  files. Reading a lesson is not owning it; the trigger was "this run is
+  long", not "this run is a rewrite". Watch for the next shape-change.
+  Partly closed the same day: long runners now checkpoint atomically, and
+  the fix was proven with kill -9 rather than assumed.

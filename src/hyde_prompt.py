@@ -165,6 +165,75 @@ question: I inherited a large sum and I do not know what to do with it
 statement: using wealth well, spending it on worthy things, wasting an \
 inheritance"""
 
+
+# ----------------------------------------------------------------------
+# A SECOND rewrite, aimed at the chapter descriptions (2026-08-04)
+# ----------------------------------------------------------------------
+#
+# Every rewrite above is compared against TWO different kinds of text:
+#
+#     133 chapter descriptions   ~44 words, a topic summary plus a word list
+#    1330 verse texts            ~47 words, a verse plus its meaning
+#
+# One rewrite has to be a good match for both, and it cannot be. A verse says
+# what happens in one situation; a chapter description says what an area of
+# life is about. Those are different shapes of text, and an embedding is
+# sensitive to shape as well as subject.
+#
+# So the question gets rewritten TWICE - once shaped like a verse meaning,
+# once shaped like a chapter description - and each is compared against the
+# thing it was shaped for.
+#
+# This is HyDE's own logic applied a second time. HyDE exists because a
+# QUESTION and an ANSWER are written differently, so searching with a
+# question finds other questions. The same argument says searching a topic
+# summary with an answer-shaped sentence finds the wrong kind of thing.
+#
+# WHY THIS IS WORTH THE SECOND CALL
+#
+# Reading the 8 questions the modern corpus fixed, every one was fixed the
+# same way: the right CHAPTER was found. "how do I stop being scared of
+# speaking in public" reached the chapter literally called "Not to dread the
+# Council" - which the old corpus missed entirely. The chapter match is doing
+# the work, so it is worth aiming at directly.
+#
+# Cost: one extra call, about Rs 0.00125 per question, and no extra waiting
+# if the two run at the same time.
+
+INSTRUCTION_CHAPTER = """You rewrite a question into a description of the \
+SUBJECT AREA it belongs to.
+
+The search is over a book about how to live, divided into 133 short chapters. \
+Each chapter covers one subject - things like restraining anger, choosing \
+friends, farming, the duties of a ruler, or the sulking of lovers.
+
+You are NOT answering the question. You are describing the area of life the \
+question belongs to, the way a chapter heading and summary would.
+
+Write it in this shape:
+
+- One sentence naming the subject area in plain modern English.
+- Then a list of words connected to that subject: everyday words a person \
+would use, and the formal words a book would use, together.
+
+Reply with the sentence and the word list only. No explanation. Under 40 \
+words.
+
+Examples:
+question: the man who lent me money when I had nothing now needs help himself
+statement: Returning help to someone who helped you first. gratitude, \
+thankfulness, repaying kindness, obligation, indebtedness, remembering a \
+favour, ingratitude
+
+question: my business partner keeps promising things and never delivers
+statement: Keeping your word once you have given it. promises, agreements, \
+reliability, trustworthiness, breaking faith, going back on your word, \
+dependability
+
+question: I inherited a large sum and I do not know what to do with it
+statement: What wealth is for and how it should be used. wealth, riches, \
+money, giving, generosity, spending, hoarding, waste, charity, inheritance"""
+
 # Which one the pipeline uses. This is the second rollback switch, alongside
 # CORPUS_TEXT_MODE in pipeline.py - and the two belong together. An archaic
 # prompt against a modern corpus, or the reverse, is a mismatch on purpose
@@ -173,12 +242,21 @@ inheritance"""
 #   "classic"    reach for old-fashioned words  - matches CORPUS_TEXT_MODE classic
 #   "modern"     plain modern words, out-of-domain examples
 #   "in-domain"  plain modern words, examples from this book's world
+#
+# Tried "modern" on 2026-08-04 (Vikash's call, measured by
+# src/measure_requested_settings.py): 164/233 against 174, and a REAL loss on
+# Set A (89 vs 97, p = 0.0215). Why it lost: the classic instruction asks for
+# the old words ALONGSIDE the everyday ones, so its rewrites carry both
+# vocabularies. The modern one carries only half. Rolled back same day.
 PROMPT_MODE = "classic"
 
 _INSTRUCTIONS = {
     "classic": INSTRUCTION,
     "modern": INSTRUCTION_MODERN,
     "in-domain": INSTRUCTION_IN_DOMAIN,
+    # Shaped like a chapter description, not like a verse. Used for the
+    # chapter half of the score only - see the note above.
+    "chapter": INSTRUCTION_CHAPTER,
 }
 
 
@@ -202,6 +280,9 @@ EXAMPLE_QUESTIONS = [
     "I inherited a large sum and I do not know what to do with it",
 ]
 
+# The chapter-aimed prompt reuses the same three example questions on purpose.
+# Different examples would make any comparison between it and the in-domain
+# prompt partly a comparison of their examples.
 
 # Sentences a model could copy from EITHER instruction. Any output that
 # matches one is mimicry rather than comprehension, and the benchmark flags
@@ -214,6 +295,9 @@ EXAMPLE_STATEMENTS = [
     "gratitude, repaying a kindness received, remembering help given in hard times",
     "broken promises, failing to keep one's word, unreliable conduct in an agreement",
     "using wealth well, spending it on worthy things, wasting an inheritance",
+    "Returning help to someone who helped you first.",
+    "Keeping your word once you have given it.",
+    "What wealth is for and how it should be used.",
     "worn brake pads, scored rotors, metal-on-metal friction in the braking system",
     "poor algorithmic complexity, inefficient iteration, performance degradation at scale",
     "blocked waste pipe, drainage backflow, obstruction in the soil stack",

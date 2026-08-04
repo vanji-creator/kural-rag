@@ -67,6 +67,7 @@ from hyde_prompt import MAX_NEW_TOKENS, instruction_for
 from keyword_search import BM25Index
 from llm import HostedModel
 from pipeline import (CHAPTER_BLEND_WEIGHT, EMBEDDING_MODEL_NAME,
+                      cached_vectors,
                       KEYWORD_WEIGHT, KURALS_PER_CHAPTER,
                       RERANK_CANDIDATE_COUNT, build_chapter_descriptions,
                       searchable_text)
@@ -149,10 +150,13 @@ def score_combination(search_texts, all_questions, kurals, model, reranker,
     that stage one uses, and the text the reranker reads. Missing the second
     of those is what made the previous measurement meaningless.
     """
+    # Cached on disk, keyed by a fingerprint of the model name and every text.
+    # Without this every run re-embedded 1330 verses for three minutes to get
+    # numbers identical to the last run's.
     kural_texts = [searchable_text(record, corpus_mode) for record in kurals]
-    kural_vectors = model.encode(kural_texts, show_progress_bar=False)
-    chapter_vectors = model.encode(build_chapter_descriptions(kurals),
-                                   show_progress_bar=False)
+    kural_vectors = cached_vectors(model, kural_texts, f"kurals_{corpus_mode}")
+    chapter_vectors = cached_vectors(model, build_chapter_descriptions(kurals),
+                                     "chapters")
     keyword_index = BM25Index(kural_texts)
 
     question_vectors = model.encode(search_texts, show_progress_bar=False)
@@ -212,6 +216,20 @@ def main():
         results[label] = score_combination(
             rewrites_by_prompt[prompt_mode], all_questions, kurals, model,
             reranker, corpus_mode)
+
+    # Keep the per-question hit/miss, not just the totals.
+    #
+    # The first run of this saved only the six totals. The moment the table
+    # raised a follow-up question - is the Set A jump from 90 to 97 real? -
+    # answering it needed another hour of scoring, because the arrays that
+    # McNemar's test reads had been thrown away. An experiment that cannot be
+    # re-questioned without re-running is an experiment half kept.
+    results_path = PROJECT_ROOT / "data" / "modern_stack_results.json"
+    with open(results_path, "w", encoding="utf-8") as open_file:
+        json.dump({label: [bool(hit) for hit in hits]
+                   for label, hits in results.items()},
+                  open_file, indent=2)
+    print(f"per-question results saved to {results_path.name}")
 
     split = len(set_a)
     baseline = COMBINATIONS[0][0]

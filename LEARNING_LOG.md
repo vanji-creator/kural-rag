@@ -1344,3 +1344,55 @@ not - Python buffers stdout when it is piped instead of going to a terminal.
 `python -u` avoids it. Separately, a wait-loop written as
 `until ! pgrep -f benchmark_hyde` never exits, because the loop's own command
 line contains that text and matches itself.
+
+---
+
+## 2026-08-04 — The reranker convicted, tried, and replaced
+
+### What was learned, in order
+
+**A correct-sounding idea can be measured wrong in an afternoon.** The
+requested settings (modern prompt, poem out of embeddings) lost 8 questions
+on the honest set, p = 0.0215. The lesson inside the loss: the classic
+rewrite instruction asks for old AND everyday words — switching to "modern"
+did not modernise the query, it halved its vocabulary.
+
+**Correlation, then intervention — the difference, felt.** Ticket counts
+(correct verses in the 50) correlate beautifully with success: 45% → 92%.
+It looked like "more tickets = more wins". The intervention said no: raising
+the pile to 75 ADDED tickets and LOST 9 questions, p = 0.0352. The climb was
+"easy questions are easy for both stages". One experiment separated the two
+readings; staring at the table never could.
+
+**The p value, derived by hand.** Only disagreements carry information; if
+two methods were equal, each disagreement is a fair coin. 9-vs-1 in 10
+disagreements: 22 lopsided outcomes of 1024 = 0.0215 — the exact number the
+morning's test printed. Also named what p is NOT: not the size of the win,
+not the chance of being right, not fishing-proof.
+
+**Component selection as science.** Four small rerankers, each arm isolating
+one axis: depth +3 (noise), same-size multilingualism −9, Tamil input +8.
+Verdict: go large and Tamil-capable. bge-reranker-v2-m3 on a free Colab T4:
+rank-1 105 → 131, p = 0.0001 — the strongest result this project has
+produced. Set A rank-1: 68 → 80.
+
+**Frozen piles travel; computation does not.** The Colab package ships the
+50-candidate piles as data because a different machine's embeddings differ
+in the last decimals — enough to swap position 50 for 51 and void the
+comparison.
+
+**Owned weights vs rented APIs.** LaBSE, MiniLM, bge — all downloaded, all
+ours forever. Renting generic GPU time to run owned weights is not the same
+dependency as calling an API whose model changes under you.
+
+### The mistake of the day
+
+Lost 40 minutes of compute to a save-at-the-end script — a mistake this
+project had already recorded once. New rule: checkpoint by expected runtime,
+not habit. The rewritten runner was proven with kill -9 before shipping.
+
+### Open
+
+bge (arm E) is the chosen reranker, unserved: 875 ms on a T4, ~20 s on this
+laptop. Serving options to be researched under a zero-budget constraint.
+The E-vs-F (Tamil input) question stays open until the test set grows.

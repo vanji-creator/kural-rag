@@ -53,6 +53,20 @@ RERANKER_MODEL_NAME = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 # 94 languages including Tamil) rather than declared by the reranker itself.
 MULTILINGUAL_MODEL_NAME = "BAAI/bge-reranker-v2-m3"
 
+# What production actually loads. Vikash's decision, 2026-08-04, after run
+# #14 of the experiment log: bge reading the same English text beat the
+# small model where the reader lives - rank-1 105 -> 131 of 233, p = 0.0001,
+# with top-5 rising 174 -> 182. Set A rank-1 went 68 -> 80.
+#
+# THE COST, KNOWN AND ACCEPTED: ~15-25 s per uncached search on a laptop
+# CPU, 875 ms on a T4 GPU. Exact-only (CLAUDE.md 3.5): accuracy outranks
+# speed. The quantization experiment may buy the speed back and must prove
+# zero accuracy loss first.
+#
+# RERANKER_MODEL_NAME above stays pointing at the small model on purpose:
+# benchmark scripts use it to reproduce baseline arm A.
+PRODUCTION_RERANKER_MODEL = MULTILINGUAL_MODEL_NAME
+
 DEFAULT_CANDIDATE_COUNT = 50
 
 
@@ -87,10 +101,30 @@ def rerankable_prose(kural_record, mode=None):
     return kural_record["english_explanation"]
 
 
-def rerankable_text(kural_record, mode=None):
+# Does the reranker see the verse couplet as well as the prose?
+#
+# The couplet is compressed Victorian verse - "Anger against the weak is wrong
+# It is futile against the strong". It is not a sentence, and a cross-encoder
+# trained on ordinary web passages has never seen text shaped like it.
+#
+# Worse, it is accidental keyword bait. Asked "how do I stay strong when
+# things go wrong?", the reranker scored that anger verse 0.406 and the
+# correct verse about enduring trouble 0.016 - 25 times higher - because the
+# couplet contains the words "strong" and "wrong" and the question does too.
+# The verse is about anger. It shares no meaning with the question at all.
+#
+# False means the reranker reads only the prose, which is a real sentence.
+INCLUDE_COUPLET_IN_RERANK = True
+
+
+def rerankable_text(kural_record, mode=None, include_couplet=None):
     """English only. All our current reranker can read."""
-    return (kural_record["english_translation"] + ". "
-            + rerankable_prose(kural_record, mode))
+    if include_couplet is None:
+        include_couplet = INCLUDE_COUPLET_IN_RERANK
+    prose = rerankable_prose(kural_record, mode)
+    if not include_couplet:
+        return prose
+    return kural_record["english_translation"] + ". " + prose
 
 
 def rerankable_text_with_tamil(kural_record, mode=None):

@@ -62,7 +62,7 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 
 from keyword_search import BM25Index
-from rerank import (RERANKER_MODEL_NAME, Reranker, rerankable_text)
+from rerank import (PRODUCTION_RERANKER_MODEL, Reranker, rerankable_text)
 from rewrite_hyde import (REWRITER_FAILED, REWRITER_SKIPPED_TAMIL,
                           HydeRewriter)
 
@@ -147,13 +147,14 @@ def confidence_for(top_score):
     return "none"
 
 
-ENGINE_NAME = "Sarvam HyDE + LaBSE + BM25 + cross-encoder rerank"
+ENGINE_NAME = "Sarvam HyDE + LaBSE + BM25 + bge-reranker-v2-m3"
 ENGINE_DESCRIPTION = (
     "Rewrites the question into the vocabulary the verses use with "
     "Sarvam-105B, scores every verse by meaning and by keyword, blends in the "
     "chapter signal, then rereads the top 50 against the original question "
-    "with a cross-encoder. Measured at 90 of 100 on a hand-built English "
-    "question set, and 170 of 233 on the wider set."
+    "with a 568M-parameter cross-encoder. Measured at 97 of 100 top-5 on the "
+    "hand-built question set, 182 of 233 on the wider set, and 131 of 233 "
+    "correct-at-rank-1 (was 105 with the previous reranker, p = 0.0001)."
 )
 
 
@@ -172,7 +173,33 @@ MODERN_EXPLANATIONS_PATH = (PROJECT_ROOT / "data"
 #
 # THIS IS THE ROLLBACK SWITCH. Setting it back to "classic" restores the
 # behaviour measured at 170/233 with no files moved and nothing regenerated.
-CORPUS_TEXT_MODE = "classic"
+CORPUS_TEXT_MODE = "modern"
+
+# Does the searched text include the 1880s two-line verse translation?
+#
+# "Modern corpus mode" above only ever replaced the PROSE. The old verse
+# translation sits in front of it in every mode, so the modern corpus that
+# scored 97/100 on Set A was half modern.
+#
+# 1727 words appear ONLY in those verse lines and never in the modern prose -
+# thyself, savant, ignoble, eschew, insolence, nev'r. Keyword search weights a
+# word by how rare it is, and a word in 1 verse of 1330 carries about four
+# times the weight of a word in 100. So these lines are the strongest keyword
+# signals in the corpus, and nobody types most of them.
+#
+# That cuts both ways and has to be measured, not guessed:
+#   keeping them   rare precise hooks - a question about "equity" finds the
+#                  one verse containing it
+#   dropping them  removes words nobody types, and removes accidental
+#                  matches where a rare word lands by coincidence
+#
+# The two halves of the search can be decided SEPARATELY since 2026-08-04.
+# Removing the poem from the embeddings was tried that day: roughly free on
+# rank-1 (105 -> 106) but 172 vs 174 on top-5 in run #9's matching arm, and
+# this project rejects any unproven drop (CLAUDE.md 3.5). Both stay True -
+# the measured 174/233 configuration.
+INCLUDE_COUPLET_IN_EMBEDDINGS = True
+INCLUDE_COUPLET_IN_KEYWORDS = True
 
 _modern_explanations = None
 
@@ -202,7 +229,7 @@ def load_modern_explanations():
     return _modern_explanations
 
 
-def searchable_text(kural_record, mode=None):
+def searchable_text(kural_record, mode=None, include_couplet=None):
     """The one block of text a kural is searched by.
 
     Measured in Phase 4 against the alternatives - the actual Tamil verse
@@ -229,6 +256,11 @@ def searchable_text(kural_record, mode=None):
     deliberately self-contained rather than importing from production code.)
     """
     mode = mode or CORPUS_TEXT_MODE
+    # Callers that mean one specific half of the search pass the flag
+    # themselves (see KuralRetriever.__init__). The default keeps the poem in,
+    # so every older measurement script still builds the text it measured.
+    if include_couplet is None:
+        include_couplet = True
     modern = load_modern_explanations().get(kural_record["number"], "")
 
     if mode == "modern" and modern:
@@ -238,9 +270,12 @@ def searchable_text(kural_record, mode=None):
     else:
         prose = kural_record["english_explanation"]
 
-    return (kural_record["english_translation"] + " "
-            + prose + " "
-            + kural_record["tamil_meaning_mu_varadarajan"])
+    pieces = []
+    if include_couplet:
+        pieces.append(kural_record["english_translation"])
+    pieces.append(prose)
+    pieces.append(kural_record["tamil_meaning_mu_varadarajan"])
+    return " ".join(pieces)
 
 
 CHAPTER_DESCRIPTIONS_PATH = PROJECT_ROOT / "data" / "chapter_descriptions.json"
@@ -354,6 +389,28 @@ def fingerprint(model_name, texts):
     return digest.hexdigest()[:16]
 
 
+def cached_vectors(model, texts, name):
+    """Embed these texts, reusing a cache keyed by what is in them.
+
+    WHY THIS EXISTS
+
+    Embedding 1330 verses on this processor takes about three minutes. Every
+    analysis script wrote `model.encode(texts)` directly, so every run paid
+    that again - for text that had not changed since the morning. One check
+    that compares two corpus versions was spending six of its ten minutes
+    re-embedding identical input.
+
+    KuralRetriever already avoided this through load_or_build_vectors. The
+    scripts around it did not, because that function wanted a fixed path and
+    the scripts needed one cache per corpus mode. This gives them one.
+
+    Safe because the fingerprint covers the model name AND every text, so a
+    changed corpus rebuilds rather than silently serving old vectors.
+    """
+    cache_path = PROJECT_ROOT / "data" / f"vectors_{name}.npy"
+    return load_or_build_vectors(model, texts, cache_path, name)
+
+
 def load_or_build_vectors(model, texts, cache_path, label):
     """Embed these texts, reusing the cache only if it holds the same thing."""
     meta_path = cache_path.with_suffix(".meta.json")
@@ -412,20 +469,33 @@ class KuralRetriever:
         print(f"loading {EMBEDDING_MODEL_NAME}...")
         self.embedding_model = SentenceTransformer(EMBEDDING_MODEL_NAME)
 
-        kural_texts = [searchable_text(record) for record in self.kurals]
+        # The two halves of stage one read DIFFERENT text since 2026-08-04:
+        # the embeddings search the verse without the 1880s poem, the keyword
+        # index keeps it for its rare-word hooks.
+        embedding_texts = [
+            searchable_text(record,
+                            include_couplet=INCLUDE_COUPLET_IN_EMBEDDINGS)
+            for record in self.kurals]
+        keyword_texts = [
+            searchable_text(record,
+                            include_couplet=INCLUDE_COUPLET_IN_KEYWORDS)
+            for record in self.kurals]
         self.kural_vectors = load_or_build_vectors(
-            self.embedding_model, kural_texts, KURAL_VECTOR_CACHE, "kurals")
+            self.embedding_model, embedding_texts, KURAL_VECTOR_CACHE,
+            "kurals")
         self.chapter_vectors = load_or_build_vectors(
             self.embedding_model, build_chapter_descriptions(self.kurals),
             CHAPTER_VECTOR_CACHE, "chapters")
 
         print("building the BM25 keyword index...")
-        self.keyword_index = BM25Index(kural_texts)
+        self.keyword_index = BM25Index(keyword_texts)
 
         self.reranker = None
         if use_reranker:
-            print(f"loading {RERANKER_MODEL_NAME}...")
-            self.reranker = Reranker(RERANKER_MODEL_NAME)
+            print(f"loading {PRODUCTION_RERANKER_MODEL}...")
+            print("  (568M parameters - expect 15-25 s per uncached search "
+                  "on a laptop CPU. Chosen for accuracy, run #14.)")
+            self.reranker = Reranker(PRODUCTION_RERANKER_MODEL)
 
         # question text -> finished results, most recently used last
         self.query_cache = OrderedDict()

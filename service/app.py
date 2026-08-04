@@ -36,7 +36,7 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 from pipeline import (  # noqa: E402  (import must follow the path insert)
     ENGINE_DESCRIPTION, ENGINE_NAME, EMBEDDING_MODEL_NAME,
     RERANK_CANDIDATE_COUNT, SCORES_ARE_CALIBRATED, KuralRetriever)
-from rerank import RERANKER_MODEL_NAME  # noqa: E402
+from rerank import PRODUCTION_RERANKER_MODEL  # noqa: E402
 from search_log import (  # noqa: E402
     SEARCH_LOG_PATH, configure_logging, new_request_id, record, record_error,
     record_search)
@@ -68,7 +68,7 @@ async def lifespan(app):
     record("service_started",
            engine=ENGINE_NAME,
            embeddingModel=EMBEDDING_MODEL_NAME,
-           rerankerModel=RERANKER_MODEL_NAME,
+           rerankerModel=PRODUCTION_RERANKER_MODEL,
            rerankCandidates=RERANK_CANDIDATE_COUNT,
            calibrated=SCORES_ARE_CALIBRATED,
            corpusSize=len(retriever.kurals),
@@ -100,7 +100,7 @@ def health():
         "engine": ENGINE_NAME,
         "description": ENGINE_DESCRIPTION,
         "embeddingModel": EMBEDDING_MODEL_NAME,
-        "rerankerModel": RERANKER_MODEL_NAME,
+        "rerankerModel": PRODUCTION_RERANKER_MODEL,
         "rerankCandidates": RERANK_CANDIDATE_COUNT,
         "calibrated": SCORES_ARE_CALIBRATED,
         "corpusSize": len(retriever.kurals) if retriever else 0,

@@ -238,3 +238,5 @@
 {"key": "a48c3a23de86e4d113de", "question": "what does Thirukkural say about lying?", "model": "sarvam-105b", "rewrite": "dishonesty, falsehood, the vice of untruthfulness in speech"}
 {"key": "a5c43314a37502b628ff", "question": "is it wrong to eat meat?", "model": "sarvam-105b", "rewrite": "the ethics of consuming flesh, moral permissibility of eating meat"}
 {"key": "e3e1fb23a4892b34192e", "question": "how should I choose my friends?", "model": "sarvam-105b", "rewrite": "Friendship selection, choosing companions wisely, discernment in social bonds."}
+{"key": "1c2a1b9ba408409900b9", "question": "how do I deal with lazy coworkers?", "model": "sarvam-105b", "rewrite": "slothful colleagues, idleness, dereliction of duty among peers"}
+{"key": "44afeab4c99e3611d57c", "question": "Is it ever right to lie to protect someone?", "model": "sarvam-105b", "rewrite": "moral casuistry, the ethics of deception, virtue and expediency in the face of danger"}

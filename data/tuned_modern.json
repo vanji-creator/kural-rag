@@ -1,0 +1,7 @@
+{
+  "chapter_text": "topic+words",
+  "keyword_weight": 0.3,
+  "chapter_blend": 0.5,
+  "bm25_saturation": 1.5,
+  "bm25_length_penalty": 0.75
+}

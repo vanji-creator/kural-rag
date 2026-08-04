@@ -331,11 +331,20 @@ def main():
     # The multilingual challenger, measured two ways so the model change and
     # the text change are separated. If only the second row moves, Tamil is
     # what mattered. If both move together, the model is what mattered.
-    # The multilingual reranker was measured and REJECTED: 91 of 100 for 24x
-    # the latency (11,840 ms per question against 498 ms), and the Tamil
-    # variant cost another 5.6 seconds to gain exactly nothing. Running it
-    # again takes about 40 minutes, so it is off unless asked for. The code
-    # stays so the claim can be re-checked rather than taken on trust.
+    #
+    # VERDICT HISTORY - both kept, because they disagree and both were right:
+    #   July (classic corpus, golden 100, top-5 only): REJECTED. 91 of 100
+    #     for 24x the latency, Tamil variant gained nothing.
+    #   2026-08-04 (modern corpus, 233 questions, run #14 on a GPU): CHOSEN.
+    #     Rank-1 105 -> 131, p = 0.0001 - a metric the July run never looked
+    #     at, on corpus text that did not exist then. It is now
+    #     PRODUCTION_RERANKER_MODEL.
+    # Same model, opposite verdicts: the corpus changed and the question
+    # changed. A verdict is about a configuration, not a model.
+    #
+    # The July measurement below takes about 40 minutes to rerun, so it is
+    # off unless asked for. The code stays so the claim can be re-checked
+    # rather than taken on trust.
     if "--full" in sys.argv:
         multilingual_reranker = Reranker(MULTILINGUAL_MODEL_NAME,
                                          max_length=1024)
