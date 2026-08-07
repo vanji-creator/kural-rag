@@ -29,6 +29,15 @@ interface SearchExperienceProps {
   isDemo: boolean;
 }
 
+/*
+ * The four example questions.
+ *
+ * `fontSize` is their size in the small chips on the no-match screen.
+ * `ghostScale` is their size inside the big ask box, as a fraction of the
+ * input's own font size: Tamil letterforms read optically larger than Spectral
+ * at the same pixel size and the monospace face reads larger still, so each
+ * script is stepped down until the three look like one size.
+ */
 const EXAMPLE_QUERIES = [
   {
     tag: "EN",
@@ -36,6 +45,7 @@ const EXAMPLE_QUERIES = [
     lang: "en",
     font: "var(--f-text)",
     fontSize: "15.5px",
+    ghostScale: 1,
   },
   {
     tag: "தமிழ்",
@@ -43,6 +53,7 @@ const EXAMPLE_QUERIES = [
     lang: "ta",
     font: "var(--f-ta)",
     fontSize: "17px",
+    ghostScale: 0.86,
   },
   {
     tag: "Thanglish",
@@ -50,6 +61,7 @@ const EXAMPLE_QUERIES = [
     lang: "en",
     font: "var(--f-mono)",
     fontSize: "13.5px",
+    ghostScale: 0.78,
   },
   {
     tag: "EN",
@@ -57,11 +69,16 @@ const EXAMPLE_QUERIES = [
     lang: "en",
     font: "var(--f-text)",
     fontSize: "15.5px",
+    ghostScale: 1,
   },
 ];
 
 /** The shortest the thinking screen is allowed to be, so it is legible. */
 const MINIMUM_THINKING_MS = 900;
+
+/** How long each example holds in the ask box before the next one fades in. */
+const PLACEHOLDER_HOLD_MS = 4000;
+
 
 export function SearchExperience({
   engine,
@@ -79,8 +96,8 @@ export function SearchExperience({
   const [openPanels, setOpenPanels] = useState<Record<number, boolean>>({});
   const [arrivedAt, setArrivedAt] = useState(0);
   const [scoreProgress, setScoreProgress] = useState(initialResponse ? 1 : 0);
-  const [step, setStep] = useState(0);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
   const cardRefs = useRef<Record<number, HTMLLIElement | null>>({});
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -109,6 +126,29 @@ export function SearchExperience({
   }, []);
 
   useEffect(() => clearTimers, [clearTimers]);
+
+  // ------------------------------------------------------------------
+  // the ask box shows the examples instead of listing them
+  // ------------------------------------------------------------------
+
+  /*
+   * The four example questions used to sit under the input as four buttons.
+   * They now cycle inside the box itself, so the resting screen is the
+   * headline and the input and nothing else.
+   *
+   * Two conditions stop the cycle, and both matter. It stops the moment there
+   * is anything in the box, because text moving underneath what someone is
+   * typing is hostile. And it never starts when the reader's system asks for
+   * reduced motion — in that case the first example simply stays put, which
+   * is still a complete instruction.
+   */
+  useEffect(() => {
+    if (phase !== "rest" || query !== "" || reducedMotion) return;
+    const cycle = setInterval(() => {
+      setPlaceholderIndex((current) => (current + 1) % EXAMPLE_QUERIES.length);
+    }, PLACEHOLDER_HOLD_MS);
+    return () => clearInterval(cycle);
+  }, [phase, query, reducedMotion]);
 
   const later = useCallback((ms: number, run: () => void) => {
     timers.current.push(setTimeout(run, ms));
@@ -148,14 +188,7 @@ export function SearchExperience({
       setOpenPanels({});
       setArrivedAt(0);
       setScoreProgress(0);
-      setStep(0);
       setPhase("thinking");
-
-      [
-        [360, 1],
-        [880, 2],
-        [1420, 3],
-      ].forEach(([delay, stepIndex]) => later(delay, () => setStep(stepIndex)));
 
       const startedAt = performance.now();
 
@@ -173,7 +206,6 @@ export function SearchExperience({
 
         later(wait, () => {
           setResponse(payload);
-          setStep(4);
           setPhase("answer");
           countUp();
         });
@@ -256,18 +288,6 @@ export function SearchExperience({
   const retrieval = response?.retrieval;
   const answer = response?.answer ?? null;
   const queryIsTamil = retrieval?.queryLanguage === "ta";
-
-  const thinkingSteps = [
-    { label: "reading the query", meta: "script detected" },
-    { label: `scanning ${corpusSize} verses`, meta: "exhaustive" },
-    { label: "ranking by rare-word weight", meta: "idf weighted" },
-    {
-      label: engine.calibrated
-        ? "checking the result against the floor"
-        : "reporting what was found, without judging it",
-      meta: engine.calibrated ? `floor ${engine.floor.toFixed(2)}` : "uncalibrated",
-    },
-  ];
 
   const notices: Notice[] = [];
 
@@ -352,8 +372,18 @@ export function SearchExperience({
               </span>
             </div>
 
+            {/*
+              The book's own name is set in its own script. Tamil letterforms
+              run optically larger than Spectral at the same pixel size, so the
+              word is stepped down to 0.84em to sit level with the English
+              around it — see .resting__title-ta.
+            */}
             <h1 className="resting__title">
-              <span lang="en">Ask the Thirukkural a question.</span>
+              <span lang="en">Ask the</span>{" "}
+              <span lang="ta" className="resting__title-ta">
+                திருக்குறள்
+              </span>{" "}
+              <span lang="en">a question.</span>
             </h1>
 
             <p lang="en" className="resting__lede">
@@ -370,18 +400,45 @@ export function SearchExperience({
               </label>
 
               <div className="askbox__line">
-                <input
-                  id="kural-question"
-                  className="askbox__input"
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") runSearch(query);
-                  }}
-                  placeholder="e.g. what does it say about restraining anger?"
-                  autoComplete="off"
-                  spellCheck={false}
-                />
+                {/*
+                  The prompt text is drawn as a sibling rather than given to
+                  the input's own placeholder attribute, because a real
+                  placeholder is one string in one font — and these four are in
+                  three different scripts, each needing its own face and its
+                  own size. It is hidden from assistive technology: the input
+                  already has a real <label>, and this is decoration.
+                */}
+                <span className="askbox__inputwrap">
+                  <input
+                    id="kural-question"
+                    className="askbox__input"
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") runSearch(query);
+                    }}
+                    autoComplete="off"
+                    spellCheck={false}
+                  />
+                  {query === "" && (
+                    <span
+                      // keyed by index so the fade runs again on every change
+                      key={placeholderIndex}
+                      aria-hidden="true"
+                      className="askbox__ghost"
+                      lang={EXAMPLE_QUERIES[placeholderIndex].lang}
+                      style={{
+                        fontFamily: EXAMPLE_QUERIES[placeholderIndex].font,
+                        fontSize: `${EXAMPLE_QUERIES[placeholderIndex].ghostScale}em`,
+                        animation: reducedMotion
+                          ? "none"
+                          : "kr-fade var(--d3) var(--e-out) both",
+                      }}
+                    >
+                      {EXAMPLE_QUERIES[placeholderIndex].query}
+                    </span>
+                  )}
+                </span>
                 <button
                   type="button"
                   className="button-solid askbox__submit"
@@ -394,29 +451,7 @@ export function SearchExperience({
                   </span>
                 </button>
               </div>
-
-              <div className="askbox__langs">
-                <span lang="en" className="askbox__lang">
-                  <span className="askbox__dot" aria-hidden="true" />
-                  English
-                </span>
-                <span className="askbox__lang">
-                  <span className="askbox__dot" aria-hidden="true" />
-                  <span lang="ta" style={{ fontFamily: "var(--f-ta-ui)", fontSize: 14 }}>
-                    தமிழ்
-                  </span>
-                </span>
-                <span lang="en" className="askbox__lang">
-                  <span className="askbox__dot" aria-hidden="true" />
-                  Thanglish{" "}
-                  <span className="mono" style={{ fontSize: 11, color: "var(--ink-4)" }}>
-                    sinam adakkuvadhu eppadi
-                  </span>
-                </span>
-              </div>
             </div>
-
-            <ExampleRow onRun={runSearch} />
           </div>
 
           <div className="hairline-grid stats">
@@ -444,8 +479,6 @@ export function SearchExperience({
         <ThinkingScreen
           query={query}
           queryIsTamil={/[஀-௿]/.test(query)}
-          step={step}
-          steps={thinkingSteps}
           reducedMotion={reducedMotion}
         />
       )}

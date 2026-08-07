@@ -550,10 +550,57 @@ a {
   font-family: var(--f-text);
   font-weight: 300;
   font-size: clamp(38px, 6.4vw, 74px);
-  line-height: 1.06;
+  /* 1.06 in the Latin-only version. Raised because the title now carries a
+     Tamil word inline, and the marks that sit above ள் need the room. */
+  line-height: 1.12;
   letter-spacing: -0.022em;
   color: var(--ink);
   text-wrap: balance;
+}
+
+/*
+  திருக்குறள் inside the display line, set light on a dark block.
+
+  Three corrections, all of them because Tamil is not Latin:
+
+  1. Tamil reads optically larger than Spectral 300 at the same pixel size,
+     and it takes no negative tracking, so size and letter-spacing are reset.
+  2. Light type on a dark ground looks THINNER than the same type dark on
+     light — the background eats into the strokes. Weight goes 300 to 500 to
+     put back what the reversal takes away.
+  3. The block needs room above and below for the marks that hang off ள் and
+     ி. The padding gives it; the negative margin takes the same amount back
+     out of the layout, so adding the block did not move the line.
+
+  The fill is --ink on --paper-2, which is the same pair as .button-solid.
+  That is deliberate: the name of the book and the button that searches it are
+  the only two solid objects on the resting screen, and they should read as
+  one family rather than two ideas.
+*/
+.resting__title-ta {
+  /*
+    inline-block, and this is the whole trick. Left as plain inline text, the
+    dark box takes its height from the FONT's own ascent and descent, and Noto
+    Serif Tamil declares a very tall pair — the result was a slab about half
+    again as deep as the word inside it. As an inline-block the box takes its
+    height from line-height instead, which is a number we control, so the fill
+    can be made to hug the letters.
+
+    vertical-align: baseline keeps the Tamil sitting on the same line the
+    English sits on, so the block does not float up or drop.
+  */
+  display: inline-block;
+  vertical-align: baseline;
+  font-family: var(--f-ta);
+  font-size: 0.72em;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.14;
+  background: var(--ink);
+  color: var(--paper-2);
+  padding: 0.04em 0.2em 0.06em;
+  border-radius: 2px;
+  white-space: nowrap;
 }
 
 .resting__lede {
@@ -576,13 +623,136 @@ a {
   gap: var(--s2);
 }
 
+/* ---------------------------------------------------------------------------
+   The rule under the ask box, and the only motion in the hero.
+
+   Nothing was added to the page to get this. The line was always there as a
+   border-bottom; it is now two absolutely-positioned layers instead, which is
+   the difference between a border and something that can move.
+
+   Absolutely positioned, and that detail is load-bearing: .askbox__line is a
+   flex row, and a ::before or ::after left in normal flow would become a flex
+   item and sit in the row beside the input. Out of flow, they do not.
+
+   Three things happen, in this order:
+
+     on load   the line draws itself from the left edge to the right, 900ms
+     on focus  it doubles in weight, 140ms
+     on focus  one band of accent travels its length, once, and leaves
+
+   The full width of the field is the widest measurement in the hero, so a
+   line crossing it is a large gesture made out of one pixel.
+   --------------------------------------------------------------------------- */
+
 .askbox__line {
+  position: relative;
   display: flex;
   align-items: stretch;
   gap: var(--s3);
-  border-bottom: 1px solid var(--ink);
   padding-bottom: var(--s3);
-  transition: border-color var(--d2) var(--e-std);
+}
+
+/* the rule itself */
+.askbox__line::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--ink);
+  /* drawn from the left edge, the end a hand would start at */
+  transform-origin: left center;
+  animation: kr-rule-draw var(--d5) var(--e-out) 240ms both;
+  transition: height var(--d1) var(--e-std);
+}
+
+.askbox__line:focus-within::after {
+  height: 2px;
+}
+
+/*
+  The band of accent that runs the length of the line when the field is
+  entered. It is transparent at both ends, so it reads as a moving highlight
+  on the rule rather than as an object sliding along it.
+
+  It is 20% of the width and travels 500% of its own width, which is exactly
+  far enough to leave the right edge: 20% + 500% × 20% = 120%.
+*/
+.askbox__line::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  /*
+    Above the rule, and it has to be said explicitly. Both layers are
+    positioned, so paint order falls back to document order — and ::after
+    comes second, which means the ink rule was covering the accent band
+    completely. The effect was invisible until this line existed.
+  */
+  z-index: 1;
+  width: 20%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent) 45%,
+    var(--accent) 55%,
+    transparent
+  );
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+/*
+  linear, not eased. --e-std front-loads hard: with it, the band covered nine
+  tenths of the line in the first three hundred milliseconds and then crawled
+  the rest, which reads as a thing being flung rather than a light passing
+  along. A steady pace is the whole effect.
+*/
+.askbox__line:focus-within::before {
+  animation: kr-rule-run 1000ms linear both;
+}
+
+@keyframes kr-rule-draw {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+@keyframes kr-rule-run {
+  0%   { opacity: 0;    transform: translateX(-100%); }
+  14%  { opacity: 0.95; }
+  86%  { opacity: 0.95; }
+  100% { opacity: 0;    transform: translateX(500%); }
+}
+
+/*
+  Motion reduced: the line is simply there, at full width, and entering the
+  field still thickens it. What is dropped is travel — the draw and the run —
+  not the information that the field is focused.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .askbox__line::after {
+    animation: none;
+    transform: none;
+  }
+  .askbox__line::before,
+  .askbox__line:focus-within::before {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/*
+  The input and the cycling example sit in the same box, one on top of the
+  other. The wrapper is what makes that stacking possible; it takes the flex
+  growth the input used to take.
+*/
+.askbox__inputwrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
 }
 
 .askbox__input {
@@ -592,37 +762,45 @@ a {
   border: 0;
   outline: none;
   padding: 0;
-  font-family: var(--f-text);
+  /* Spectral first, then the Tamil serif, because a reader can type Tamil
+     straight into this box and Spectral carries no Tamil letters. */
+  font-family: var(--font-spectral), var(--font-noto-serif-tamil), Georgia, serif;
   font-size: clamp(20px, 2.6vw, 28px);
   line-height: 1.4;
   color: var(--ink);
+}
+
+/*
+  The example question showing through the empty box.
+
+  It is not the input's placeholder attribute: the four examples are in three
+  scripts and each needs its own face and size, which one attribute cannot
+  carry. Sizes are given in em so they scale with the input's own clamp().
+  pointer-events: none so a click still lands in the field beneath it.
+*/
+.askbox__ghost {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  overflow: hidden;
+  white-space: nowrap;
+  line-height: 1.4;
+  color: var(--ink-4);
 }
 
 .askbox__submit {
   align-self: flex-end;
 }
 
-.askbox__langs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s2) var(--s4);
-  padding-top: var(--s1);
-  font-size: 12.5px;
-  color: var(--ink-3);
-}
-
-.askbox__lang {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.askbox__dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--ink-4);
-}
+/*
+  .askbox__langs / __lang / __dot were removed 2026-08-04. The row listed
+  "English · தமிழ் · Thanglish" under the input as three labels. The example
+  queries below the box are written one per language and already prove the
+  same thing by demonstration, so the labels were duplication in the one place
+  on the page that needs to stay quiet.
+*/
 
 .examples {
   display: grid;
@@ -2195,4 +2373,550 @@ a {
   border: 1px solid var(--rule);
   border-left: 2px solid var(--accent);
   background: var(--paper-2);
+}
+
+/* ==========================================================================
+   Search — the pipeline animation (replaces the generic step list)
+
+   An engineer's rail: the six real stages of the retrieval pipeline, a
+   hairline down the left, and a pulse that travels it while work is live.
+   Stage states: pending (faint), active (accent node, pulsing), done
+   (filled node, full ink). The clock in the header is real elapsed time.
+   ========================================================================== */
+
+.pipe__clock {
+  font-family: var(--f-mono);
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-4);
+}
+
+.pipe {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  max-width: 720px;
+  position: relative;
+}
+
+/* the rail itself */
+.pipe::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 10px;
+  bottom: 10px;
+  width: 1px;
+  background: var(--rule);
+}
+
+/* the pulse that travels the rail */
+.pipe[data-motion="on"]::after {
+  content: "";
+  position: absolute;
+  left: 3.5px;
+  top: 10px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: kr-pipe-travel 2600ms var(--e-std) infinite;
+}
+
+@keyframes kr-pipe-travel {
+  0% {
+    top: 10px;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    top: calc(100% - 14px);
+    opacity: 0;
+  }
+}
+
+.pipe__stage {
+  position: relative;
+  display: flex;
+  gap: var(--s5);
+  padding: 11px 0 11px 0;
+  transition: opacity var(--d3) var(--e-std);
+}
+
+.pipe__stage[data-state="pending"] {
+  opacity: 0.32;
+}
+
+.pipe__stage[data-state="active"] {
+  opacity: 1;
+}
+
+.pipe__stage[data-state="done"] {
+  opacity: 0.78;
+}
+
+/* the node on the rail */
+.pipe__node {
+  flex: none;
+  width: 11px;
+  height: 11px;
+  margin-top: 4px;
+  border: 1px solid var(--ink-4);
+  background: var(--paper);
+  z-index: 1;
+  transition:
+    background var(--d2) var(--e-std),
+    border-color var(--d2) var(--e-std);
+}
+
+.pipe__stage[data-state="done"] .pipe__node {
+  background: var(--ink-3);
+  border-color: var(--ink-3);
+}
+
+.pipe__stage[data-state="active"] .pipe__node {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.pipe[data-motion="on"] .pipe__stage[data-state="active"] .pipe__node {
+  animation: kr-node-pulse 1200ms var(--e-std) infinite;
+}
+
+@keyframes kr-node-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+}
+
+.pipe__body {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+  border-bottom: 1px solid var(--rule-2);
+  padding-bottom: 11px;
+}
+
+.pipe__stage:last-child .pipe__body {
+  border-bottom: none;
+}
+
+.pipe__row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s4);
+}
+
+.pipe__index {
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  color: var(--ink-4);
+  letter-spacing: 0.08em;
+}
+
+.pipe__label {
+  flex: 1;
+  font-size: 14.5px;
+  color: var(--ink-2);
+}
+
+.pipe__stage[data-state="active"] .pipe__label {
+  color: var(--ink);
+}
+
+.pipe__meta {
+  font-family: var(--f-mono);
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-4);
+  white-space: nowrap;
+}
+
+.pipe__stage[data-state="active"] .pipe__meta {
+  color: var(--accent);
+}
+
+.pipe__detail {
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  color: var(--ink-4);
+}
+
+/* the 1330-verse scan, embedded in stage 03 */
+.pipe__bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 44px;
+  margin-top: var(--s2);
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.pipe__bar {
+  flex: 1;
+  min-width: 1px;
+  background: var(--ink-3);
+  transform-origin: bottom;
+  transition: opacity var(--d2) var(--e-std);
+}
+
+.pipe__bars[data-running="yes"] .pipe__bar {
+  animation: kr-scan 1500ms var(--e-std) infinite;
+}
+
+/* ==========================================================================
+   Pipeline stage schematics
+
+   Each active stage draws its MECHANISM as a small SVG in the paper-and-ink
+   language: words dimming for the rewrite, a point located in vector space,
+   a funnel to 50, pairs weighed by the reranker, answer lines written with
+   citation chips. Rules: resting styles are the FINISHED frame, so when
+   [data-motion="off"] kills the animations, a correct still image remains.
+   ========================================================================== */
+
+.pipe__viz {
+  width: 100%;
+  max-width: 560px;
+  height: 64px;
+  margin-top: var(--s3);
+  display: block;
+  animation: kr-viz-in var(--d3) var(--e-out) both;
+}
+
+@keyframes kr-viz-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.pipe[data-motion="off"] .pipe__viz,
+.pipe[data-motion="off"] .pipe__viz * {
+  animation: none !important;
+}
+
+/* shared vocabulary */
+.viz-hair {
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+.viz-dot {
+  fill: var(--ink-4);
+  opacity: 0.7;
+  animation: kr-viz-appear 400ms var(--e-std) both;
+}
+
+@keyframes kr-viz-appear {
+  from {
+    opacity: 0;
+  }
+}
+
+/* 01 — rewrite: filler words drop, topic words arrive */
+.viz-word {
+  rx: 2;
+}
+
+.viz-word--keep {
+  fill: var(--ink-3);
+}
+
+.viz-word--drop {
+  fill: var(--ink-4);
+  opacity: 0.18;
+  animation: kr-word-drop 900ms var(--e-std) both;
+}
+
+@keyframes kr-word-drop {
+  0% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0.18;
+  }
+}
+
+.viz-word--new {
+  fill: var(--accent);
+  opacity: 0.85;
+  animation: kr-word-new 500ms var(--e-out) both;
+}
+
+@keyframes kr-word-new {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 0.85;
+    transform: none;
+  }
+}
+
+.viz-arrow {
+  stroke: var(--ink-4);
+  stroke-width: 1;
+  fill: none;
+}
+
+/* 02 — embed: crosshair converges on the question's point */
+.viz-cross {
+  stroke: var(--accent);
+  stroke-width: 0.75;
+  stroke-dasharray: 3 4;
+  opacity: 0.55;
+}
+
+.viz-cross--h {
+  animation: kr-cross-h 900ms var(--e-out) both;
+  animation-delay: 250ms;
+}
+
+.viz-cross--v {
+  animation: kr-cross-v 900ms var(--e-out) both;
+  animation-delay: 250ms;
+}
+
+@keyframes kr-cross-h {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 0.55;
+    transform: none;
+  }
+}
+
+@keyframes kr-cross-v {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 0.55;
+    transform: none;
+  }
+}
+
+.viz-target {
+  fill: var(--accent);
+  animation: kr-viz-appear 300ms var(--e-std) both;
+  animation-delay: 950ms;
+}
+
+.viz-ping {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: kr-ping 1600ms var(--e-std) infinite;
+  animation-delay: 1150ms;
+  opacity: 0;
+}
+
+@keyframes kr-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  70%,
+  100% {
+    transform: scale(3.4);
+    opacity: 0;
+  }
+}
+
+/* 04 — shortlist: ticks dim, five survivors flow down to the kept row */
+.viz-tick {
+  stroke: var(--ink-4);
+  stroke-width: 1.5;
+  opacity: 0.16;
+  animation: kr-tick-dim 700ms var(--e-std) both;
+}
+
+@keyframes kr-tick-dim {
+  from {
+    opacity: 0.6;
+  }
+  to {
+    opacity: 0.16;
+  }
+}
+
+.viz-tick--kept {
+  stroke: var(--ink-2);
+  opacity: 1;
+  animation: none;
+}
+
+.viz-flow {
+  fill: none;
+  stroke: var(--ink-4);
+  stroke-width: 0.75;
+  stroke-dasharray: 90;
+  stroke-dashoffset: 0;
+  opacity: 0.5;
+  animation: kr-flow 700ms var(--e-std) both;
+}
+
+@keyframes kr-flow {
+  from {
+    stroke-dashoffset: 90;
+    opacity: 0;
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 0.5;
+  }
+}
+
+.viz-tick--landed {
+  stroke: var(--accent);
+  stroke-width: 2;
+  opacity: 1;
+  animation: kr-viz-appear 300ms var(--e-std) both;
+}
+
+/* 05 — rerank: two cards read together, a weight emitted per pair */
+.viz-card {
+  fill: var(--paper-2);
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+.viz-line {
+  stroke: var(--ink-4);
+  stroke-width: 1.5;
+  opacity: 0.6;
+}
+
+.viz-swap {
+  animation: kr-pair-swap 1800ms var(--e-std) infinite;
+}
+
+@keyframes kr-pair-swap {
+  0%,
+  78% {
+    opacity: 1;
+    transform: none;
+  }
+  86% {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  88% {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.viz-beam {
+  stroke: var(--accent);
+  stroke-width: 0.75;
+  opacity: 0.6;
+  stroke-dasharray: 118;
+}
+
+.viz-beam--left {
+  animation: kr-beam 1800ms var(--e-std) infinite;
+}
+
+.viz-beam--right {
+  animation: kr-beam 1800ms var(--e-std) infinite;
+}
+
+@keyframes kr-beam {
+  0% {
+    stroke-dashoffset: 118;
+    opacity: 0;
+  }
+  22% {
+    stroke-dashoffset: 0;
+    opacity: 0.6;
+  }
+  78% {
+    stroke-dashoffset: 0;
+    opacity: 0.6;
+  }
+  92%,
+  100% {
+    stroke-dashoffset: 118;
+    opacity: 0;
+  }
+}
+
+.viz-gauge {
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-dasharray: 128;
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: kr-gauge 1800ms var(--e-std) infinite;
+}
+
+@keyframes kr-gauge {
+  0%,
+  25% {
+    transform: scaleX(0);
+  }
+  55% {
+    transform: scaleX(0.82);
+  }
+  78% {
+    transform: scaleX(0.82);
+  }
+  95%,
+  100% {
+    transform: scaleX(0);
+  }
+}
+
+/* 06 — compose: answer lines written, each closed by a citation chip */
+.viz-write {
+  stroke: var(--ink-3);
+  stroke-width: 2;
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: kr-write 600ms var(--e-out) both;
+}
+
+@keyframes kr-write {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.viz-chip {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1;
+  rx: 2;
+  animation: kr-viz-appear 300ms var(--e-std) both;
 }
