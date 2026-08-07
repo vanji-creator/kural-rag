@@ -2729,7 +2729,7 @@ a {
   stroke-width: 1;
   transform-box: fill-box;
   transform-origin: center;
-  animation: kr-ping 1600ms var(--e-std) infinite;
+  animation: kr-ping 2000ms var(--e-std) infinite;
   animation-delay: 1150ms;
   opacity: 0;
 }
@@ -2811,7 +2811,7 @@ a {
 }
 
 .viz-swap {
-  animation: kr-pair-swap 1800ms var(--e-std) infinite;
+  animation: kr-pair-swap 2400ms var(--e-std) infinite;
 }
 
 @keyframes kr-pair-swap {
@@ -2842,11 +2842,11 @@ a {
 }
 
 .viz-beam--left {
-  animation: kr-beam 1800ms var(--e-std) infinite;
+  animation: kr-beam 2400ms var(--e-std) infinite;
 }
 
 .viz-beam--right {
-  animation: kr-beam 1800ms var(--e-std) infinite;
+  animation: kr-beam 2400ms var(--e-std) infinite;
 }
 
 @keyframes kr-beam {
@@ -2875,7 +2875,7 @@ a {
   stroke-dasharray: 128;
   transform-box: fill-box;
   transform-origin: left center;
-  animation: kr-gauge 1800ms var(--e-std) infinite;
+  animation: kr-gauge 2400ms var(--e-std) infinite;
 }
 
 @keyframes kr-gauge {

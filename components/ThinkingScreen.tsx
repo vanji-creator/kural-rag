@@ -31,8 +31,27 @@ interface ThinkingScreenProps {
 
 const CORPUS_SIZE = 1330;
 
-/** When each stage begins, in ms of elapsed search time. */
-const STAGE_STARTS_MS = [0, 1600, 3200, 5400, 7200, 20000];
+/**
+ * When each stage begins, in ms of elapsed search time.
+ *
+ * Each window is at least as long as that stage's own schematic takes to
+ * play through once, so nothing is ever cut off mid-draw:
+ *
+ *   01 rewrite   2.6 s   last topic word lands at ~1.9 s
+ *   02 embed     3.4 s   crosshair settles ~1.3 s, one full ping ~3.2 s
+ *   03 scan      3.2 s   the 1330 sweep reads as a sweep
+ *   04 shortlist 3.0 s   last survivor lands at ~1.9 s
+ *   05 rerank    8.8 s   the pair loop repeats ~4 times
+ *   06 compose            three lines and their citation chips, ~2.5 s
+ *
+ * HONESTY NOTE. Only stage 05's length is true to life. Embedding one
+ * question takes about 50 ms and scoring all 1330 about 4 ms — far too
+ * fast to see. So the early stages are given a legibility floor, while the
+ * ordering, the models, the counts and the clock are all real, and the
+ * reranker remains by far the longest window because that is where the
+ * time genuinely goes on this machine.
+ */
+const STAGE_STARTS_MS = [0, 2600, 6000, 9200, 12200, 21000];
 
 const STAGES = [
   {
