@@ -1,5 +1,7 @@
 # Kural RAG
 
+▶ **[Watch the demo and read the post on LinkedIn](https://lnkd.in/p/g2A2nUhh)**
+
 Ask a life question in English, Tamil, or Thanglish. Get back the verses of
 the **Thirukkural** that actually answer it, and a short answer that cites
 those verses by number.
