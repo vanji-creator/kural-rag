@@ -13,11 +13,10 @@ to help with those posts.
 
 **Rules for any AI assistant reading this:**
 
-1. **This document supersedes** `RESUME_BRIEF.md`, `WEB.md`, and
-   `WHERE_WE_LEFT_OFF.md`. All three are stale: they quote numbers from
-   before the reranker replacement of 2026-08-04 (they say "44 → 90",
-   "85/100", and "grounded answer — not built"; the current numbers and
-   state are in §10 here).
+1. **This document supersedes** every older summary. The stale ones
+   (`RESUME_BRIEF.md`, `WEB.md`, `WHERE_WE_LEFT_OFF.md`) were removed from
+   the repository on 2026-10-04; `README.md` is the short public summary and
+   takes its numbers from §10 here.
 2. **Every number in this document is a measured fact** from the repository —
    from `EXPERIMENT_LOG.md`, `LEARNING_LOG.md`, `LEARNING_GAPS.md`, or a
    named source-file docstring. Nothing is rounded up. Do not round,
